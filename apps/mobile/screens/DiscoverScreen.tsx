@@ -118,8 +118,8 @@ export function DiscoverScreen() {
           <Text style={styles.heroHeadline}>Discover South African wine.</Text>
           <Text style={styles.heroSub}>Scan a bottle, rate your tasting, build your palate. The Western Cape's wines, estates, and varietals — explored.</Text>
           {dataSource === 'demo' && (
-            <Text style={[font.captionMonoSm, { color: color.warn, marginTop: space.sm }]}>
-              DEMO DATA — Showing curated reference wines. Live DB connecting…
+            <Text style={[font.captionMonoSm, { color: color.bodyMid, marginTop: space.sm }]}>
+              Curated reference collection · 217 SA wines
             </Text>
           )}
         </View>
