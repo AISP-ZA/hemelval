@@ -116,7 +116,7 @@ export function DiscoverScreen() {
         <View style={styles.heroContent}>
           <Eyebrow>YOUR CELLAR · YOUR PALATE</Eyebrow>
           <Text style={styles.heroHeadline}>Discover South African wine.</Text>
-          <Text style={styles.heroSub}>The Western Cape, in your pocket. Scan a bottle, log your tasting, let Hemelval learn your palate.</Text>
+          <Text style={styles.heroSub}>Scan a bottle, rate your tasting, build your palate. The Western Cape's wines, estates, and varietals — explored.</Text>
           {dataSource === 'demo' && (
             <Text style={[font.captionMonoSm, { color: color.warn, marginTop: space.sm }]}>
               DEMO DATA — Showing curated reference wines. Live DB connecting…
@@ -136,56 +136,13 @@ export function DiscoverScreen() {
         />
       </View>
 
-      {/* "What are you eating?" — AI food-pairing search */}
-      <View style={styles.section}>
-        <Eyebrow>PAIRING WIZARD</Eyebrow>
-        <Text style={styles.sectionHeadline}>What are you eating?</Text>
-        <BodyText muted size="sm" style={{ marginTop: space.xs }}>
-          Tell us your dish — we'll match SA wines that pair perfectly.
-        </BodyText>
-        <View style={styles.foodSearchRow}>
-          <TextInput
-            style={[styles.input, { flex: 1 }]}
-            placeholder="e.g. braai lamb chops, sushi, bobotie…"
-            placeholderTextColor={color.bodyMid}
-            value={foodQuery}
-            onChangeText={setFoodQuery}
-            onSubmitEditing={() => {
-              if (foodQuery.trim()) {
-                setFoodMatch(findWinesForFood(foodQuery));
-              }
-            }}
-          />
-          <Button variant="primary" onPress={() => { if (foodQuery.trim()) setFoodMatch(findWinesForFood(foodQuery)); }} style={{ marginLeft: space.sm }}>PAIR</Button>
-        </View>
-        {/* Quick-pick food chips */}
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: space.xs, marginTop: space.md }}>
-          {['Braai', 'Steak', 'Sushi', 'Bobotie', 'Oysters', 'Lamb', 'Curry', 'Pizza', 'Malva pudding', 'Biltong'].map((food) => (
-            <Pressable key={food} hitSlop={8} onPress={() => { setFoodQuery(food); setFoodMatch(findWinesForFood(food)); }}>
-              <Chip tone={foodMatch?.tags.some((t) => t.includes(food.toLowerCase().split(' ')[0])) ? 'accent' : 'neutral'}>{food}</Chip>
-            </Pressable>
-          ))}
-        </ScrollView>
-        {/* AI explanation */}
-        {foodMatch && (
-          <Card style={{ marginTop: space.md, borderColor: color.gold }}>
-            <Eyebrow>SOMMELIER SAYS</Eyebrow>
-            <Text style={styles.sommelierText}>{foodMatch.explanation}</Text>
-            {foodMatch.varietalSlugs.length > 0 && (
-              <View style={styles.chipRowSmall}>
-                {foodMatch.varietalSlugs.slice(0, 6).map((v) => (
-                  <Chip key={v} tone={foodMatch.wineTypes[0] === 'red' ? 'wine' : 'accent'}>{v.replace(/-/g, ' ')}</Chip>
-                ))}
-              </View>
-            )}
-            <Pressable hitSlop={8} onPress={() => { setFoodMatch(null); setFoodQuery(''); }} style={{ marginTop: space.md }}>
-              <Text style={[font.captionMonoSm, { color: color.bodyMid, textDecorationLine: 'underline' }]}>CLEAR PAIRING ✕</Text>
-            </Pressable>
-          </Card>
-        )}
-      </View>
+      {/* Signature SA grapes — the differentiator (grape education) */}
       <View style={styles.section}>
         <Eyebrow>SIGNATURE SA GRAPES</Eyebrow>
+        <Text style={styles.sectionHeadline}>The grapes that define us.</Text>
+        <BodyText muted size="sm" style={{ marginTop: space.xs }}>
+          South Africa's signature varieties — tap to explore and filter wines.
+        </BodyText>
         <View style={styles.chipRow}>
           {signatureVarietals().map((v) => (
             <Pressable key={v.slug} hitSlop={8} onPress={() => setVarietalFilter(varietalFilter === v.slug ? null : v.slug)}>
@@ -195,35 +152,7 @@ export function DiscoverScreen() {
         </View>
       </View>
 
-      {/* Full varietal browser — tappable filter chips */}
-      <View style={styles.section}>
-        <Eyebrow>BROWSE BY VARIETAL // {VARIETALS.length}</Eyebrow>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: space.sm, marginTop: space.md }}>
-          {VARIETALS.map((v) => {
-            const active = varietalFilter === v.slug;
-            return (
-              <Pressable key={v.slug} hitSlop={8} onPress={() => setVarietalFilter(active ? null : v.slug)}>
-                <Chip tone={active ? (v.type === 'red' ? 'wine' : 'accent') : 'neutral'}>
-                  {v.name.replace(' / Syrah', '').replace(' (Méthode Cap Classique)', '')}
-                </Chip>
-              </Pressable>
-            );
-          })}
-        </ScrollView>
-        {varietalFilter && (
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm, marginTop: space.md }}>
-            <BodyText size="sm" muted>Filtered by: </BodyText>
-            <Chip tone={VARIETALS.find((v) => v.slug === varietalFilter)?.type === 'red' ? 'wine' : 'accent'}>
-              {VARIETALS.find((v) => v.slug === varietalFilter)?.name}
-            </Chip>
-            <Pressable hitSlop={8} onPress={() => setVarietalFilter(null)}>
-              <Text style={[font.captionMonoSm, { color: color.bodyMid, textDecorationLine: 'underline' }]}>CLEAR ✕</Text>
-            </Pressable>
-          </View>
-        )}
-      </View>
-
-      {/* Top rated — photo-backed cards */}
+      {/* Top rated — discovery carousel */}
       {topRated.length > 0 && (
       <View style={styles.section}>
         <Eyebrow>TOP RATED // 01</Eyebrow>
@@ -254,7 +183,7 @@ export function DiscoverScreen() {
       </View>
       )}
 
-      {/* Wine list */}
+      {/* Wine list — the core browsing experience */}
       <View style={styles.section}>
         <Eyebrow>{query ? `RESULTS · ${filtered.length}` : 'ALL WINES'}</Eyebrow>
         {filtered.map((w) => {
@@ -287,6 +216,34 @@ export function DiscoverScreen() {
         })}
       </View>
 
+      {/* Browse by varietal — deeper grape education */}
+      <View style={styles.section}>
+        <Eyebrow>BROWSE BY VARIETAL // {VARIETALS.length}</Eyebrow>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: space.sm, marginTop: space.md }}>
+          {VARIETALS.map((v) => {
+            const active = varietalFilter === v.slug;
+            return (
+              <Pressable key={v.slug} hitSlop={8} onPress={() => setVarietalFilter(active ? null : v.slug)}>
+                <Chip tone={active ? (v.type === 'red' ? 'wine' : 'accent') : 'neutral'}>
+                  {v.name.replace(' / Syrah', '').replace(' (Méthode Cap Classique)', '')}
+                </Chip>
+              </Pressable>
+            );
+          })}
+        </ScrollView>
+        {varietalFilter && (
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm, marginTop: space.md }}>
+            <BodyText size="sm" muted>Filtered by: </BodyText>
+            <Chip tone={VARIETALS.find((v) => v.slug === varietalFilter)?.type === 'red' ? 'wine' : 'accent'}>
+              {VARIETALS.find((v) => v.slug === varietalFilter)?.name}
+            </Chip>
+            <Pressable hitSlop={8} onPress={() => setVarietalFilter(null)}>
+              <Text style={[font.captionMonoSm, { color: color.bodyMid, textDecorationLine: 'underline' }]}>CLEAR ✕</Text>
+            </Pressable>
+          </View>
+        )}
+      </View>
+
       {/* Regions */}
       <View style={styles.section}>
         <Eyebrow>WESTERN CAPE REGIONS</Eyebrow>
@@ -294,6 +251,50 @@ export function DiscoverScreen() {
           {regions.map((r) => <Chip key={r} tone="neutral">{r}</Chip>)}
         </View>
       </View>
+
+      {/* Food pairing — small section at the bottom */}
+      <View style={styles.section}>
+        <Eyebrow>WHAT IT PAIRS WITH</Eyebrow>
+        <View style={styles.foodSearchRow}>
+          <TextInput
+            style={[styles.input, { flex: 1 }]}
+            placeholder="e.g. braai lamb, sushi, bobotie…"
+            placeholderTextColor={color.bodyMid}
+            value={foodQuery}
+            onChangeText={setFoodQuery}
+            onSubmitEditing={() => {
+              if (foodQuery.trim()) {
+                setFoodMatch(findWinesForFood(foodQuery));
+              }
+            }}
+          />
+          <Button variant="primary" onPress={() => { if (foodQuery.trim()) setFoodMatch(findWinesForFood(foodQuery)); }} style={{ marginLeft: space.sm }}>PAIR</Button>
+        </View>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: space.xs, marginTop: space.md }}>
+          {['Braai', 'Steak', 'Sushi', 'Bobotie', 'Oysters', 'Lamb', 'Curry', 'Pizza', 'Malva pudding', 'Biltong'].map((food) => (
+            <Pressable key={food} hitSlop={8} onPress={() => { setFoodQuery(food); setFoodMatch(findWinesForFood(food)); }}>
+              <Chip tone={foodMatch?.tags.some((t) => t.includes(food.toLowerCase().split(' ')[0])) ? 'accent' : 'neutral'}>{food}</Chip>
+            </Pressable>
+          ))}
+        </ScrollView>
+        {foodMatch && (
+          <Card style={{ marginTop: space.md, borderColor: color.gold }}>
+            <Eyebrow>SOMMELIER SAYS</Eyebrow>
+            <Text style={styles.sommelierText}>{foodMatch.explanation}</Text>
+            {foodMatch.varietalSlugs.length > 0 && (
+              <View style={styles.chipRowSmall}>
+                {foodMatch.varietalSlugs.slice(0, 6).map((v) => (
+                  <Chip key={v} tone={foodMatch.wineTypes[0] === 'red' ? 'wine' : 'accent'}>{v.replace(/-/g, ' ')}</Chip>
+                ))}
+              </View>
+            )}
+            <Pressable hitSlop={8} onPress={() => { setFoodMatch(null); setFoodQuery(''); }} style={{ marginTop: space.md }}>
+              <Text style={[font.captionMonoSm, { color: color.bodyMid, textDecorationLine: 'underline' }]}>CLEAR PAIRING ✕</Text>
+            </Pressable>
+          </Card>
+        )}
+      </View>
+
       <View style={{ height: space.huge }} />
     </ScrollView>
   );
