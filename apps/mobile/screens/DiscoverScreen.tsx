@@ -7,6 +7,7 @@ import { View, ScrollView, StyleSheet, FlatList, Pressable, TextInput, Text, Ima
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Eyebrow, Headline, BodyText, Card, Chip, Button, Stars, MatchBadge, Divider } from '../components/index.js';
 import { EstateWordmark } from '../components/EstateWordmark.js';
+import { TasteProfileChart, tasteProfileForVarietal } from '../components/TasteProfileChart.js';
 import { color, font, radius, space } from '../theme/tokens.js';
 import { MOCK_ESTATES, mockEstateById, type MockWine, type MockEstate } from '../lib/mockData.js';
 import { fetchWines, type Wine } from '../lib/dataAccessor.js';
@@ -327,6 +328,11 @@ function WineDetail({ wine, matchScore, onBack, onRate, onEstatePress }: { wine:
         <View style={styles.chipRowSmall}>
           {wine.pairings.map((p) => <Chip key={p} tone="accent">{p.replace(/-/g, ' ')}</Chip>)}
         </View>
+        <Divider />
+        <TasteProfileChart
+          values={tasteProfileForVarietal(wine.varietals[0], wine.type)}
+          label="TASTE PROFILE // THIS WINE"
+        />
         <Divider />
         <Button variant="primary" style={{ marginTop: space.md }} onPress={onRate}>★ RATE & LOG THIS WINE</Button>
       </View>

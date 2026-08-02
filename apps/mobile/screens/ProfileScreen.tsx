@@ -9,6 +9,7 @@ import React, { useState } from 'react';
 import { View, ScrollView, StyleSheet, TextInput, Text, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Eyebrow, Headline, BodyText, Card, Button, Chip, Divider } from '../components/index.js';
+import { TasteProfileChart, aggregateTasteValues } from '../components/TasteProfileChart.js';
 import { color, font, space, radius } from '../theme/tokens.js';
 import { aromaLabel } from '@kelder/engine';
 import { usePalate } from '../hooks/usePalate.js';
@@ -180,6 +181,15 @@ export function ProfileScreen() {
                   {palateProfile.preferredSweetness && <PrefCell label="SWEETNESS" value={palateProfile.preferredSweetness} />}
                 </View>
               </View>
+              {/* Taste profile chart — aggregate of user's rated wines */}
+              {palateProfile.noteCount >= 2 && (
+                <View style={{ marginTop: space.lg }}>
+                  <TasteProfileChart
+                    values={aggregateTasteValues(notes)}
+                    label="YOUR TASTE FINGERPRINT"
+                  />
+                </View>
+              )}
             </>
           )}
         </Card>
