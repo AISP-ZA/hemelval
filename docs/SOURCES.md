@@ -323,17 +323,58 @@ that Hemelval must either match or counter-position against.
 ## 9. Sustainability & certification registries
 
 These validate the `certifications` array and sustainability boolean flags on estates.
+See `docs/BADGE_SYSTEM.md` for the full badge architecture (two-rail system:
+quality medals vs values certifications, kept visually distinct).
+
+SA is the **only wine-producing country** that audits sustainability as a
+prerequisite for national certification — the combined WO + IPW seal on the
+bottle neck. No global wine app surfaces this data. This is Hemelval's second
+category-defining differentiator.
+
+### Certification hierarchy (baseline → premium)
+
+| Tier | Certification | What it signals | Badge prominence |
+|---|---|---|---|
+| **Baseline** | **IPW** | Environmental sustainability (audited since 1998, 95%+ coverage) | Low — absence is more notable |
+| **Environmental** | **WWF Conservation Champions** (formerly BWI) | Top eco-tier, 70%+ IPW + biodiversity. 55 farms. Sugarbird & protea logo. | **High** — premium eco-badge |
+| **Ethical** | **WIETA** | Fair labour, safe conditions, worker empowerment. SA-only independent body. | Medium-high |
+| **Ethical** | **Fairtrade** | International standard. SA = world's largest Fairtrade wine producer (⅔ global). | **High** — globally recognised |
+| **Lifestyle** | **Organic / Biodynamic / Vegan** | International standards, growing on SA labels | Medium — lifestyle filter |
+| **Emerging** | **B Corp** | Holistic business certification. Journey's End = SA's first (March 2025). | **High when present** |
+| **Umbrella** | **SWSA** | Alliance coordinating all above. 94% of producers. | Explainer link, not per-wine |
+
+### Quality awards & competitions (Rail A)
+
+Local: Platter's (★), Veritas, Michelangelo, Trophy Wine Show, ABSA Perold,
+FNB Sauvignon Blanc Top 10, Winemag.co.za, Tim Atkin MW.
+International: Decanter (DWWA), Mundus Vini, IWSC, IWC, Wine Spectator,
+James Suckling, Robert Parker.
+
+Tiered medal system normalised: Trophy > Double Gold > Gold > Silver > Bronze.
+Critic scores (Platter's stars, numeric /100) in a separate badge slot.
 
 | Source | URL | What it provides |
 |---|---|---|
 | **IPW** (Integrated Production of Wine) | ipw.co.za | Environmental sustainability certification |
 | **WIETA** (Wine & Agricultural Ethical Trade Initiative) | wieta.org.za | Ethical labour certification |
-| **Old Vine Project (OVP)** | oldvineproject.co.za | Certified Heritage Vineyards |
+| **WWF Conservation Champions** (formerly BWI) | wwf.org.za | Top environmental tier — 55 champion farms |
+| **Old Vine Project (OVP)** | oldvineproject.co.za | Certified Heritage Vineyards (35+ year old vines) |
 | **Wine & Spirit Board / Wine Certification Authority** | wineauthority.org | WO certification, A-number verification |
-| **BWI (Biodiversity & Wine Initiative)** | via WWF-SA | Conservation area certification |
+| **Fairtrade South Africa** | fairtrade.net | Fairtrade certification (SA = largest global producer) |
+| **SWSA** (Sustainable Wine South Africa) | swsa.co.za | Umbrella alliance (WO + IPW + WWF + WoSA) |
+| **Champion Wine Guide App** | championwineguide.co.za | WWF Conservation Champion wine farms list |
 
-**Status:** ✅ 10 certification types seeded in reference table. Not yet linked
-to individual estates at scale.
+**Status:** ✅ 10 certification types + 10 award bodies seeded in reference
+tables. Not yet linked to individual estates at scale.
+
+### The second category-defining feature
+
+> Let users filter by values: "show me Trophy-winning Chenin Blancs that are
+> also WWF Conservation Champions" or "Fairtrade wines near me."
+
+No competitor app supports values-based filtering. Combined with Experience
+Discovery, this gives Hemelval **two category-defining features** no global
+wine app can replicate.
 
 ---
 
