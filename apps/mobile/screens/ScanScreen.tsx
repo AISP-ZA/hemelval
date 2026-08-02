@@ -174,8 +174,9 @@ export function ScanScreen() {
       for (const line of lines.slice(0, 8)) {
         const clean = line.trim();
         if (clean.length < 3) continue;
+        const slugTerm = clean.toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 20);
         const res = await fetch(
-          `${supabaseUrl}/rest/v1/wines?select=id,slug,name,type,avg_stars,rating_count,about,estates(name)&name=ilike.%${encodeURIComponent(clean)}%&limit=1`,
+          `${supabaseUrl}/rest/v1/wines?select=id,slug,name,type,avg_stars,rating_count,about,estates!inner(name)&slug=like.*${slugTerm}*&limit=1`,
           { headers: { apikey: anonKey, Authorization: `Bearer ${anonKey}` } }
         );
         const data = await res.json();
@@ -192,8 +193,9 @@ export function ScanScreen() {
       for (const line of lines.slice(0, 5)) {
         const clean = line.trim();
         if (clean.length < 3) continue;
+        const slugTerm = clean.toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 20);
         const res = await fetch(
-          `${supabaseUrl}/rest/v1/wines?select=id,slug,name,type,avg_stars,rating_count,about,estates(name)&estates.name=ilike.%${encodeURIComponent(clean)}%&limit=1`,
+          `${supabaseUrl}/rest/v1/wines?select=id,slug,name,type,avg_stars,rating_count,about,estates!inner(name)&slug=like.*${slugTerm}*&limit=1`,
           { headers: { apikey: anonKey, Authorization: `Bearer ${anonKey}` } }
         );
         const data = await res.json();
