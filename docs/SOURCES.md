@@ -140,34 +140,51 @@ These populate reference tables (`wine_routes`, `wine_regions`, `certifications`
 
 ---
 
-## 3. Festivals & events (Western Cape specific, 2026 calendar)
+## 3. Festivals & events — seasonal arc calendar
 
-These populate the `events` table.
+SA's wine calendar follows a distinct seasonal arc, not a flat chronological list.
+See `docs/EVENTS_CALENDAR.md` for the full month-by-month breakdown, data
+pipeline architecture, and forecast layer design.
+
+### Four seasonal chapters
+1. **Harvest (Jan–Mar)** — Harvest Parade, grape stomping, SA's wine birthday (2 Feb). Most visually rich, best content marketing window.
+2. **Winter Festivals (Apr–Aug)** — Wacky Wine Weekend (Robertson), Franschhoek Bastille, Greyton, Stellenbosch Wine Festival.
+3. **Spring Bloom (Sep–Oct)** — Hermanus Wine & Food (70+ wineries), Swartland Revolution, Pinotage on Tap, CapeWine (biennial).
+4. **Festive Sparkle (Nov–Dec)** — Cap Classique season, estate Christmas markets, Kirstenbosch concerts.
 
 ### Event listing sources
-| Source | URL | Status |
-|---|---|---|
-| Secret Cape Town — Wine Festivals | https://secretcapetown.co.za/cape-town-wine-festivals/ | 🟡 Not ingested |
-| Wine Travel Guides — SA festival index | https://winetravelguides.com/festivals/country/south-africa | 🟡 Not ingested |
-| South African Wines blog — 2026 roundup | https://www.south-african-wines.com/blog/world-class-wine-festivals-in-south-africa-2026-dates-tips-highlights | 🟡 Not ingested |
-| sa-venues.com — Western Cape events | https://www.sa-venues.com/events/westerncape/ | 🟡 Not ingested |
-| Webtickets — Wine Festival category | https://www.webtickets.co.za/v2/category.aspx?itemid=1494776936 | 🟡 Live ticketing feed |
-| Stellenbosch Wine Routes site | https://wineroute.co.za/ | 🟡 Not ingested |
-| diary.wine.co.za — SA wine events aggregator | https://diary.wine.co.za | 🟡 Not ingested |
+| Source | URL | Priority | Status |
+|---|---|---|---|
+| **wine.co.za diary** | diary.wine.co.za | **P0** — best aggregator | 🟡 Not ingested |
+| **sa-venues.com** | sa-venues.com/events/westerncape | P0 — reliable, categorised | 🟡 Not ingested |
+| **Wine route bodies** | Per-route sites | P0 — primary-source dates | 🟡 Not ingested |
+| **Webtickets** | webtickets.co.za | P1 — live ticketing cross-check | 🟡 Not ingested |
+| Secret Cape Town — Wine Festivals | secretcapetown.co.za | P1 — enrichment | 🟡 Not ingested |
+| Wine Travel Guides — SA festival index | winetravelguides.com | P1 — enrichment | 🟡 Not ingested |
+| Stellenbosch Wine Routes site | wineroute.co.za | P1 — route-specific | 🟡 Not ingested |
 
-### Key annual events to hard-code as recurring
-- Stellenbosch Wine Festival (Aug)
-- Franschhoek Uncorked (Oct)
-- Franschhoek Cap Classique & Champagne Festival (Dec) — world's only MCC-dedicated festival
-- Robertson Wine Valley Hands-On Harvest
-- WineX (Oct/Nov, Joburg — SA's biggest)
-- Paarlberg Fees
-- Pinotage on Tap
-- Simonsberg Wine Festival
-- Agulhas Wine Triangle Festival
-- Elgin Cool Wine & Country Food Festival
+### Key annual events (recurring, dates shift year-to-year)
+- Stellenbosch Harvest Parade (late Jan) + Wine Birthday (2 Feb)
+- Franschhoek Cap Classique & Champagne Festival (Feb/Mar or Dec — confirm annually)
+- Wacky Wine Weekend (Robertson, early Jun) — 40+ estates
+- Franschhoek Bastille Festival (mid-Jul) — 20+ wineries
+- Stellenbosch Wine Festival (Aug) — Church Street celebration
+- Hermanus Wine and Food Festival (late Sep) — 70+ wineries, 300+ wines
+- Swartland Revolution (Oct) — natural wines, insider favourite
+- Pinotage on Tap (Wellington, Oct)
+- CapeWine (biennial trade expo, Oct) — 350+ producers
+- WineX (Joburg, late Oct) — largest in Southern Hemisphere
+- Rocking the Daisies (Cloof Estate, early Oct) — music + lifestyle
 
-**Status:** ✅ 41 events seeded. Target: 60+ via the sources above.
+### Pipeline architecture (from EVENTS_CALENDAR.md)
+```
+Weekly scraper → normalised event schema → recurrence detection
+→ confirmation queue → published events → forecast layer
+```
+Store `typical_month` per annual event to enable: "Harvest starts in ~10 weeks"
+proactive seasonal forecasting.
+
+**Status:** ✅ 41 events seeded. Target: 80+ via dynamic pipeline.
 
 ---
 
