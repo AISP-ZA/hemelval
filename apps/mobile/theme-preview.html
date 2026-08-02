@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hemelval — Theme Options</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#000;font-family:Inter,system-ui,sans-serif;color:#fff;padding:24px}
+h1{font-family:Cormorant Garamond,Georgia,serif;font-weight:400;font-size:32px;margin-bottom:8px}
+.sub{color:#888;font-size:14px;margin-bottom:32px}
+.themes{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media(max-width:900px){.themes{grid-template-columns:1fr}}
+.theme{border-radius:12px;overflow:hidden;border:1px solid #333}
+.theme-header{padding:16px 20px;font-family:Geist Mono,monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase}
+.theme-body{padding:24px}
+.tname{font-family:Cormorant Garamond,Georgia,serif;font-size:28px;font-weight:400;margin-bottom:4px}
+.tdesc{font-size:13px;line-height:1.5;margin-bottom:20px}
+
+/* Swatches */
+.swatches{display:flex;gap:8px;margin-bottom:20px}
+.swatch{flex:1;text-align:center}
+.swatch-chip{height:48px;border-radius:6px;border:1px solid rgba(255,255,255,0.08);margin-bottom:6px}
+.swatch-label{font-family:Geist Mono,monospace;font-size:9px;letter-spacing:0.5px;text-transform:uppercase}
+.swatch-hex{font-family:Geist Mono,monospace;font-size:9px;opacity:0.6}
+
+/* Simulated wine card */
+.wcard{border-radius:8px;padding:14px;margin-bottom:12px;display:flex;gap:12px;align-items:center}
+.wcard-img{width:56px;height:72px;border-radius:4px;background-size:cover;background-position:center;flex-shrink:0;border:1px solid rgba(255,255,255,0.1)}
+.wcard-name{font-family:Inter,sans-serif;font-size:14px;font-weight:500}
+.wcard-estate{font-size:12px;opacity:0.6;margin-top:2px}
+.wcard-rating{font-family:Cormorant Garamond,serif;font-size:18px;margin-top:4px}
+
+/* Simulated hero */
+.hero{height:140px;border-radius:8px;margin-bottom:16px;padding:20px;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden}
+.hero-eyebrow{font-family:Geist Mono,monospace;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:6px}
+.hero-title{font-family:Cormorant Garamond,Georgia,serif;font-size:24px;font-weight:400;line-height:1.1}
+
+/* Button sample */
+.btn{display:inline-block;padding:8px 18px;border-radius:9999px;font-size:13px;font-weight:500;margin-top:8px}
+.btn-primary{border:none}
+.btn-outline{border:1px solid;background:transparent}
+
+.chip{display:inline-block;padding:4px 10px;border-radius:9999px;font-family:Geist Mono,monospace;font-size:10px;letter-spacing:0.8px;text-transform:uppercase;margin:2px}
+</style>
+</head>
+<body>
+
+<h1>Hemelval — Theme Options</h1>
+<p class="sub">Three premium dark themes. Each shows a hero, a wine card with a real bottle photo, swatches, chips, and buttons. Scroll through all three, then tell me which one.</p>
+
+<div class="themes">
+
+<!-- ═══ THEME 1: CANDLELIT CELLAR ═══════════════════════════════════════ -->
+<div class="theme" style="background:#1a1219">
+  <div class="theme-header" style="background:#261c24;color:#c9a96a;border-bottom:1px solid #3a2a34">Option A · Candlelit Cellar</div>
+  <div class="theme-body">
+    <div class="tname" style="color:#ede4d6">Candlelit Cellar</div>
+    <div class="tdesc" style="color:#c8bdb0">Warm burgundy-dark — like a candle-lit cellar. Premium, close to current but fixed for visibility.</div>
+
+    <div class="swatches">
+      <div class="swatch"><div class="swatch-chip" style="background:#1a1219"></div><div class="swatch-label" style="color:#857a6e">Canvas</div><div class="swatch-hex" style="color:#857a6e">#1a1219</div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:#261c24"></div><div class="swatch-label" style="color:#857a6e">Card</div><div class="swatch-hex" style="color:#857a6e">#261c24</div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:#c9a96a"></div><div class="swatch-label" style="color:#857a6e">Gold</div><div class="swatch-hex" style="color:#857a6e">#c9a96a</div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:#7a1520"></div><div class="swatch-label" style="color:#857a6e">Wine</div><div class="swatch-hex" style="color:#857a6e">#7a1520</div></div>
+    </div>
+
+    <div class="hero" style="background:linear-gradient(135deg,#1a1219,#3a2030,#1a1219);border:1px solid #3a2a34">
+      <div class="hero-eyebrow" style="color:#857a6e">YOUR CELLAR · YOUR PALATE</div>
+      <div class="hero-title" style="color:#ede4d6">Discover South African wine.</div>
+    </div>
+
+    <div class="wcard" style="background:#261c24;border:1px solid #3a2a34">
+      <div class="wcard-img" style="background-image:url('https://kanonkop.co.za/wp-content/uploads/2026/02/Kanonkop-Pinotage-NV.png')"></div>
+      <div>
+        <div class="wcard-name" style="color:#ede4d6">Kanonkop Pinotage '21</div>
+        <div class="wcard-estate" style="color:#857a6e">Kanonkop · Simonsberg-Stellenbosch</div>
+        <div class="wcard-rating" style="color:#c9a96a">★ 4.5</div>
+      </div>
+    </div>
+
+    <div style="margin:12px 0">
+      <span class="chip" style="background:rgba(201,169,106,0.15);color:#c9a96a;border:1px solid #c9a96a">Cabernet</span>
+      <span class="chip" style="background:rgba(122,21,32,0.35);color:#d49aa3;border:1px solid #7a1520">Pinotage</span>
+      <span class="chip" style="background:rgba(201,169,106,0.15);color:#c9a96a;border:1px solid #c9a96a">Chenin</span>
+    </div>
+
+    <button class="btn btn-primary" style="background:#c9a96a;color:#1a1219">★ RATE THIS WINE</button><br>
+    <button class="btn btn-outline" style="color:#ede4d6;border-color:#3a2a34">+ ADD TO CELLAR</button>
+  </div>
+</div>
+
+<!-- ═══ THEME 2: OAK LIBRARY ═════════════════════════════════════════════ -->
+<div class="theme" style="background:#1e1612">
+  <div class="theme-header" style="background:#2a201a;color:#c4a26a;border-bottom:1px solid #3a2e24">Option B · Oak Library</div>
+  <div class="theme-body">
+    <div class="tname" style="color:#e8ddd0">Oak Library</div>
+    <div class="tdesc" style="color:#b8a892">Warm tobacco/oak-brown — like a wine library with oak shelves and leather. Distinctive, masculine, warm.</div>
+
+    <div class="swatches">
+      <div class="swatch"><div class="swatch-chip" style="background:#1e1612"></div><div class="swatch-label" style="color:#8a7a64">Canvas</div><div class="swatch-hex" style="color:#8a7a64">#1e1612</div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:#2a201a"></div><div class="swatch-label" style="color:#8a7a64">Card</div><div class="swatch-hex" style="color:#8a7a64">#2a201a</div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:#c4a26a"></div><div class="swatch-label" style="color:#8a7a64">Gold</div><div class="swatch-hex" style="color:#8a7a64">#c4a26a</div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:#8a4a2a"></div><div class="swatch-label" style="color:#8a7a64">Sienna</div><div class="swatch-hex" style="color:#8a7a64">#8a4a2a</div></div>
+    </div>
+
+    <div class="hero" style="background:linear-gradient(135deg,#1e1612,#3a2818,#1e1612);border:1px solid #3a2e24">
+      <div class="hero-eyebrow" style="color:#8a7a64">YOUR CELLAR · YOUR PALATE</div>
+      <div class="hero-title" style="color:#e8ddd0">Discover South African wine.</div>
+    </div>
+
+    <div class="wcard" style="background:#2a201a;border:1px solid #3a2e24">
+      <div class="wcard-img" style="background-image:url('https://kanonkop.co.za/wp-content/uploads/2026/02/Kanonkop-Pinotage-NV.png')"></div>
+      <div>
+        <div class="wcard-name" style="color:#e8ddd0">Kanonkop Pinotage '21</div>
+        <div class="wcard-estate" style="color:#8a7a64">Kanonkop · Simonsberg-Stellenbosch</div>
+        <div class="wcard-rating" style="color:#c4a26a">★ 4.5</div>
+      </div>
+    </div>
+
+    <div style="margin:12px 0">
+      <span class="chip" style="background:rgba(196,162,106,0.15);color:#c4a26a;border:1px solid #c4a26a">Cabernet</span>
+      <span class="chip" style="background:rgba(138,74,42,0.4);color:#d4a888;border:1px solid #8a4a2a">Pinotage</span>
+      <span class="chip" style="background:rgba(196,162,106,0.15);color:#c4a26a;border:1px solid #c4a26a">Chenin</span>
+    </div>
+
+    <button class="btn btn-primary" style="background:#c4a26a;color:#1e1612">★ RATE THIS WINE</button><br>
+    <button class="btn btn-outline" style="color:#e8ddd0;border-color:#3a2e24">+ ADD TO CELLAR</button>
+  </div>
+</div>
+
+<!-- ═══ THEME 3: VINEYARD DUSK ═══════════════════════════════════════════ -->
+<div class="theme" style="background:#1a1220">
+  <div class="theme-header" style="background:#251a30;color:#c9a96a;border-bottom:1px solid #352840">Option C · Vineyard Dusk</div>
+  <div class="theme-body">
+    <div class="tname" style="color:#e8e0ea">Vineyard Dusk</div>
+    <div class="tdesc" style="color:#b8aec0">Deep plum-aubergine — the Winelands sky at dusk. Cooler, more modern, distinctive from every other wine app.</div>
+
+    <div class="swatches">
+      <div class="swatch"><div class="swatch-chip" style="background:#1a1220"></div><div class="swatch-label" style="color:#7e7090">Canvas</div><div class="swatch-hex" style="color:#7e7090">#1a1220</div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:#251a30"></div><div class="swatch-label" style="color:#7e7090">Card</div><div class="swatch-hex" style="color:#7e7090">#251a30</div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:#c9a96a"></div><div class="swatch-label" style="color:#7e7090">Gold</div><div class="swatch-hex" style="color:#7e7090">#c9a96a</div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:#6b2a5a"></div><div class="swatch-label" style="color:#7e7090">Plum</div><div class="swatch-hex" style="color:#7e7090">#6b2a5a</div></div>
+    </div>
+
+    <div class="hero" style="background:linear-gradient(135deg,#1a1220,#382a4a,#1a1220);border:1px solid #352840">
+      <div class="hero-eyebrow" style="color:#7e7090">YOUR CELLAR · YOUR PALATE</div>
+      <div class="hero-title" style="color:#e8e0ea">Discover South African wine.</div>
+    </div>
+
+    <div class="wcard" style="background:#251a30;border:1px solid #352840">
+      <div class="wcard-img" style="background-image:url('https://kanonkop.co.za/wp-content/uploads/2026/02/Kanonkop-Pinotage-NV.png')"></div>
+      <div>
+        <div class="wcard-name" style="color:#e8e0ea">Kanonkop Pinotage '21</div>
+        <div class="wcard-estate" style="color:#7e7090">Kanonkop · Simonsberg-Stellenbosch</div>
+        <div class="wcard-rating" style="color:#c9a96a">★ 4.5</div>
+      </div>
+    </div>
+
+    <div style="margin:12px 0">
+      <span class="chip" style="background:rgba(201,169,106,0.15);color:#c9a96a;border:1px solid #c9a96a">Cabernet</span>
+      <span class="chip" style="background:rgba(107,42,90,0.4);color:#c88ab8;border:1px solid #6b2a5a">Pinotage</span>
+      <span class="chip" style="background:rgba(201,169,106,0.15);color:#c9a96a;border:1px solid #c9a96a">Chenin</span>
+    </div>
+
+    <button class="btn btn-primary" style="background:#c9a96a;color:#1a1220">★ RATE THIS WINE</button><br>
+    <button class="btn btn-outline" style="color:#e8e0ea;border-color:#352840">+ ADD TO CELLAR</button>
+  </div>
+</div>
+
+</div>
+
+<p class="sub" style="margin-top:32px">Each theme uses the real Kanonkop Pinotage bottle photo (transparent PNG) so you can see which background makes the label most legible. Tell me A, B, or C.</p>
+
+</body>
+</html>

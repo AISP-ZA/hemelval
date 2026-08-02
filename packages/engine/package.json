@@ -1,0 +1,16 @@
+{
+  "name": "@kelder/engine",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Kelder tasting engine — WSET/Noble-Wheel controlled vocabularies, scoring, food-pairing logic for South African wine.",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "test": "npx tsx --test test/**/*.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0"
+  },
+  "license": "UNLICENSED"
+}

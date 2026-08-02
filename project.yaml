@@ -1,0 +1,50 @@
+name: Kelder
+slug: kelder
+family: Standalone
+status: Brainstorming
+phase: Implement
+priority: P0
+objective: roi
+case_study: false
+stack_cost: free
+brief: "South-Africa-first wine app — scan, rate, build a palate, discover Western Cape estates. Vivino competitor focused on SA wines, winemakers, and wine-route culture."
+summary_executive: "Kelder connects South African wine lovers with Western Cape wine farms. Snap a bottle, log your tasting, and the app learns your palate and recommends wines you'll love. Two-sided: consumer (free + Pro) and estate (verified B2B SaaS)."
+summary_technical: "Expo + React Native (iOS + Android, one JS/TS codebase). Supabase (Postgres + Auth + Storage + RLS) as sole backend. Shared tasting-engine package (WSET/Noble-Wheel controlled vocabularies + scoring). Next.js merchant admin for estates. EAS Build for App Store + Play Store binaries."
+summary_project: "Building. Research complete (Vivino, SA wine industry, tasting taxonomy, festivals). Stack: Expo RN + Supabase. Brand: Kelder. Monetization: Consumer Pro (R89/mo) + Estate SaaS (R499-1499/mo); marketplace deferred to Phase 2."
+tech: [Expo, React-Native, TypeScript, Supabase, Next.js]
+
+integrations:
+  github: { org: AISP-ZA, repo: kelder }
+  vercel: { team: "", project: "", prod: "", staging: "" }
+  supabase: { project: "" }
+  payments: ""
+  domain: { name: "", registrar: "" }
+  cloudflare: { zone_id: "", proxied: false, registrar_transfer: "" }
+  eas: { project: "", ios_app_id: "", android_package: "" }
+
+urls: { local: "http://localhost:8081", prod: "", staging: "" }
+design: { authority: zcode, approved: true }
+
+last_worked: 2026-08-01
+next_action: "CEO: provision Supabase project kelder-prod + create EAS project for za.co.kelder.app. Then wire tasting-note flow UI + estate detail screen."
+blockers:
+  - { item: "Supabase project not provisioned — app runs on mock data until created.", priority: P1 }
+  - { item: "EAS project + Apple/Google dev accounts needed before App Store submission.", priority: P2 }
+  - { item: "kelder.co.za domain not registered.", priority: P2 }
+todo:
+  - { task: "Scaffold monorepo + AISP files", priority: P0, status: done }
+  - { task: "Port DESIGN.md tokens to React Native theme", priority: P0, status: done }
+  - { task: "Build tasting engine (aroma wheel, palate vocab, scoring) — 13 tests pass", priority: P0, status: done }
+  - { task: "Build Supabase schema + RLS (15 tables)", priority: P0, status: done }
+  - { task: "Seed Western Cape regions, estates, varietals, festivals, vintages", priority: P0, status: done }
+  - { task: "Build mobile screens (discover, scan, cellar, events, profile) + wine detail", priority: P0, status: done }
+  - { task: "Verify: Expo web build compiles + renders in browser (HTTP 200, full content)", priority: P0, status: done }
+  - { task: "Write SPEC.md + PROJECT_PLAN.md + SOURCES.md", priority: P1, status: done }
+  - { task: "Tasting-note flow UI (star picker + engine-driven aroma/palate selectors) + live palate store — verified end-to-end save cycle", priority: P0, status: done }
+  - { task: "Build estate detail screen (history, certs, awards, map)", priority: P0, status: pending }
+  - { task: "Build Next.js merchant admin (Phase 2)", priority: P1, status: pending }
+
+history:
+  - { date: 2026-08-01, agent: ZCode, action: "Project created. Research complete (4 domains). Brand: Kelder. Stack: Expo RN + Supabase. Monetization: Consumer Pro + Estate SaaS." }
+  - { date: 2026-08-01, agent: ZCode, action: "MVP built: tasting engine (13 tests pass), design system, Supabase schema+RLS, SA seed data, 5 mobile screens. Web build verified rendering (HTTP 200, no runtime errors)." }
+  - { date: 2026-08-01, agent: ZCode, action: "Tasting-note flow built + wired: StarPicker, PalateProvider (AsyncStorage + engine buildPalateProfile), TastingNoteScreen (Noble-Wheel + WSET selectors). Verified full scan→log→rate→refine-palate cycle in browser: new note persists, Cellar + Profile read live palate, match scores differentiate by varietal." }

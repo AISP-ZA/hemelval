@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Hemelval — South African wine, discovered.</title>
+<meta name="description" content="The Western Cape, in your pocket. Scan any SA bottle, log your tasting, and let Hemelval learn your palate. Built for South African wine.">
+<link rel="canonical" href="https://hemelval.co.za/">
+<style>
+:root{
+  --canvas:#14090c; --canvas-soft:#1f1014; --card:#1c0d11; --ink:#ece4d8;
+  --body:#cfc4b4; --mute:#8a7f72; --hairline:#2e1820; --gold:#c9a96a;
+  --wine:#8b1d2e; --systems:#7fa86a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--canvas);color:var(--ink);
+  font-family:'Inter',system-ui,-apple-system,sans-serif;line-height:1.6;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.serif{font-family:'Cormorant Garamond','Georgia',serif;font-weight:400}
+.mono{font-family:'Geist Mono','SF Mono',ui-monospace,monospace;text-transform:uppercase;letter-spacing:0.08em}
+.wrap{max-width:960px;margin:0 auto;padding:0 24px}
+.eyebrow{font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:var(--mute)}
+section{padding:96px 0}
+a{color:var(--gold);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* HERO */
+.hero{position:relative;min-height:92vh;display:flex;align-items:center;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:linear-gradient(135deg,#14090c 0%,#2a1218 50%,#14090c 100%);z-index:0}
+.hero-orb{position:absolute;width:600px;height:600px;border-radius:50%;filter:blur(120px);opacity:0.25;z-index:1}
+.hero-orb-1{background:var(--wine);top:-150px;right:-100px}
+.hero-orb-2{background:var(--gold);bottom:-200px;left:-100px}
+.hero-content{position:relative;z-index:2;width:100%}
+.hero h1{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:clamp(40px,7vw,76px);line-height:1.05;letter-spacing:-0.02em;margin:16px 0 24px}
+.hero p.sub{font-size:clamp(16px,2vw,20px);color:var(--body);max-width:520px;margin-bottom:40px}
+.hero-cta{display:flex;gap:16px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:9999px;font-weight:500;font-size:15px;border:1px solid transparent;cursor:pointer;transition:opacity 0.2s}
+.btn:hover{opacity:0.85;text-decoration:none}
+.btn-primary{background:var(--gold);color:var(--canvas)}
+.btn-outline{background:transparent;color:var(--ink);border-color:var(--hairline)}
+.hero-trust{display:flex;gap:24px;margin-top:48px;flex-wrap:wrap}
+.trust-item{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--mute)}
+.trust-num{font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--gold)}
+
+/* SECTIONS */
+h2{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:clamp(30px,4vw,44px);line-height:1.1;letter-spacing:-0.01em;margin:12px 0 24px}
+p.lead{font-size:18px;color:var(--body);max-width:620px}
+
+.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;margin-top:48px}
+.feature{background:var(--card);border:1px solid var(--hairline);border-radius:8px;padding:28px}
+.feature-emoji{font-size:32px;margin-bottom:12px}
+.feature h3{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:22px;margin-bottom:8px}
+.feature p{font-size:14px;color:var(--body)}
+
+.split{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+@media(max-width:720px){.split{grid-template-columns:1fr}}
+.split-card{background:var(--card);border:1px solid var(--hairline);border-radius:8px;padding:32px}
+.tier-row{display:flex;justify-content:space-between;align-items:center;padding:16px 0;border-bottom:1px solid var(--hairline)}
+.tier-row:last-child{border-bottom:none}
+.tier-price{font-family:'Cormorant Garamond',serif;color:var(--gold);font-size:20px}
+
+/* FOOTER */
+footer{border-top:1px solid var(--hairline);padding:48px 0;color:var(--mute);font-size:13px}
+.footer-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+
+@media(max-width:600px){
+  section{padding:64px 0}
+  .hero{min-height:auto;padding:80px 0}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+  <div class="hero-content wrap">
+    <div class="eyebrow">HEMELVAL · WESTERN CAPE WINE</div>
+    <h1>South African wine,<br>discovered.</h1>
+    <p class="sub">The Western Cape, in your pocket. Scan any bottle, log a proper tasting, and let Hemelval learn your palate. Built for South African wine — every estate, every varietal, every festival.</p>
+    <div class="hero-cta">
+      <a href="#download" class="btn btn-primary">📱 Get the app</a>
+      <a href="#how" class="btn btn-outline">How it works</a>
+    </div>
+    <div class="hero-trust">
+      <div class="trust-item"><span class="trust-num">60+</span> estates</div>
+      <div class="trust-item"><span class="trust-num">19</span> SA varietals</div>
+      <div class="trust-item"><span class="trust-num">15</span> festivals</div>
+      <div class="trust-item"><span class="trust-num">WSET</span> tasting engine</div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="wrap">
+    <div class="eyebrow">HOW IT WORKS</div>
+    <h2>Scan. Taste. Discover.</h2>
+    <p class="lead">Three steps to a smarter palate — built on the WSET systematic approach to tasting, the Noble Wine Aroma Wheel, and a database of every Western Cape wine region.</p>
+    <div class="features">
+      <div class="feature">
+        <div class="feature-emoji">📷</div>
+        <h3>Scan the bottle</h3>
+        <p>Photograph the label, scan the barcode, or scan a QR code. Hemelval identifies the wine from its SA database and shows ratings, awards, and pairings.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-emoji">🍷</div>
+        <h3>Log a proper tasting</h3>
+        <p>Rate by the criteria connoisseurs use: nose, palate, tannins, acidity, finish, value — drawn from the WSET vocabulary, not a 5-star afterthought.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-emoji">✨</div>
+        <h3>Refine your palate</h3>
+        <p>Every tasting sharpens your palate profile. Hemelval recommends wines you'll love — matched to your taste, not a generic average.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOR WINE LOVERS -->
+<section>
+  <div class="wrap split">
+    <div>
+      <div class="eyebrow">FOR WINE LOVERS</div>
+      <h2>Your cellar, your palate, your Western Cape.</h2>
+      <p class="lead">Track every bottle. Discover new estates. Get matched to wines based on what you actually enjoy drinking — from Stellenbosch Cabernet to Swartland Chenin, Hemel-en-Aarde Pinot to Robertson MCC.</p>
+      <ul style="list-style:none;margin-top:24px;color:var(--body);font-size:15px">
+        <li style="padding:8px 0">✓ Structured tasting notes (the Noble Aroma Wheel, WSET scales)</li>
+        <li style="padding:8px 0">✓ Personalised match scores on every wine</li>
+        <li style="padding:8px 0">✓ Cellar tracking with ageability alerts</li>
+        <li style="padding:8px 0">✓ SA food-pairing guidance (braai, bobotie, malva, melktert)</li>
+        <li style="padding:8px 0">✓ Every Western Cape wine region — the WO appellation system</li>
+        <li style="padding:8px 0">✓ Platter's, Veritas, Tim Atkin award badges</li>
+      </ul>
+    </div>
+    <div class="split-card">
+      <div class="eyebrow">FREE FOREVER</div>
+      <h3 class="serif" style="font-size:28px;margin:12px 0">Scan, taste, discover.</h3>
+      <p style="color:var(--body);font-size:14px;margin-bottom:24px">The core app is free — because every tasting makes Hemelval smarter for everyone.</p>
+      <div class="tier-row"><span>Scan + rate + palate + cellar</span><span class="tier-price">Free</span></div>
+      <div class="tier-row"><span>Hemelval Pro — unlimited, analytics, ad-free</span><span class="tier-price">R89/mo</span></div>
+      <p style="color:var(--mute);font-size:12px;margin-top:16px">Pro is less than one bottle a month. Cancel anytime.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOR ESTATES -->
+<section style="background:var(--canvas-soft)">
+  <div class="wrap split">
+    <div class="split-card">
+      <div class="eyebrow">FOR WINE FARMS</div>
+      <h3 class="serif" style="font-size:28px;margin:12px 0">Reach the people who love your wine.</h3>
+      <p style="color:var(--body);font-size:14px;margin-bottom:24px">A verified Hemelval profile puts your estate in front of engaged SA wine drinkers — with the data and analytics Vivino can't give you locally.</p>
+      <div class="tier-row"><span>Small estate (≤20 wines)</span><span class="tier-price">R499/mo</span></div>
+      <div class="tier-row"><span>Mid (multi-vineyard + events)</span><span class="tier-price">R999/mo</span></div>
+      <div class="tier-row"><span>Large (portfolio + analytics API)</span><span class="tier-price">R1,499/mo</span></div>
+    </div>
+    <div>
+      <div class="eyebrow">FOR WINE FARMS</div>
+      <h2>A direct line to SA wine lovers.</h2>
+      <p class="lead">Own your profile. List your full catalogue. Submit events. See anonymised demand analytics for your varietals in your region — intelligence that shapes what you plant and produce.</p>
+      <ul style="list-style:none;margin-top:24px;color:var(--body);font-size:15px">
+        <li style="padding:8px 0">✓ Verified, editable estate profile</li>
+        <li style="padding:8px 0">✓ Wine catalogue CMS (vintages, varietals, awards)</li>
+        <li style="padding:8px 0">✓ Event listings (tastings, festivals, wine-club openings)</li>
+        <li style="padding:8px 0">✓ Regional palate-demand analytics</li>
+        <li style="padding:8px 0">✓ Sustainability & compliance badges (IPW, WIETA, Old Vine)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- DOWNLOAD -->
+<section id="download" style="text-align:center">
+  <div class="wrap">
+    <div class="eyebrow">COMING SOON · APP STORE + GOOGLE PLAY</div>
+    <h2 style="margin-top:12px">Get Hemelval on your phone.</h2>
+    <p class="lead" style="margin:0 auto 40px">Built mobile-first for iOS and Android. Sign up to be notified at launch.</p>
+    <div class="hero-cta" style="justify-content:center">
+      <a href="#" class="btn btn-primary">🍎 App Store</a>
+      <a href="#" class="btn btn-outline">▶ Google Play</a>
+    </div>
+    <p style="color:var(--mute);font-size:13px;margin-top:32px">Hemelval · <a href="mailto:hello@hemelval.co.za">hello@hemelval.co.za</a> · Cape Town, South Africa</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-row">
+    <div>© 2026 Hemelval. Built for the Western Cape wine community.</div>
+    <div><a href="#">Privacy</a> · <a href="#">Terms</a> · <a href="https://hemelval.co.za">hemelval.co.za</a></div>
+  </div>
+</footer>
+
+</body>
+</html>
