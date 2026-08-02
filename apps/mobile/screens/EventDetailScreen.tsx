@@ -134,7 +134,7 @@ export function EventDetailScreen({
               {event.priceMinZar ? (
                 <View>
                   <BodyText size="sm" muted>From</BodyText>
-                  <Text style={styles.priceText}>R{event.priceMinZar}{event.priceMaxZar && event.priceMaxZar !== event.priceMinZar ? ` – R${event.priceMaxZar}` : ''}</Text>
+                  <Text style={styles.priceText}>R{event.priceMinZar}{event.priceMaxZar && event.priceMaxZar !== event.priceMinZar ? `–R${event.priceMaxZar}` : ''}</Text>
                 </View>
               ) : (
                 <BodyText size="sm" muted>Pricing TBC</BodyText>

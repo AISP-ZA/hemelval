@@ -119,13 +119,49 @@ export const WINE_IMAGES: Record<string, Photo> = {
 };
 
 // ── Festival / event imagery ────────────────────────────────────────────────
+// Verified image pool (HTTP 200, no hotlink block):
+//   A — Unsplash: wine glasses raising  (Kelsey Knight)
+//   B — Pexels 5690802: people at a wine table
+//   C — Pexels 31086289: Swartland vineyard rows
+//   D — Unsplash photo-1474722883778: green vineyard hillside
+//   E — Unsplash photo-1558618666: dark barrel cellar
 export const FESTIVAL_IMAGES: Record<string, Photo> = {
-  ev1: { url: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800&q=80', alt: 'Wine glasses cheering', credit: 'Kelsey Knight / Unsplash' },
-  ev2: { url: 'https://images.pexels.com/photos/36189155/pexels-photo-36189155.jpeg?auto=compress&cs=tinysrgb&w=800', alt: 'Cool-climate vineyard', credit: 'Pexels' },
-  ev3: { url: 'https://images.pexels.com/photos/5690802/pexels-photo-5690802.jpeg?auto=compress&cs=tinysrgb&w=800', alt: 'People enjoying wine', credit: 'Pexels' },
-  ev4: { url: 'https://images.pexels.com/photos/31086289/pexels-photo-31086289.jpeg?auto=compress&cs=tinysrgb&w=800', alt: 'Swartland vineyard', credit: 'Pexels' },
-  ev5: { url: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800&q=80', alt: 'Sparkling celebration', credit: 'Kelsey Knight / Unsplash' },
-  ev6: { url: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800&q=80', alt: 'Wine festival', credit: 'Kelsey Knight / Unsplash' },
+  ev1:  { url: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800&q=80', alt: 'Wine glasses cheering', credit: 'Kelsey Knight / Unsplash' },
+  ev2:  { url: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80', alt: 'Wine barrel cellar', credit: 'Unsplash' },
+  ev3:  { url: 'https://images.pexels.com/photos/5690802/pexels-photo-5690802.jpeg?auto=compress&cs=tinysrgb&w=800', alt: 'People enjoying wine', credit: 'Pexels' },
+  ev4:  { url: 'https://images.pexels.com/photos/31086289/pexels-photo-31086289.jpeg?auto=compress&cs=tinysrgb&w=800', alt: 'Vineyard harvest', credit: 'Pexels' },
+  ev5:  { url: 'https://images.unsplash.com/photo-1474722883778-792e7990302f?w=800&q=80', alt: 'Vineyard hillside', credit: 'Unsplash' },
+  ev6:  { url: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800&q=80', alt: 'Wine tasting festival', credit: 'Kelsey Knight / Unsplash' },
+  ev7:  { url: 'https://images.pexels.com/photos/5690802/pexels-photo-5690802.jpeg?auto=compress&cs=tinysrgb&w=800', alt: 'Wine and food festival', credit: 'Pexels' },
+  ev8:  { url: 'https://images.pexels.com/photos/31086289/pexels-photo-31086289.jpeg?auto=compress&cs=tinysrgb&w=800', alt: 'Valley vineyard', credit: 'Pexels' },
+  ev9:  { url: 'https://images.unsplash.com/photo-1474722883778-792e7990302f?w=800&q=80', alt: 'Coastal vineyard', credit: 'Unsplash' },
+  ev10: { url: 'https://images.pexels.com/photos/31086289/pexels-photo-31086289.jpeg?auto=compress&cs=tinysrgb&w=800', alt: 'Mountain vineyard', credit: 'Pexels' },
+  ev11: { url: 'https://images.pexels.com/photos/5690802/pexels-photo-5690802.jpeg?auto=compress&cs=tinysrgb&w=800', alt: 'Wine tasting', credit: 'Pexels' },
+  ev12: { url: 'https://images.unsplash.com/photo-1474722883778-792e7990302f?w=800&q=80', alt: 'Robertson valley vineyards', credit: 'Unsplash' },
+  ev13: { url: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80', alt: 'Port wine cellar', credit: 'Unsplash' },
+  ev14: { url: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800&q=80', alt: 'Chenin blanc tasting', credit: 'Kelsey Knight / Unsplash' },
+  ev15: { url: 'https://images.pexels.com/photos/5690802/pexels-photo-5690802.jpeg?auto=compress&cs=tinysrgb&w=800', alt: 'Grand tasting hall', credit: 'Pexels' },
+  ev16: { url: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800&q=80', alt: 'Stellenbosch wine festival', credit: 'Kelsey Knight / Unsplash' },
+  ev17: { url: 'https://images.pexels.com/photos/31086289/pexels-photo-31086289.jpeg?auto=compress&cs=tinysrgb&w=800', alt: 'Knysna valley', credit: 'Pexels' },
+  ev18: { url: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800&q=80', alt: 'Franschhoek celebration', credit: 'Kelsey Knight / Unsplash' },
+  ev19: { url: 'https://images.unsplash.com/photo-1474722883778-792e7990302f?w=800&q=80', alt: 'Greyton village vineyards', credit: 'Unsplash' },
+  ev20: { url: 'https://images.pexels.com/photos/5690802/pexels-photo-5690802.jpeg?auto=compress&cs=tinysrgb&w=800', alt: 'TOPS wine show', credit: 'Pexels' },
+  ev21: { url: 'https://images.pexels.com/photos/31086289/pexels-photo-31086289.jpeg?auto=compress&cs=tinysrgb&w=800', alt: 'Breedekloof valley', credit: 'Pexels' },
+  ev22: { url: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80', alt: 'Klein Karoo cellar', credit: 'Unsplash' },
+  ev23: { url: 'https://images.pexels.com/photos/5690802/pexels-photo-5690802.jpeg?auto=compress&cs=tinysrgb&w=800', alt: 'Johannesburg wine festival', credit: 'Pexels' },
+  ev24: { url: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800&q=80', alt: 'Cap classique tasting', credit: 'Kelsey Knight / Unsplash' },
+  ev25: { url: 'https://images.unsplash.com/photo-1474722883778-792e7990302f?w=800&q=80', alt: 'Paternoster coastal vineyard', credit: 'Unsplash' },
+  ev26: { url: 'https://images.pexels.com/photos/31086289/pexels-photo-31086289.jpeg?auto=compress&cs=tinysrgb&w=800', alt: 'Swartland olive grove', credit: 'Pexels' },
+  ev27: { url: 'https://images.unsplash.com/photo-1474722883778-792e7990302f?w=800&q=80', alt: 'Constantia wine estate', credit: 'Unsplash' },
+  ev28: { url: 'https://images.pexels.com/photos/5690802/pexels-photo-5690802.jpeg?auto=compress&cs=tinysrgb&w=800', alt: 'Pinotage festival', credit: 'Pexels' },
+  ev29: { url: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800&q=80', alt: 'WineX expo', credit: 'Kelsey Knight / Unsplash' },
+  ev30: { url: 'https://images.unsplash.com/photo-1474722883778-792e7990302f?w=800&q=80', alt: 'Robertson riverside festival', credit: 'Unsplash' },
+  ev31: { url: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80', alt: 'CWG auction cellar', credit: 'Unsplash' },
+  ev32: { url: 'https://images.pexels.com/photos/31086289/pexels-photo-31086289.jpeg?auto=compress&cs=tinysrgb&w=800', alt: 'Swartland Revolution', credit: 'Pexels' },
+  ev33: { url: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800&q=80', alt: 'Cap Classique & Champagne', credit: 'Kelsey Knight / Unsplash' },
+  ev34: { url: 'https://images.unsplash.com/photo-1474722883778-792e7990302f?w=800&q=80', alt: 'Greyton village', credit: 'Unsplash' },
+  ev35: { url: 'https://images.pexels.com/photos/5690802/pexels-photo-5690802.jpeg?auto=compress&cs=tinysrgb&w=800', alt: 'Stellenbosch street soiree', credit: 'Pexels' },
+  ev36: { url: 'https://images.pexels.com/photos/5690802/pexels-photo-5690802.jpeg?auto=compress&cs=tinysrgb&w=800', alt: 'Durban wine festival', credit: 'Pexels' },
 };
 
 export function estateCover(estateId: string): Photo {

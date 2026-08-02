@@ -104,7 +104,11 @@ export function EventsScreen() {
                 </View>
                 <View style={styles.chipRow}>
                   <Chip tone="neutral">{ev.format?.replace('-', ' ')}</Chip>
-                  {ev.priceMinZar ? <Chip tone="sunset">R{ev.priceMinZar}–{ev.priceMaxZar}</Chip> : null}
+                  {ev.priceMinZar ? (
+                    <Chip tone="sunset">
+                      R{ev.priceMinZar}{ev.priceMaxZar && ev.priceMaxZar !== ev.priceMinZar ? `–R${ev.priceMaxZar}` : ''}
+                    </Chip>
+                  ) : null}
                   {ev.ticketingPlatform && <Chip tone="neutral">{ev.ticketingPlatform}</Chip>}
                 </View>
                 <BodyText size="sm" muted style={{ marginTop: space.sm }} numberOfLines={2}>{ev.description}</BodyText>
