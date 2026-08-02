@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hemelval — Executive Summary</title>
+<style>
+:root{
+  --canvas:#241b18;--card:#302420;--soft:#2e2320;--ink:#f0e8da;--body:#d4c8b8;
+  --mute:#9a8a78;--hairline:#46342c;--gold:#d4a86a;--wine:#8a2030;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--canvas);color:var(--ink);font-family:Inter,system-ui,sans-serif;line-height:1.7;padding:0}
+.serif{font-family:'Cormorant Garamond','Georgia',serif;font-weight:400}
+.mono{font-family:'Geist Mono','SF Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.wrap{max-width:760px;margin:0 auto;padding:0 24px}
+section{padding:48px 0;border-bottom:1px solid var(--hairline)}
+section:last-child{border-bottom:none}
+h1{font-family:'Cormorant Garamond',Georgia,serif;font-size:42px;font-weight:400;letter-spacing:-.02em;line-height:1.1;margin:8px 0 16px}
+h2{font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;font-weight:400;letter-spacing:-.01em;margin:0 0 16px;color:var(--gold)}
+h3{font-size:16px;font-weight:500;margin:24px 0 8px;color:var(--ink)}
+p{color:var(--body);font-size:15px;margin-bottom:12px}
+strong{color:var(--ink)}
+.eyebrow{font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);margin-bottom:8px;display:block}
+.lead{font-size:18px;color:var(--body);max-width:620px}
+
+/* HERO */
+.hero{padding:64px 0 48px;text-align:center;border-bottom:1px solid var(--hairline)}
+.hero h1{font-size:48px}
+.hero .tagline{color:var(--gold);font-size:16px;margin-top:8px}
+
+/* TABLES */
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+th{text-align:left;font-family:'Geist Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);padding:8px 12px;border-bottom:1px solid var(--hairline)}
+td{padding:10px 12px;border-bottom:1px solid var(--hairline);color:var(--body);vertical-align:top}
+td strong{color:var(--ink)}
+
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--hairline);border-radius:8px;padding:20px;margin:16px 0}
+.card h3{margin-top:0}
+
+/* FEATURE GRID */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+@media(max-width:600px){.grid{grid-template-columns:1fr}}
+.feat{background:var(--card);border:1px solid var(--hairline);border-radius:8px;padding:16px}
+.feat h3{margin:0 0 4px;font-size:14px;color:var(--gold)}
+.feat p{font-size:13px;margin:0}
+
+/* BADGES */
+.badge{display:inline-block;padding:4px 10px;border-radius:9999px;font-family:'Geist Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;margin:2px}
+.b-gold{background:rgba(212,168,106,.15);color:var(--gold);border:1px solid var(--gold)}
+.b-wine{background:rgba(138,32,48,.3);color:#d49aa3;border:1px solid var(--wine)}
+.b-mute{background:transparent;color:var(--mute);border:1px solid var(--hairline)}
+
+/* CODE */
+.code{background:var(--soft);border:1px solid var(--hairline);border-radius:6px;padding:12px;font-family:'Geist Mono',monospace;font-size:12px;color:var(--body);overflow-x:auto;margin:12px 0}
+
+/* GAPS */
+.gap{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--hairline)}
+.gap:last-child{border-bottom:none}
+.gap-num{font-family:'Geist Mono',monospace;color:var(--gold);font-size:14px;min-width:24px}
+.gap-text{color:var(--body);font-size:14px}
+
+/* ASK */
+.ask{background:rgba(212,168,106,.06);border:1px solid var(--gold);border-radius:8px;padding:20px;margin:20px 0}
+.ask ol{padding-left:20px;color:var(--body);font-size:14px}
+.ask li{margin-bottom:8px}
+
+footer{padding:32px 0;text-align:center;color:var(--mute);font-size:12px}
+a{color:var(--gold);text-decoration:none}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="wrap">
+    <span class="eyebrow" style="text-align:center">HEMELVAL · WESTERN CAPE WINE</span>
+    <h1>Hemelval</h1>
+    <p class="tagline">South African wine, discovered.</p>
+    <p style="margin-top:16px;font-size:14px;color:var(--mute)">A mobile-first wine app built exclusively for South African wine — every estate, varietal, region, and festival of the Western Cape. The local competitor to Vivino, but SA-deep where Vivino is SA-thin.</p>
+  </div>
+</div>
+
+<div class="wrap">
+
+<!-- ONE SENTENCE -->
+<section>
+  <span class="eyebrow">THE PRODUCT</span>
+  <h2>What it does, in one sentence.</h2>
+  <p class="lead"><strong>Scan any SA wine bottle, log a structured tasting, build your palate profile, and get personalized recommendations — while giving Western Cape wine farms a verified, owned presence and demand analytics.</strong></p>
+  <p style="margin-top:12px">The name "Hemelval" (Afrikaans: "heaven-dew") evokes the Hemel-en-Aarde valley — South Africa's premium Pinot Noir/Chardonnay region. Domains <code>hemelval.com</code> + <code>hemelval.co.za</code> are available.</p>
+</section>
+
+<!-- TWO-SIDED MODEL -->
+<section>
+  <span class="eyebrow">BUSINESS MODEL</span>
+  <h2>Two-sided revenue.</h2>
+  <table>
+    <tr><th>Side</th><th>Tier</th><th>Price</th><th>What they get</th></tr>
+    <tr><td><strong>Consumer</strong></td><td>Free</td><td>R0</td><td>Scan, rate, palate, cellar, basic recs, events calendar</td></tr>
+    <tr><td><strong>Consumer</strong></td><td>Pro</td><td>R89/mo</td><td>Unlimited scans, advanced palate analytics, ageability alerts, ad-free, AI sommelier</td></tr>
+    <tr><td><strong>Estate</strong></td><td>SaaS</td><td>R499–R1,499/mo</td><td>Verified editable profile, wine catalog CMS, event listings, anonymized regional palate-demand analytics</td></tr>
+    <tr><td><em>Phase 3</em></td><td>Marketplace</td><td>8–12% commission</td><td>Wine sales (deferred — needs liquor licensing)</td></tr>
+  </table>
+</section>
+
+<!-- TECH STACK -->
+<section>
+  <span class="eyebrow">TECHNOLOGY</span>
+  <h2>The stack.</h2>
+  <table>
+    <tr><th>Layer</th><th>Technology</th></tr>
+    <tr><td><strong>Mobile app</strong></td><td>Expo SDK 53 + React Native + TypeScript (iOS + Android + web from one codebase)</td></tr>
+    <tr><td><strong>Backend</strong></td><td>Supabase (Postgres + Auth + Storage + Row-Level Security) — live at <code>vlbqrvynpmuzktpxhkjt.supabase.co</code></td></tr>
+    <tr><td><strong>Tasting engine</strong></td><td><code>@kelder/engine</code> — pure TypeScript: WSET SAT + Noble Wine Aroma Wheel vocabularies (80+ descriptors), scoring, food-pairing logic, palate profile + match scoring. 13 unit tests passing.</td></tr>
+    <tr><td><strong>Design</strong></td><td>"Candlelit Cellar" theme — warm tobacco-brown (#241b18), gold + wine-red accents, Cormorant Garamond serif + Inter body</td></tr>
+    <tr><td><strong>Landing page</strong></td><td>Static HTML at <a href="https://hemelval.vercel.app">hemelval.vercel.app</a></td></tr>
+    <tr><td><strong>Source control</strong></td><td><a href="https://github.com/AISP-ZA/hemelval">github.com/AISP-ZA/hemelval</a></td></tr>
+  </table>
+</section>
+
+<!-- WHAT'S BUILT -->
+<section>
+  <span class="eyebrow">CURRENT STATE</span>
+  <h2>What's built and verified.</h2>
+  
+  <h3>Live data in Supabase</h3>
+  <div class="grid">
+    <div class="feat"><h3>20 Varietals</h3><p>7 SA signature (Chenin, Pinotage, MCC, Cabernet, Shiraz, Sauvignon Blanc, Chardonnay)</p></div>
+    <div class="feat"><h3>30 Estates</h3><p>Across 11 WO regions — Kanonkop, Sadie, Hamilton Russell, Boekenhoutskloof, etc.</p></div>
+    <div class="feat"><h3>41 Wines</h3><p>Full narrative descriptions — estate history, winemaker, vintage context, tasting notes</p></div>
+    <div class="feat"><h3>35 Festivals</h3><p>Complete annual SA wine calendar (all 12 months)</p></div>
+    <div class="feat"><h3>7 Certifications</h3><p>WO, IPW, WIETA, OVP, Fairtrade, ROC, BWI</p></div>
+    <div class="feat"><h3>7 Award Bodies</h3><p>Platter's, Veritas, Tim Atkin, DWWA, IWSC, Michelangelo, Suckling</p></div>
+  </div>
+
+  <h3>Features (all verified, zero runtime errors)</h3>
+  <div class="grid">
+    <div class="feat"><h3>Discover</h3><p>Editorial hero, food-pairing wizard ("What are you eating?"), signature grapes, varietal browser, wine list with real bottle imagery</p></div>
+    <div class="feat"><h3>Wine Detail</h3><p>Full story, serving temp, pairings, 4-axis taste profile chart, estate wordmark, match score</p></div>
+    <div class="feat"><h3>Estate Detail</h3><p>History, award medallions, certifications, QR codes, wine-route, tasting hours, estate's wines</p></div>
+    <div class="feat"><h3>Tasting Flow</h3><p>Star picker + Noble Wheel aromas + WSET palate scales → saves to Supabase → palate re-derives</p></div>
+    <div class="feat"><h3>Scan</h3><p>Photo upload (OCR path), barcode lookup, QR code → match → confirm → rate</p></div>
+    <div class="feat"><h3>Cellar</h3><p>Live palate, top varietals/aromas, tasting journal, notes sync from Supabase when logged in</p></div>
+    <div class="feat"><h3>Events</h3><p>35 festivals, tappable detail with participants + tickets + what-to-expect</p></div>
+    <div class="feat"><h3>Auth</h3><p>Real Supabase Auth (email/password), session persistence, verified with test user</p></div>
+  </div>
+</section>
+
+<!-- THE MOAT -->
+<section>
+  <span class="eyebrow">COMPETITIVE ADVANTAGE</span>
+  <h2>The SA localization moat.</h2>
+  <p>Why Hemelval beats Vivino in South Africa:</p>
+  <div class="grid">
+    <div class="feat"><h3>WO Appellations</h3><p>Full 4-tier hierarchy (unit → region → district → ward) — Vivino ignores this</p></div>
+    <div class="feat"><h3>SA Varietals</h3><p>Pinotage, Chenin/Steen, MCC, Hanepoot as first-class categories</p></div>
+    <div class="feat"><h3>SA Awards</h3><p>Platter's 5-star, Veritas Double Gold, Tim Atkin 95+ badges</p></div>
+    <div class="feat"><h3>SA Food Pairing</h3><p>Braai, bobotie, malva pudding, milk tart, biltong, Cape Malay curry</p></div>
+    <div class="feat"><h3>SA Events</h3><p>Wine Town, Wacky Wine, Swartland Revolution calendar</p></div>
+    <div class="feat"><h3>SA Payments</h3><p>PayFast (Instant EFT, SnapScan, Zapper) — not Stripe-only</p></div>
+    <div class="feat"><h3>SA Certifications</h3><p>IPW sustainability, WIETA ethical trade, Old Vine Project heritage seals</p></div>
+    <div class="feat"><h3>Real Imagery</h3><p>Actual estate bottle photography (not stock photos)</p></div>
+  </div>
+</section>
+
+<!-- GAPS -->
+<section>
+  <span class="eyebrow">REMAINING GAPS</span>
+  <h2>What's not yet built.</h2>
+  <div class="gap"><span class="gap-num">1.</span><span class="gap-text"><strong>App Store + Play Store binaries</strong> — EAS Build not run (needs Apple Developer $99/yr + Google Play $25)</span></div>
+  <div class="gap"><span class="gap-num">2.</span><span class="gap-text"><strong>Real camera OCR</strong> — photo scan is simulated (architecture ready for Google Vision free tier)</span></div>
+  <div class="gap"><span class="gap-num">3.</span><span class="gap-text"><strong>Vendor admin portal</strong> — the B2B Estate SaaS side (Next.js) is unbuilt</span></div>
+  <div class="gap"><span class="gap-num">4.</span><span class="gap-text"><strong>More estates</strong> — currently 30 of ~500+ SA producers (~6%)</span></div>
+  <div class="gap"><span class="gap-num">5.</span><span class="gap-text"><strong>Marketplace</strong> — wine sales commission (Phase 3, deferred for liquor licensing)</span></div>
+  <div class="gap"><span class="gap-num">6.</span><span class="gap-text"><strong>AI sommelier</strong> — chat assistant (GLM/Gemini-backed) not yet wired</span></div>
+  <div class="gap"><span class="gap-num">7.</span><span class="gap-text"><strong>Social features</strong> — follow/feed/share (WhatsApp sharing critical for SA)</span></div>
+</section>
+
+<!-- ASK -->
+<section>
+  <div class="ask">
+    <span class="eyebrow">WE'RE SEEKING INPUT ON</span>
+    <h2 style="margin-top:8px">Five questions.</h2>
+    <ol>
+      <li><strong>Prioritization</strong> — which of the 7 gaps should we tackle next for maximum impact?</li>
+      <li><strong>Monetization</strong> — is the freemium + Estate SaaS model right, or should we consider alternatives?</li>
+      <li><strong>Technical architecture</strong> — any concerns with the Expo + Supabase stack for scaling to 10k+ users?</li>
+      <li><strong>SA market fit</strong> — what features would make SA wine drinkers switch from Vivino to Hemelval?</li>
+      <li><strong>Vendor acquisition</strong> — how to get wine farms to sign up for verified profiles?</li>
+    </ol>
+  </div>
+</section>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    <p>Hemelval · South African wine, discovered. · <a href="https://hemelval.vercel.app">hemelval.vercel.app</a> · <a href="https://github.com/AISP-ZA/hemelval">github.com/AISP-ZA/hemelval</a></p>
+  </div>
+</footer>
+
+</body>
+</html>
