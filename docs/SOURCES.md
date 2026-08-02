@@ -260,6 +260,47 @@ logic encoded in `packages/engine/`.
 
 ## 8. Competitive baseline
 
+No single app leads in every dimension. Each of the apps below leads in one area
+that Hemelval must either match or counter-position against.
+
+### Rating matrix
+
+| App | Leads in | Hemelval relevance | What we learn |
+|---|---|---|---|
+| **Vivino** | Everyday discovery, scanning, community scale | ⭐⭐⭐⭐⭐ | 70M users, 16M wines, best label scanner. But: recs feel commerce-driven, boutique wineries poorly covered, data quality inconsistent at scale. **SA boutique density is our opening.** |
+| **CellarTracker** | Serious collectors, cellar management, data trust | ⭐⭐⭐⭐⭐ | Collectors trust it more than Vivino. Exceptional inventory + drinking windows + critic reviews. But: dated UI, no lifestyle layer. **Data-quality trust is the bar to hit.** |
+| **Wine-Searcher** | Price comparison, global bottle finding | ⭐⭐⭐⭐☆ | Fast, excellent search engine. But: zero lifestyle/experience layer. **Search speed + price transparency as distinct feature.** |
+| **Oeni** | Cellaring, maturity tracking, drinking windows | ⭐⭐⭐⭐☆ | Beautiful app, premium collector focus. Ideal for investment-value tracking. **Premium collector tier reference for Pro.** |
+| **InVintory** | Luxury cellar management, 3D visualisation | ⭐⭐⭐⭐☆ | Most beautiful cellar app, luxury feel, 3D cellar viz. But: inventory-focused, not discovery. **UI craft benchmark for Estate SaaS.** |
+| **Delectable** | Fast scanning, tasting journal | ⭐⭐⭐⭐☆ | Simple, fast, good tasting journal. Limited social innovation. **Scan-flow speed benchmark.** |
+| **Sommo** | AI education, food pairing, taste development | ⭐⭐⭐⭐☆ | Newer AI-driven entrant. Signals category direction: AI-assisted education + pairing. **AI sommelier is where the category is heading.** |
+
+### Strategic takeaways for Hemelval
+
+1. **Vivino's weaknesses are our opening.** Its commerce-driven recommendations,
+   poor boutique-winery coverage, and inconsistent data quality at scale are the
+   exact gaps Hemelval fills — SA has the highest density of boutique/family
+   estates that global apps under-serve.
+
+2. **CellarTracker's data trust is the quality bar.** Collectors trust it more
+   than Vivino. Hemelval must prioritise data accuracy and provenance (WO
+   certification, verified estate profiles) over scale. The "is_verified" flag
+   on every estate record is our equivalent.
+
+3. **Wine-Searcher shows search must be a feature, not an afterthought.**
+   Fast, relevant search with price comparison is a distinct capability worth
+   building — not bolted onto discovery as Vivino does.
+
+4. **Oeni / InVintory define premium UI expectations.** If Hemelval adds a
+   "serious collector" Pro tier, these apps show the craft level needed:
+   maturity tracking, drinking windows, investment-value visualisation.
+
+5. **Sommo signals AI is the differentiator.** AI-assisted education, pairing,
+   and taste development — paired with Hemelval's local storytelling/heritage
+   angle that none of these global apps have — is the moat.
+
+### Original competitive analysis sources
+
 | Source | URL | What we learned |
 |---|---|---|
 | **Vivino** | App Store / Play / Wikipedia (en.wikipedia.org/wiki/Vivino) | Scan-to-match, "Match for You" palate scoring, 2-sided marketplace |
