@@ -202,3 +202,112 @@ can replicate, combined with AI-assisted discovery and community ratings.
 2. Estate SaaS portal — wineries self-manage their profiles
 3. Cellar-door booking integration — book tastings directly
 4. Wine route trip planning — plan a day/weekend around estates
+
+---
+
+## Capability leaderboard
+
+| Capability | Current leader | Hemelval's play |
+|---|---|---|
+| Label Scanner | Vivino | Match (Tesseract.js → Google Vision) |
+| Cellar Management | CellarTracker | Phase 2 Pro feature |
+| Luxury Design | InVintory | Tier 1 design upgrade in progress |
+| Price Comparison | Wine-Searcher | REST API built; retailer integration Phase 2 |
+| Food Pairing | Sommo | @kelder/engine already does SA-localised pairings |
+| Community | Vivino | Supabase tasting_notes + ratings aggregation |
+| Serious Collector | CellarTracker | Drinking-window tracking = Phase 2 Pro |
+| AI Features | Sommo | AI sommelier = Phase 2 differentiator |
+| Wine Education | Sommo | WSET SAT + Noble Wheel engine built |
+| **Experience Discovery** | **No clear leader** | **← Hemelval's category-defining opportunity** |
+
+That last row is the gap — and it's the biggest opening in the market.
+
+---
+
+## The biggest gap in the market
+
+Every app above treats wine as a product to catalogue, scan, rate, or price.
+None of them treat it as a **connected local experience** — where to go, what's
+on, what to pair, who you're becoming as a taster, and how to plan a day around
+it. If Hemelval opened tomorrow with this experience, no existing app delivers it:
+
+> 🍷 **Good evening, Brandon**
+> It's 21°C tomorrow — perfect weather for Chardonnay.
+>
+> **12 minutes away**
+> - Jordan Wine Estate — live jazz from 15:00
+> - Waterford Estate — chocolate pairing
+> - Hidden Valley — dog-friendly terrace
+>
+> **Based on your Taste DNA**
+> You'll probably love: Rustenberg Chardonnay · Capensis Fijnbosch · Ataraxia Chardonnay
+>
+> **Suggested Saturday itinerary**
+> 09:00 Coffee · 10:30 Jordan tasting · 13:00 Lunch at Cavalli · 15:30 Lourensford Market · 17:00 Live music
+
+That combination — weather-aware, location-aware, taste-personalised,
+itinerary-building — sits at the intersection of wine app, local discovery app,
+and lifestyle-recommendation engine. **No competitor occupies that space.**
+
+This is what "Experience Discovery" means as a category. It requires:
+- **Location data** (estate lat/long — 0% populated today, P0 priority)
+- **Real-time events** (festival calendar — 41 events seeded, needs live feed)
+- **Palate profile** (@kelder/engine built, needs user data volume)
+- **Weather API** (trivial to add — OpenWeatherMap free tier)
+- **Itinerary builder** (new feature — route optimisation between estates)
+- **Estate amenity data** (restaurant, live_music, pet_friendly flags — 77% populated)
+
+### Implementation pathway
+
+| Component | Status | Priority |
+|---|---|---|
+| Estate geo coords (lat/lng) | 🔴 0% populated | **P0** — enables nearby, itinerary, distance |
+| Palate profile engine | ✅ Built (@kelder/engine) | Needs user tasting volume |
+| Events calendar | ✅ 41 events seeded | Needs live feed (Webtickets etc.) |
+| Facility flags (restaurant, live_music, pet_friendly) | 🟡 77% region, 54% tasting_room | Enrichment ongoing |
+| Weather API | 🔴 Not built | P2 — simple OpenWeatherMap integration |
+| Itinerary builder | 🔴 Not built | P2 — route optimisation + scheduling |
+| "Good evening" home screen | 🔴 Not built | P2 — synthesis of all above |
+
+---
+
+## Cross-category synthesis
+
+Rather than out-building any single wine app at their own game, study each and
+lift the single best mechanic — then synthesise with patterns from outside the
+wine category.
+
+### In-category (what to borrow from wine apps)
+
+| App | Borrow this mechanic |
+|---|---|
+| **Vivino** | Scanner, community scale, onboarding flow, "Taste Match" personalisation logic |
+| **CellarTracker** | Cellar management and drinking-window tracking, done with real data rigour |
+| **InVintory** | Premium visual design language and inventory/collection experience |
+| **Wine-Searcher** | Search quality, price comparison, retailer integration |
+| **Sommo** | AI-driven education and food pairing |
+
+### Out-of-category (the models for lifestyle transformation)
+
+The three out-of-category references matter as much as the in-category ones —
+they're the models for turning a product-catalogue app into a habit-forming
+lifestyle app.
+
+| App | Borrow this mechanic | How it applies to Hemelval |
+|---|---|---|
+| **Strava** | Social feed + achievement/progress mechanics | Tasting milestones ("100 wines tasted", "Swartland Explorer badge"), friend activity feed, weekly tasting streaks |
+| **Airbnb** | Discovery and inspirational browsing patterns | "Explore Stellenbosch" browse-first experience with full-bleed photography, curated collections ("Hidden gems of the Swartland") |
+| **Spotify** | Personalised recommendation engine | "Discover Weekly" equivalent for wine: a weekly curated list of 10 wines matched to your palate, plus estate/event/experience recommendations |
+
+---
+
+## Positioning statement
+
+> **If the goal is for Hemelval to define a new category — "experience discovery,"
+> not "wine catalogue" — this synthesis is the brief. It's the one row on the
+> capability leaderboard with no incumbent, which makes it the most defensible
+> place to build.**
+
+Hemelval is not competing with Vivino (catalogue + commerce). Hemelval is
+creating the category of **SA wine experience discovery** — scanning and rating
+are table stakes; the product is the connected local experience.

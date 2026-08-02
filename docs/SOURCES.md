@@ -299,6 +299,17 @@ that Hemelval must either match or counter-position against.
    and taste development — paired with Hemelval's local storytelling/heritage
    angle that none of these global apps have — is the moat.
 
+6. **"Experience Discovery" is the category with no incumbent.** Every wine app
+   treats wine as a product to catalogue/scan/rate/price. None treats it as a
+   connected local experience — weather-aware, location-aware,
+   taste-personalised, itinerary-building. This is Hemelval's category-defining
+   opportunity. See `docs/COMPETITIVE_ANALYSIS.md` for the full vision.
+
+7. **Cross-category synthesis is the brief.** Don't just borrow from wine apps —
+   borrow from Strava (social feed + achievements), Airbnb (inspirational
+   browsing), and Spotify ("Discover Weekly" for wine). These are the models for
+   turning a product catalogue into a habit-forming lifestyle app.
+
 ### Original competitive analysis sources
 
 | Source | URL | What we learned |
