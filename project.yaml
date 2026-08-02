@@ -16,7 +16,7 @@ tech: [Expo, React-Native, TypeScript, Supabase, Next.js]
 integrations:
   github: { org: AISP-ZA, repo: hemelval }
   vercel: { team: aisp-za, project: hemelval, prod: "https://hemelval.vercel.app", staging: "" }
-  supabase: { project: "" }
+  supabase: { project: "hemelval-prod", ref: "vlbqrvynpmuzktpxhkjt", url: "https://vlbqrvynpmuzktpxhkjt.supabase.co" }
   payments: ""
   domain: { name: "hemelval.co.za", registrar: "" }
   cloudflare: { zone_id: "", proxied: false, registrar_transfer: "" }
