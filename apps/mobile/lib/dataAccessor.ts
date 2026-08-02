@@ -181,3 +181,25 @@ export async function saveTastingNote(note: {
     return false;
   }
 }
+
+/**
+ * Fetch tasting notes for the current user from Supabase.
+ * Returns null if not authenticated or on error (caller uses local store).
+ */
+export async function fetchTastingNotes(): Promise<any[] | null> {
+  if (!isSupabaseConfigured) return null;
+  try {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return null;
+    const { data, error } = await supabase
+      .from('tasting_notes')
+      .select('*')
+      .eq('user_id', user.id)
+      .order('tasted_at', { ascending: false })
+      .limit(100);
+    if (error || !data) return null;
+    return data;
+  } catch {
+    return null;
+  }
+}

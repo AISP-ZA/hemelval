@@ -3,11 +3,12 @@
  * Cards now carry cover photography from FESTIVAL_IMAGES.
  */
 
-import React, { useState } from 'react';
-import { View, ScrollView, StyleSheet, Linking, Pressable, Image, Text } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, ScrollView, StyleSheet, Linking, Pressable, Image, Text, ActivityIndicator } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Eyebrow, Headline, BodyText, Card, Chip, Button, Divider } from '../components/index.js';
 import { color, font, space, radius } from '../theme/tokens.js';
+import { fetchEvents, type WineEvent } from '../lib/dataAccessor.js';
 import { MOCK_EVENTS } from '../lib/mockData.js';
 import { FESTIVAL_IMAGES } from '../lib/imagery.js';
 import { EventDetailScreen, type FestivalEvent } from './EventDetailScreen.js';
@@ -21,7 +22,19 @@ export function EventsScreen() {
   const insets = useSafeAreaInsets();
   const [selectedEvent, setSelectedEvent] = useState<FestivalEvent | null>(null);
   const [estateView, setEstateView] = useState<MockEstate | null>(null);
-  const sorted = [...MOCK_EVENTS].sort((a, b) => (a.recurringMonth ?? 0) - (b.recurringMonth ?? 0));
+  const [events, setEvents] = useState<WineEvent[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch events from live Supabase (falls back to mock)
+  useEffect(() => {
+    (async () => {
+      const data = await fetchEvents();
+      setEvents(data);
+      setLoading(false);
+    })();
+  }, []);
+
+  const sorted = [...events].sort((a, b) => (a.recurringMonth ?? 0) - (b.recurringMonth ?? 0));
 
   // Estate detail (opened from event participants)
   if (estateView) {

@@ -22,6 +22,8 @@ import {
   type PalateProfile,
 } from '@kelder/engine';
 import { MOCK_WINES, type MockWine } from '../lib/mockData.js';
+import { supabase } from '../lib/supabase.js';
+import { saveTastingNote } from '../lib/dataAccessor.js';
 
 const STORAGE_KEY = 'hemelval.tastingNotes.v1';
 
@@ -137,6 +139,14 @@ export function PalateProvider({ children }: { children: React.ReactNode }) {
       tastedAt: new Date().toISOString(),
     };
     setNotes((prev) => [full, ...prev]);
+    // Also persist to live Supabase if user is logged in (fire-and-forget)
+    saveTastingNote({
+      vintageId: note.wineVintageId,
+      stars: note.stars,
+      nose: note.nose,
+      palate: note.palate,
+      freeText: note.freeText,
+    }).catch(() => {});
     return { ok: true };
   }, []);
 
