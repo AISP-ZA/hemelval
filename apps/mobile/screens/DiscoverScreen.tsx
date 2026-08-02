@@ -87,7 +87,7 @@ export function DiscoverScreen() {
         <View style={styles.heroContent}>
           <Eyebrow>YOUR CELLAR · YOUR PALATE</Eyebrow>
           <Text style={styles.heroHeadline}>Discover South African wine.</Text>
-          <Text style={styles.heroSub}>The Western Cape, in your pocket. Scan a bottle, log your tasting, let Kelder learn your palate.</Text>
+          <Text style={styles.heroSub}>The Western Cape, in your pocket. Scan a bottle, log your tasting, let Hemelval learn your palate.</Text>
         </View>
       </View>
 

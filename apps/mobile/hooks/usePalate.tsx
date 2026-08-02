@@ -23,7 +23,7 @@ import {
 } from '@kelder/engine';
 import { MOCK_WINES, type MockWine } from '../lib/mockData.js';
 
-const STORAGE_KEY = 'kelder.tastingNotes.v1';
+const STORAGE_KEY = 'hemelval.tastingNotes.v1';
 
 // Seed a small history on first run so the app demonstrates a non-empty palate.
 // (Real users start empty; the seed makes the demo meaningful.)

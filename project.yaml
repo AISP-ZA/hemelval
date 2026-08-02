@@ -14,11 +14,11 @@ summary_project: "Building. Research complete (Vivino, SA wine industry, tasting
 tech: [Expo, React-Native, TypeScript, Supabase, Next.js]
 
 integrations:
-  github: { org: AISP-ZA, repo: kelder }
-  vercel: { team: "", project: "", prod: "", staging: "" }
+  github: { org: AISP-ZA, repo: hemelval }
+  vercel: { team: aisp-za, project: hemelval, prod: "https://hemelval.vercel.app", staging: "" }
   supabase: { project: "" }
   payments: ""
-  domain: { name: "", registrar: "" }
+  domain: { name: "hemelval.co.za", registrar: "" }
   cloudflare: { zone_id: "", proxied: false, registrar_transfer: "" }
   eas: { project: "", ios_app_id: "", android_package: "" }
 

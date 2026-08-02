@@ -103,7 +103,7 @@ export function ProfileScreen() {
         <Card style={{ marginTop: space.lg }}>
           <Eyebrow>ABOUT KELDER</Eyebrow>
           <BodyText size="sm" muted style={{ marginTop: space.md }}>
-            Kelder is built for the South African wine community — every estate, varietal, and festival of the Western Cape. Your tasting data stays on your device; nothing is shared.
+            Hemelval is built for the South African wine community — every estate, varietal, and festival of the Western Cape. Your tasting data stays on your device; nothing is shared.
           </BodyText>
           <BodyText size="sm" muted style={{ marginTop: space.sm }}>
             Photography: Unsplash & Pexels contributors. Tasting vocabulary: WSET & the Noble Wine Aroma Wheel (UC Davis).
