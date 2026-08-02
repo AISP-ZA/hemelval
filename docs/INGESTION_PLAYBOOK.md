@@ -1,4 +1,4 @@
-# Hemelval — Data Ingestion Playbook
+# Decanta — Data Ingestion Playbook
 
 > Companion to `docs/SOURCES.md`. This document defines **exactly how each
 > authoritative source maps to database tables and fields**, and the concrete
@@ -186,7 +186,7 @@ Fields:  estates.* (contact, hours, facilities, images), wines.* (name, type, pr
 - Respect `robots.txt` (check `https://wine.co.za/robots.txt`)
 - Rate limit: 1 request / 2 seconds (use `await sleep(2000)`)
 - Cache responses to `/tmp/wine-co-za-cache/`
-- User-Agent: `HemelvalBot/1.0 (research; contact@hemelval.co.za)`
+- User-Agent: `DecantaBot/1.0 (research; contact@decanta.co.za)`
 
 #### A3. Wineries.co.za (narrative enrichment)
 

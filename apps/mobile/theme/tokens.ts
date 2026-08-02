@@ -1,5 +1,5 @@
 /**
- * Hemelval theme tokens — "Candlelit Cellar" identity.
+ * Decanta theme tokens — "Candlelit Cellar" identity.
  *
  * Warm tobacco-brown canvas (#241b18), gold (#d4a86a) + wine-red (#8a2030)
  * brand accents, Cormorant Garamond serif display / Inter body / GeistMono
@@ -42,7 +42,7 @@ export const color = {
   primary: '#d4a86a',     // gold — the CTA fill
   onPrimary: '#241b18',   // dark text on gold
 
-  // Hemelval brand accents
+  // Decanta brand accents
   gold: '#d4a86a',        // primary accent — warmer gold
   wine: '#8a2030',        // deep wine-red co-primary
   wineBright: '#a52838',  // brighter wine for badges

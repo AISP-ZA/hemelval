@@ -1,5 +1,5 @@
 /**
- * Hemelval reference dataset — curated SA wines and estates for offline/demo mode.
+ * Decanta reference dataset — curated SA wines and estates for offline/demo mode.
  *
  * This is DEMO FALLBACK data used only when the live Supabase DB is unreachable.
  * The live DB (420 estates, 217 wines) is the primary data source via dataAccessor.ts.

@@ -1,5 +1,5 @@
 /**
- * Hemelval — app root.
+ * Decanta — app root.
  * Tab navigation: Discover · Scan · Cellar · Events · Profile.
  * Mobile-first, dark canvas, AISP DESIGN.md spec.
  *

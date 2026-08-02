@@ -144,7 +144,7 @@ export function ScanScreen() {
     setState('processing');
     try {
       // Extract slug from QR URL patterns:
-      // hemelval.co.za/w/:slug  or  hemelval.co.za/e/:slug  or  raw slug
+      // decanta.co.za/w/:slug  or  decanta.co.za/e/:slug  or  raw slug
       const wineMatch = qrText.match(/\/w\/([a-z0-9-]+)/i);
       const estateMatch = qrText.match(/\/e\/([a-z0-9-]+)/i);
       const slug = wineMatch?.[1] || estateMatch?.[1] || (qrText.match(/^[a-z0-9-]+$/i)?.[0]);
@@ -502,7 +502,7 @@ export function ScanScreen() {
       <Eyebrow>SCAN // IDENTIFY ANY SA WINE</Eyebrow>
       <Headline size="xl" style={{ marginTop: space.sm }}>What did you drink?</Headline>
       <BodyText muted style={{ marginTop: space.md }}>
-        Photograph the bottle, scan its barcode, or scan a QR code. Hemelval identifies the wine and helps you log a proper tasting.
+        Photograph the bottle, scan its barcode, or scan a QR code. Decanta identifies the wine and helps you log a proper tasting.
       </BodyText>
 
       <View style={{ gap: space.md, marginTop: space.xl }}>

@@ -1,4 +1,4 @@
-// Hemelval REST API v1 — Supabase Edge Function
+// Decanta REST API v1 — Supabase Edge Function
 // Runtime: Deno (Supabase Edge Functions)
 // Framework: Hono
 //
@@ -17,12 +17,15 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.4";
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const ALLOWED_ORIGINS = [
-  "https://hemelval.vercel.app",
-  "https://hemelval.co.za",
+  "https://decanta.vercel.app",
+  "https://decanta-app.vercel.app",
+  "https://decanta.co.za",
+  "https://decanta-app.vercel.app", // legacy URL until Vercel project renamed
   "http://localhost:3000",
   "http://localhost:3002",
   "http://localhost:3010",
   "http://localhost:8080",
+  "http://localhost:8086",
 ];
 
 const app = new Hono();
@@ -788,7 +791,7 @@ app.post("/v1/scan/label", async (c) => {
 app.get("/v1/health", (c) =>
   c.json({
     status: "ok",
-    service: "hemelval-api",
+    service: "decanta-api",
     version: "v1",
     timestamp: new Date().toISOString(),
   }));
@@ -800,7 +803,7 @@ app.notFound((c) =>
   errorResponse("NOT_FOUND", `Route not found: ${c.req.method} ${c.req.path}`, 404));
 
 app.onError((err, c) => {
-  console.error("[hemelval-api] unhandled:", err);
+  console.error("[decanta-api] unhandled:", err);
   return errorResponse("INTERNAL_ERROR", err.message, 500);
 });
 

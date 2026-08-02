@@ -1,24 +1,24 @@
 {
   "expo": {
-    "name": "Hemelval",
-    "slug": "hemelval",
+    "name": "Decanta",
+    "slug": "decanta",
     "version": "0.1.0",
     "orientation": "portrait",
     "userInterfaceStyle": "dark",
-    "scheme": "hemelval",
+    "scheme": "decanta",
     "splash": {
       "backgroundColor": "#241b18",
       "resizeMode": "contain"
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "za.co.hemelval.app",
+      "bundleIdentifier": "za.co.decanta.app",
       "infoPlist": {
-        "NSCameraUsageDescription": "Hemelval uses the camera to scan wine bottle labels and barcodes so you can log what you taste."
+        "NSCameraUsageDescription": "Decanta uses the camera to scan wine bottle labels and barcodes so you can log what you taste."
       }
     },
     "android": {
-      "package": "za.co.hemelval.app",
+      "package": "za.co.decanta.app",
       "permissions": [
         "android.permission.CAMERA"
       ]
@@ -27,14 +27,14 @@
       "bundler": "metro",
       "favicon": "./assets/favicon.png",
       "pwaDisplay": "standalone",
-      "name": "Hemelval — SA Wine"
+      "name": "Decanta — SA Wine"
     },
     "plugins": [
       "expo-router",
       [
         "expo-camera",
         {
-          "cameraPermissionText": "Hemelval uses the camera to scan wine bottle labels and barcodes."
+          "cameraPermissionText": "Decanta uses the camera to scan wine bottle labels and barcodes."
         }
       ],
       "expo-font"

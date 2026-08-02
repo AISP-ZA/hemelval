@@ -236,7 +236,7 @@ export function EstateDetailScreen({
         <View style={styles.qrRow}>
           <QRCode value={`https://kelder.co.za/e/${estate.slug}`} size={96} />
           <View style={{ flex: 1, gap: space.xs }}>
-            <BodyText size="sm">Scan to save {estate.name} to your Hemelval cellar, or share with a friend.</BodyText>
+            <BodyText size="sm">Scan to save {estate.name} to your Decanta cellar, or share with a friend.</BodyText>
             <BodyText size="sm" muted>Encodes a real link — works with any phone camera.</BodyText>
           </View>
         </View>

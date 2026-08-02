@@ -28,8 +28,10 @@ const corsHeaders = {
 };
 
 const ALLOWED_ORIGINS = [
-  "https://hemelval-app.vercel.app",
-  "https://hemelval.vercel.app",
+  "https://decanta-app.vercel.app",
+  "https://decanta.vercel.app",
+  "https://decanta.co.za",
+  "https://decanta-app.vercel.app", // legacy URL until Vercel project renamed
   "http://localhost:8086",
   "http://localhost:8083",
   "http://localhost:3000",

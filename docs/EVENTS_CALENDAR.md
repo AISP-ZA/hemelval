@@ -1,4 +1,4 @@
-# Hemelval — Wine Festival & Event Calendar
+# Decanta — Wine Festival & Event Calendar
 
 > The canonical SA wine events calendar. Defines the seasonal arc,
 > data sourcing pipeline, and UX structure for the Events screen.
@@ -105,7 +105,7 @@ Confirmation queue → published events
 ### Forecast layer
 Surface a "coming up this year" view from recurrence data. In November, proactively
 show "Harvest season starts again in ~10 weeks — here's what typically happens each
-February" using the historical pattern. This turns Hemelval from reactive listings
+February" using the historical pattern. This turns Decanta from reactive listings
 into **proactive seasonal planning** — a natural extension of the Experience Discovery vision.
 
 ---

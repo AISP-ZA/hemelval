@@ -1,6 +1,6 @@
-# Hemelval REST API — v1
+# Decanta REST API — v1
 
-> Canonical API contract for the Hemelval wine platform.
+> Canonical API contract for the Decanta wine platform.
 > Implementation lives at `supabase/functions/api/index.ts` (Supabase Edge Function, Hono on Deno).
 
 ## Base URL
@@ -23,7 +23,7 @@ All paths below are relative to the base. Examples show only the path.
 | **Sorting** | `?sort=rating` (default) \| `name` \| `established` \| `distance` (geo only) |
 | **Errors** | RFC 7807-style: `{ error: { code, message } }` with correct HTTP status. |
 | **Content type** | `application/json` for all request and response bodies. |
-| **CORS** | Allowed origins: `hemelval.vercel.app`, `hemelval.co.za`, `localhost:*`. |
+| **CORS** | Allowed origins: `decanta.vercel.app`, `decanta.co.za`, `localhost:*`. |
 
 ## Response envelope
 
@@ -473,7 +473,7 @@ OCR lookup — accepts a base64 image, runs OCR, fuzzy-matches against the wines
 ### `POST /v1/scan/qr`
 
 ```jsonc
-{ "qr": "https://hemelval.co.za/w/chocolate-block-2021" }
+{ "qr": "https://decanta.co.za/w/chocolate-block-2021" }
 ```
 
 ---

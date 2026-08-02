@@ -110,7 +110,7 @@ export function TastingNoteScreen({
           <Eyebrow>NOTE LOGGED // {beforeCount + 1} TASTED</Eyebrow>
           <Headline size="lg" style={{ marginTop: space.md }}>Your palate is sharpening.</Headline>
           <BodyText muted style={{ marginTop: space.md }}>
-            {wine.name} is now part of your cellar. Hemelval has re-learnt what you love —
+            {wine.name} is now part of your cellar. Decanta has re-learnt what you love —
             your recommendations just got smarter.
           </BodyText>
           <Divider />

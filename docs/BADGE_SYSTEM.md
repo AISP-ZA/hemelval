@@ -1,7 +1,7 @@
-# Hemelval — Badge & Recognition System
+# Decanta — Badge & Recognition System
 
 > Defines the two-badge-rail architecture for wine quality awards and
-> sustainability/values certifications. This is Hemelval's second
+> sustainability/values certifications. This is Decanta's second
 > category-defining differentiator (after "Experience Discovery") — no global
 > wine app surfaces SA's sustainability certification data at all.
 >
@@ -70,7 +70,7 @@ B Corp), not the near-universal IPW baseline.
 
 ## B. Sustainability, ethical & environmental certifications
 
-This is Hemelval's **strongest differentiation opportunity**. South Africa's
+This is Decanta's **strongest differentiation opportunity**. South Africa's
 sustainability certification system is unusually mature and unusually combined
 into the official bottle seal — the combined Wine of Origin + IPW seal on the
 bottle neck makes SA the **only wine-producing country in the world** that
@@ -117,7 +117,7 @@ This is a genuine local-only advantage.
 
 No competitor app supports values-based filtering at all. Combined with the
 "Experience Discovery" gap (weather/location/taste-aware itinerary builder),
-this gives Hemelval **two category-defining features** that no global wine app
+this gives Decanta **two category-defining features** that no global wine app
 can replicate — both rooted in South Africa's unusually structured certification
 landscape.
 

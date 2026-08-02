@@ -1,5 +1,5 @@
 /**
- * Hemelval data accessor — live Supabase queries with transparent fallback.
+ * Decanta data accessor — live Supabase queries with transparent fallback.
  *
  * Reads from the live Supabase database (420 estates, 217 wines, 41 events).
  * If Supabase is unreachable, falls back to the bundled reference dataset

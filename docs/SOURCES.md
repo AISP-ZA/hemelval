@@ -1,6 +1,6 @@
-# Hemelval — Authoritative Source List
+# Decanta — Authoritative Source List
 
-> **This is the canonical research list for the Hemelval wine platform.**
+> **This is the canonical research list for the Decanta wine platform.**
 > Every dataset, rating, image, event, and farmer story must trace back to a
 > source listed here. If a source is not in this document, it is not authoritative.
 >
@@ -191,7 +191,7 @@ proactive seasonal forecasting.
 ## 4. Farmer stories, heritage & transformation (the human layer)
 
 These populate `estates.history`, `estates.about`, and the future "stories" feature.
-This is what makes Hemelval feel human, not AI-generated.
+This is what makes Decanta feel human, not AI-generated.
 
 ### Story sources
 | Source | URL | Focus |
@@ -278,11 +278,11 @@ logic encoded in `packages/engine/`.
 ## 8. Competitive baseline
 
 No single app leads in every dimension. Each of the apps below leads in one area
-that Hemelval must either match or counter-position against.
+that Decanta must either match or counter-position against.
 
 ### Rating matrix
 
-| App | Leads in | Hemelval relevance | What we learn |
+| App | Leads in | Decanta relevance | What we learn |
 |---|---|---|---|
 | **Vivino** | Everyday discovery, scanning, community scale | ⭐⭐⭐⭐⭐ | 70M users, 16M wines, best label scanner. But: recs feel commerce-driven, boutique wineries poorly covered, data quality inconsistent at scale. **SA boutique density is our opening.** |
 | **CellarTracker** | Serious collectors, cellar management, data trust | ⭐⭐⭐⭐⭐ | Collectors trust it more than Vivino. Exceptional inventory + drinking windows + critic reviews. But: dated UI, no lifestyle layer. **Data-quality trust is the bar to hit.** |
@@ -292,15 +292,15 @@ that Hemelval must either match or counter-position against.
 | **Delectable** | Fast scanning, tasting journal | ⭐⭐⭐⭐☆ | Simple, fast, good tasting journal. Limited social innovation. **Scan-flow speed benchmark.** |
 | **Sommo** | AI education, food pairing, taste development | ⭐⭐⭐⭐☆ | Newer AI-driven entrant. Signals category direction: AI-assisted education + pairing. **AI sommelier is where the category is heading.** |
 
-### Strategic takeaways for Hemelval
+### Strategic takeaways for Decanta
 
 1. **Vivino's weaknesses are our opening.** Its commerce-driven recommendations,
    poor boutique-winery coverage, and inconsistent data quality at scale are the
-   exact gaps Hemelval fills — SA has the highest density of boutique/family
+   exact gaps Decanta fills — SA has the highest density of boutique/family
    estates that global apps under-serve.
 
 2. **CellarTracker's data trust is the quality bar.** Collectors trust it more
-   than Vivino. Hemelval must prioritise data accuracy and provenance (WO
+   than Vivino. Decanta must prioritise data accuracy and provenance (WO
    certification, verified estate profiles) over scale. The "is_verified" flag
    on every estate record is our equivalent.
 
@@ -308,18 +308,18 @@ that Hemelval must either match or counter-position against.
    Fast, relevant search with price comparison is a distinct capability worth
    building — not bolted onto discovery as Vivino does.
 
-4. **Oeni / InVintory define premium UI expectations.** If Hemelval adds a
+4. **Oeni / InVintory define premium UI expectations.** If Decanta adds a
    "serious collector" Pro tier, these apps show the craft level needed:
    maturity tracking, drinking windows, investment-value visualisation.
 
 5. **Sommo signals AI is the differentiator.** AI-assisted education, pairing,
-   and taste development — paired with Hemelval's local storytelling/heritage
+   and taste development — paired with Decanta's local storytelling/heritage
    angle that none of these global apps have — is the moat.
 
 6. **"Experience Discovery" is the category with no incumbent.** Every wine app
    treats wine as a product to catalogue/scan/rate/price. None treats it as a
    connected local experience — weather-aware, location-aware,
-   taste-personalised, itinerary-building. This is Hemelval's category-defining
+   taste-personalised, itinerary-building. This is Decanta's category-defining
    opportunity. See `docs/COMPETITIVE_ANALYSIS.md` for the full vision.
 
 7. **Cross-category synthesis is the brief.** Don't just borrow from wine apps —
@@ -345,7 +345,7 @@ quality medals vs values certifications, kept visually distinct).
 
 SA is the **only wine-producing country** that audits sustainability as a
 prerequisite for national certification — the combined WO + IPW seal on the
-bottle neck. No global wine app surfaces this data. This is Hemelval's second
+bottle neck. No global wine app surfaces this data. This is Decanta's second
 category-defining differentiator.
 
 ### Certification hierarchy (baseline → premium)
@@ -390,7 +390,7 @@ tables. Not yet linked to individual estates at scale.
 > also WWF Conservation Champions" or "Fairtrade wines near me."
 
 No competitor app supports values-based filtering. Combined with Experience
-Discovery, this gives Hemelval **two category-defining features** no global
+Discovery, this gives Decanta **two category-defining features** no global
 wine app can replicate.
 
 ---
