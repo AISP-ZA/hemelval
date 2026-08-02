@@ -1,52 +1,53 @@
 /**
- * Decanta theme tokens — "Candlelit Cellar" identity.
+ * Decanta theme tokens — "Grand Cru" identity.
  *
- * Warm tobacco-brown canvas (#241b18), gold (#d4a86a) + wine-red (#8a2030)
- * brand accents, Cormorant Garamond serif display / Inter body / GeistMono
- * captions. Hairline borders carry elevation — no drop shadows. Pill geometry
- * on every interactive element. Display weight 400.
+ * Near-black canvas (#08030a) with a breath of magenta. Antique gold (#c4973c)
+ * is the brand identity colour — used on the wordmark, ghost borders, and star
+ * ratings. Cardinal burgundy (#6b1228) fills the primary CTA; gold labels sit
+ * on top of it. Cards are near-invisible glass with a hairline gold rim.
+ * Cormorant Garamond serif display / Inter body / GeistMono captions.
+ * Pill geometry on every interactive element. Display weight 400.
  *
- * Brand accents: gold #d4a86a (primary) + wine-red #8a2030 (co-primary).
+ * Brand accents: antique gold #c4973c (identity) + cardinal #6b1228 (CTA fill).
  */
 
 export const color = {
-  // Surfaces — Candlelit Cellar: warm tobacco-brown, visible on phone screens
-  canvas: '#241b18',      // warm tobacco-brown — clearly visible, candle-lit mood
-  canvasSoft: '#2e2320',  // inputs, inset surfaces
-  canvasCard: '#302420',  // cards — lighter than canvas for depth
-  canvasMid: '#46342c',   // mid-tone dividers/fills
+  // Surfaces — Grand Cru: near-black with a whisper of magenta
+  canvas: '#08030a',      // near-pure black — the void, a private cellar
+  canvasSoft: '#0f0610',  // inputs, inset surfaces — barely lighter
+  canvasCard: 'rgba(196,151,60,0.04)',  // glass card — plum-gold tint, just enough to lift
+  canvasMid: '#2a1428',   // deep plum for dividers/mid-fills
 
-  // Card elevation — a barely-visible white overtone border that creates the
-  // "glass" effect on dark backgrounds. Without this, cards on a dark canvas
-  // blend invisibly into the background.
-  cardBorder: 'rgba(255,255,255,0.06)',
-  cardBorderStrong: 'rgba(255,255,255,0.10)',
+  // Card elevation — gold hairline border carries elevation on the glass surface.
+  // A white-overtone border would read warm-grey here; gold reads as chosen.
+  cardBorder: 'rgba(196,151,60,0.22)',
+  cardBorderStrong: 'rgba(196,151,60,0.38)',
 
   // Image overlays — canvas-coloured gradients layered over photography
-  // for text legibility. Replaces the 7 hardcoded rgba(36,27,24,α) values.
-  overlayWeak: 'rgba(36,27,24,0.45)',
-  overlayMid: 'rgba(36,27,24,0.72)',
-  overlayStrong: 'rgba(36,27,24,0.88)',
+  // for text legibility.
+  overlayWeak: 'rgba(8,3,10,0.45)',
+  overlayMid: 'rgba(8,3,10,0.72)',
+  overlayStrong: 'rgba(8,3,10,0.88)',
 
-  // Text — warm parchment
-  ink: '#f0e8da',         // primary text
-  inkHover: '#f7f0e4',
-  body: '#d4c8b8',        // secondary text
-  bodyMid: '#9a8a78',     // muted captions
-  mute: '#9a8a78',
+  // Text — warm parchment on near-black
+  ink: '#ede0cc',         // primary text — warm parchment
+  inkHover: '#f5ecd8',
+  body: '#c4b49a',        // secondary text
+  bodyMid: '#7a6858',     // muted captions
+  mute: '#7a6858',
 
-  // Lines — warm hairline
-  hairline: '#46342c',
+  // Lines — deep plum hairline (not grey — chosen)
+  hairline: '#2a1428',
 
-  // Fills
-  primary: '#d4a86a',     // gold — the CTA fill
-  onPrimary: '#241b18',   // dark text on gold
+  // Fills — cardinal burgundy CTA + gold label on top
+  primary: '#6b1228',     // cardinal burgundy — the CTA fill
+  onPrimary: '#c4973c',   // antique gold text on cardinal button
 
   // Decanta brand accents
-  gold: '#d4a86a',        // primary accent — warmer gold
-  wine: '#8a2030',        // deep wine-red co-primary
-  wineBright: '#a52838',  // brighter wine for badges
-  goldSoft: '#b89058',
+  gold: '#c4973c',        // antique gold — the identity colour
+  wine: '#6b1228',        // cardinal co-primary
+  wineBright: '#8a1a30',  // brighter wine for badges
+  goldSoft: '#9a7828',
 
   // Semantic
   systems: '#7fa86a',
@@ -56,16 +57,16 @@ export const color = {
   critFill: 'rgba(176,64,64,0.12)',
   telemetry: '#a8b8c8',
 
-  // Legacy aliases
-  sunset: '#d4a86a',
-  twilight: '#e0c898',
-  dusk: '#8a2030',
+  // Legacy aliases — updated to Grand Cru palette
+  sunset: '#c4973c',
+  twilight: '#d4b870',
+  dusk: '#6b1228',
 
   // Wine-type chips
-  redWine: '#8a2030',
-  whiteWine: '#c4a468',
-  roseWine: '#c07060',
-  sparkling: '#d4b45e',
+  redWine: '#6b1228',
+  whiteWine: '#c4973c',
+  roseWine: '#b06878',
+  sparkling: '#c8a840',
 } as const;
 
 export const space = {
