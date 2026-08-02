@@ -23,7 +23,7 @@ import {
 } from '@kelder/engine';
 import { MOCK_WINES, type MockWine } from '../lib/mockData.js';
 import { supabase } from '../lib/supabase.js';
-import { saveTastingNote } from '../lib/dataAccessor.js';
+import { saveTastingNote, fetchTastingNotes } from '../lib/dataAccessor.js';
 
 const STORAGE_KEY = 'hemelval.tastingNotes.v1';
 
@@ -100,19 +100,49 @@ export function PalateProvider({ children }: { children: React.ReactNode }) {
   const [notes, setNotes] = useState<TastingNote[]>(SEED_NOTES);
   const [loaded, setLoaded] = useState(false);
 
-  // Load persisted notes on mount
+  // Load notes: local cache first (instant), then merge live Supabase notes
   useEffect(() => {
     (async () => {
+      // 1. Load local cache immediately
+      let localNotes: TastingNote[] = SEED_NOTES;
       try {
         const raw = await AsyncStorage.getItem(STORAGE_KEY);
         if (raw) {
           const parsed = JSON.parse(raw) as TastingNote[];
-          if (Array.isArray(parsed)) setNotes(parsed);
+          if (Array.isArray(parsed) && parsed.length > 0) localNotes = parsed;
         }
-      } catch {
-        // ignore — fall back to seed
-      }
+      } catch { /* fall back to seed */ }
+      setNotes(localNotes);
       setLoaded(true);
+
+      // 2. If user is logged in, fetch their live notes from Supabase
+      //    and merge with local (dedup by id, server takes priority)
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return; // not logged in — local cache is enough
+
+        const serverNotes = await fetchTastingNotes();
+        if (serverNotes && serverNotes.length > 0) {
+          // Map server notes → TastingNote shape
+          const mapped: TastingNote[] = serverNotes.map((sn: any) => ({
+            id: sn.id,
+            wineVintageId: sn.vintage_id,
+            userId: sn.user_id,
+            tastedAt: sn.tasted_at,
+            stars: Number(sn.stars),
+            nose: sn.nose,
+            palate: sn.palate,
+            freeText: sn.free_text,
+          }));
+          // Merge: server notes first, then any local-only notes (by id)
+          const serverIds = new Set(mapped.map(n => n.id));
+          const localOnly = localNotes.filter(n => !serverIds.has(n.id));
+          const merged = [...mapped, ...localOnly];
+          setNotes(merged);
+          // Persist merged to local cache
+          AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(merged)).catch(() => {});
+        }
+      } catch { /* network failure — local cache stays */ }
     })();
   }, []);
 
