@@ -116,11 +116,11 @@ export function Chip({ children, tone = 'neutral', style }: {
   style?: ViewStyle;
 }) {
   const tones: Record<string, { bg: string; border: string; fg: string }> = {
-    neutral: { bg: 'transparent', border: color.hairline, fg: color.body },
-    accent: { bg: 'rgba(201,169,106,0.12)', border: color.gold, fg: color.gold },
-    systems: { bg: 'rgba(127,168,106,0.14)', border: color.systems, fg: color.systems },
-    wine: { bg: 'rgba(139,29,46,0.36)', border: color.wineBright, fg: '#d49aa3' },
-    sunset: { bg: 'rgba(201,169,106,0.12)', border: color.gold, fg: color.gold },
+    neutral: { bg: 'transparent', border: color.hairline, fg: color.bodyMid },
+    accent:  { bg: 'transparent', border: color.gold, fg: color.gold },
+    systems: { bg: 'transparent', border: color.gold, fg: color.gold },
+    wine:    { bg: 'rgba(107,18,40,0.22)', border: color.wine, fg: color.ink },
+    sunset:  { bg: 'transparent', border: color.gold, fg: color.gold },
   };
   const t = tones[tone];
   return (
@@ -162,7 +162,7 @@ export function Divider({ style }: { style?: ViewStyle }) {
 // ── Match score badge ────────────────────────────────────────────────────────
 
 export function MatchBadge({ score }: { score: number }) {
-  const tone = score >= 80 ? color.systems : score >= 60 ? color.sunset : color.bodyMid;
+  const tone = score >= 60 ? color.gold : color.mute;
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.xs }}>
       <Text style={[font.captionMonoSm, { color: tone }]}>{score}% MATCH</Text>

@@ -49,24 +49,24 @@ export const color = {
   wineBright: '#8a1a30',  // brighter wine for badges
   goldSoft: '#9a7828',
 
-  // Semantic
-  systems: '#7fa86a',
-  load: '#6a8aa8',
-  warn: '#c98a3a',
-  crit: '#b04040',
-  critFill: 'rgba(176,64,64,0.12)',
-  telemetry: '#a8b8c8',
+  // Semantic — desaturated so they never compete with the gold identity
+  systems: '#c4973c',              // gold: used for "good" states (Pro badge, high match)
+  load: '#686878',                 // neutral grey-blue
+  warn: '#7a6858',                 // same as mute — info only, not alarming
+  crit: '#7a3030',                 // dark desaturated red — readable as danger, not festive
+  critFill: 'rgba(122,48,48,0.10)',
+  telemetry: '#787878',
 
-  // Legacy aliases — updated to Grand Cru palette
-  sunset: '#c4973c',
-  twilight: '#d4b870',
-  dusk: '#6b1228',
+  // Aliases
+  sunset: '#c4973c',               // gold
+  twilight: 'rgba(196,151,60,0.65)', // gold at 65% — for subtext on dark surfaces
+  dusk: '#6b1228',                 // cardinal
 
-  // Wine-type chips
+  // Wine-type — two colours only: cardinal for reds, gold for everything else
   redWine: '#6b1228',
   whiteWine: '#c4973c',
-  roseWine: '#b06878',
-  sparkling: '#c8a840',
+  roseWine: '#c4973c',
+  sparkling: '#c4973c',
 } as const;
 
 export const space = {

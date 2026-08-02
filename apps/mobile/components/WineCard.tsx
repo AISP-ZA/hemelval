@@ -29,13 +29,13 @@ export interface WineCardProps {
 }
 
 const typeColors: Record<string, string> = {
-  red: color.redWine,
-  white: color.whiteWine,
-  rose: color.roseWine,
-  sparkling: color.sparkling,
-  fortified: color.redWine,
+  red: color.wine,
+  fortified: color.wine,
+  white: color.gold,
+  rose: color.gold,
+  sparkling: color.gold,
   dessert: color.gold,
-  orange: '#c08050',
+  orange: color.gold,
 };
 
 function typeLabel(type: string): string {
