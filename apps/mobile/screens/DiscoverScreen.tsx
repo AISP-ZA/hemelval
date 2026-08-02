@@ -2,13 +2,14 @@
  * Discover — the home screen. Hero, signature SA varietals, top wines, estates by region.
  */
 
-import React, { useState } from 'react';
-import { View, ScrollView, StyleSheet, FlatList, Pressable, TextInput, Text, Image } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, ScrollView, StyleSheet, FlatList, Pressable, TextInput, Text, Image, ActivityIndicator } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Eyebrow, Headline, BodyText, Card, Chip, Button, Stars, MatchBadge, Divider } from '../components/index.js';
 import { EstateWordmark } from '../components/EstateWordmark.js';
 import { color, font, radius, space } from '../theme/tokens.js';
-import { MOCK_WINES, MOCK_ESTATES, mockEstateById, type MockWine, type MockEstate } from '../lib/mockData.js';
+import { MOCK_ESTATES, mockEstateById, type MockWine, type MockEstate } from '../lib/mockData.js';
+import { fetchWines, type Wine } from '../lib/dataAccessor.js';
 import { VARIETALS, signatureVarietals, findWinesForFood } from '@kelder/engine';
 import type { FoodMatch } from '@kelder/engine';
 import { HERO_CELLAR, HERO_VINEYARD, wineImage, estateCover } from '../lib/imagery.js';
@@ -22,12 +23,26 @@ export function DiscoverScreen() {
   const [varietalFilter, setVarietalFilter] = useState<string | null>(null);
   const [foodQuery, setFoodQuery] = useState('');
   const [foodMatch, setFoodMatch] = useState<FoodMatch | null>(null);
-  const [selected, setSelected] = useState<MockWine | null>(null);
-  const [tasting, setTasting] = useState<MockWine | null>(null);
+  const [selected, setSelected] = useState<Wine | null>(null);
+  const [tasting, setTasting] = useState<Wine | null>(null);
   const [estateView, setEstateView] = useState<MockEstate | null>(null);
   const { matchFor } = usePalate();
+  const [wines, setWines] = useState<Wine[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [dataSource, setDataSource] = useState('mock');
 
-  const filtered = MOCK_WINES.filter((w) => {
+  // Fetch wines from live Supabase (falls back to mock)
+  useEffect(() => {
+    (async () => {
+      const data = await fetchWines();
+      setWines(data);
+      setLoading(false);
+      // If data came from Supabase (length differs from mock count), mark as live
+      setDataSource(data.length !== 41 ? 'live' : 'mock');
+    })();
+  }, []);
+
+  const filtered = wines.filter((w) => {
     const matchesQuery = query
       ? (w.name + ' ' + w.estateName + ' ' + w.region + ' ' + w.varietals.join(' '))
           .toLowerCase()
@@ -50,7 +65,7 @@ export function DiscoverScreen() {
         estate={estateView}
         onBack={() => setEstateView(null)}
         onWinePress={(wid) => {
-          const w = MOCK_WINES.find((x) => x.id === wid);
+          const w = wines.find((x) => x.id === wid);
           if (w) { setEstateView(null); setSelected(w); }
         }}
       />
@@ -75,7 +90,7 @@ export function DiscoverScreen() {
   }
 
   const signature = ['chenin-blanc', 'pinotage', 'mcc'];
-  const topRated = [...MOCK_WINES].sort((a, b) => b.avgStars - a.avgStars).slice(0, 6);
+  const topRated = [...wines].sort((a, b) => b.avgStars - a.avgStars).slice(0, 6);
   const regions = [...new Set(MOCK_ESTATES.map((e) => e.region))].slice(0, 8);
 
   return (
