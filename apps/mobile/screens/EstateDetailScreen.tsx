@@ -12,7 +12,7 @@
  *  - the estate's wines in the catalog
  */
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, ScrollView, StyleSheet, Pressable, Linking, Text, Image } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
@@ -22,7 +22,8 @@ import { EstateWordmark } from '../components/EstateWordmark.js';
 import { AwardBadge, type AwardDescriptor } from '../components/AwardBadge.js';
 import { QRCode } from '../components/QRCode.js';
 import { color, font, space, radius } from '../theme/tokens.js';
-import { CERT_INFO, MOCK_WINES, type MockEstate, type MockAward } from '../lib/mockData.js';
+import { CERT_INFO, type MockEstate, type MockAward } from '../lib/mockData.js';
+import { fetchWinesByEstate, type Wine } from '../lib/dataAccessor.js';
 import { estateCover } from '../lib/imagery.js';
 import { usePalate } from '../hooks/usePalate.js';
 
@@ -37,8 +38,16 @@ export function EstateDetailScreen({
 }) {
   const insets = useSafeAreaInsets();
   const { matchFor } = usePalate();
-  const estateWines = MOCK_WINES.filter((w) => w.estateId === estate.id);
+  const [estateWines, setEstateWines] = useState<Wine[]>([]);
   const cover = estateCover(estate.id);
+
+  // Fetch this estate's wines from live Supabase (falls back to mock)
+  useEffect(() => {
+    (async () => {
+      const wines = await fetchWinesByEstate(estate.id);
+      setEstateWines(wines);
+    })();
+  }, [estate.id]);
 
   // Helper: is an award "top tier" (gets the medallion/stamp treatment)?
   const isTopAward = (a: MockAward): boolean => {

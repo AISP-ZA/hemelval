@@ -104,6 +104,49 @@ export async function fetchEstates(): Promise<Estate[]> {
 }
 
 /**
+ * Fetch wines for a specific estate from Supabase.
+ * Falls back to filtering MOCK_WINES by estateId.
+ */
+export async function fetchWinesByEstate(estateId: string): Promise<Wine[]> {
+  if (!isSupabaseConfigured) return MOCK_WINES.filter((w) => w.estateId === estateId);
+  try {
+    const { data, error } = await supabase
+      .from('wines')
+      .select(`
+        id, slug, name, type, blend_type,
+        avg_stars, rating_count, barcode, image_url, about,
+        estates!inner ( id, slug, name ),
+        wo_appellations ( name )
+      `)
+      .eq('estate_id', estateId)
+      .order('avg_stars', { ascending: false })
+      .limit(20);
+    if (error || !data || data.length === 0) return MOCK_WINES.filter((w) => w.estateId === estateId);
+    return data.map((w: any) => ({
+      id: w.id,
+      slug: w.slug,
+      name: w.name,
+      estateId: w.estates?.id ?? estateId,
+      estateName: w.estates?.name ?? '',
+      type: w.type,
+      varietals: [],
+      region: w.wo_appellations?.[0]?.name ?? '',
+      avgStars: Number(w.avg_stars) || 4.0,
+      ratingCount: w.rating_count || 0,
+      priceZar: undefined,
+      abv: undefined,
+      year: 0,
+      about: w.about ?? '',
+      pairings: [],
+      serving: '',
+      barcode: w.barcode,
+    }));
+  } catch {
+    return MOCK_WINES.filter((w) => w.estateId === estateId);
+  }
+}
+
+/**
  * Fetch events from Supabase. Falls back to MOCK_EVENTS.
  */
 export async function fetchEvents(): Promise<WineEvent[]> {
