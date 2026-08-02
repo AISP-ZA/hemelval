@@ -70,7 +70,24 @@ export function ScanScreen() {
       // Convert image to base64 and call the OCR edge function
       const base64 = await imageToBase64(compressedUri);
       if (base64) {
-        // Real OCR via Supabase Edge Function → Google Vision
+        // Try client-side OCR via Tesseract.js first (zero cost, runs in browser)
+        const tesseractText = await runTesseractOCR(compressedUri);
+        if (tesseractText && tesseractText.length > 5) {
+          // Fuzzy match against live Supabase wines
+          const match = await fuzzyMatchWine(tesseractText);
+          if (match) {
+            setOcrText(`Label text: ${tesseractText.slice(0, 200)}`);
+            setMatched(match);
+            setState('matched');
+            return;
+          } else {
+            setOcrText(`Label text: ${tesseractText.slice(0, 200)}`);
+            setState('nomatch');
+            return;
+          }
+        }
+
+        // Fall back to Supabase Edge Function → Google Vision
         const result = await callOcrEdgeFunction(base64);
         if (result.match) {
           const m = result.match;
@@ -130,6 +147,69 @@ export function ScanScreen() {
       if (wine) { setMatched(wine); setState('matched'); }
       else { setState('nomatch'); }
     }, 600);
+  }
+
+  // ── Client-side OCR via Tesseract.js (zero cost, runs in browser WASM) ─
+  async function runTesseractOCR(uri: string): Promise<string | null> {
+    try {
+      const { createWorker } = await import('tesseract.js');
+      const worker = await createWorker('eng');
+      const { data: { text } } = await worker.recognize(uri);
+      await worker.terminate();
+      return text?.trim() || null;
+    } catch {
+      return null; // Tesseract not available — fall through to edge function
+    }
+  }
+
+  // ── Fuzzy match OCR text against live Supabase wines ────────────────
+  async function fuzzyMatchWine(ocrText: string): Promise<MockWine | null> {
+    try {
+      const lines = ocrText.split('\n').filter((l: string) => l.trim().length > 2);
+      const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL;
+      const anonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
+      if (!supabaseUrl || !anonKey) return null;
+
+      // Try each significant line as a search term
+      for (const line of lines.slice(0, 8)) {
+        const clean = line.trim();
+        if (clean.length < 3) continue;
+        const res = await fetch(
+          `${supabaseUrl}/rest/v1/wines?select=id,slug,name,type,avg_stars,rating_count,about,estates(name)&name=ilike.%${encodeURIComponent(clean)}%&limit=1`,
+          { headers: { apikey: anonKey, Authorization: `Bearer ${anonKey}` } }
+        );
+        const data = await res.json();
+        if (Array.isArray(data) && data.length > 0) {
+          const w = data[0];
+          return {
+            id: w.id, slug: w.slug, name: w.name, estateId: '', estateName: w.estates?.name ?? '',
+            type: w.type, varietals: [], region: '', avgStars: Number(w.avg_stars) || 4.0,
+            ratingCount: w.rating_count || 0, about: w.about ?? '', pairings: [], serving: '', year: 0,
+          };
+        }
+      }
+      // Also try estate name match
+      for (const line of lines.slice(0, 5)) {
+        const clean = line.trim();
+        if (clean.length < 3) continue;
+        const res = await fetch(
+          `${supabaseUrl}/rest/v1/wines?select=id,slug,name,type,avg_stars,rating_count,about,estates(name)&estates.name=ilike.%${encodeURIComponent(clean)}%&limit=1`,
+          { headers: { apikey: anonKey, Authorization: `Bearer ${anonKey}` } }
+        );
+        const data = await res.json();
+        if (Array.isArray(data) && data.length > 0) {
+          const w = data[0];
+          return {
+            id: w.id, slug: w.slug, name: w.name, estateId: '', estateName: w.estates?.name ?? '',
+            type: w.type, varietals: [], region: '', avgStars: Number(w.avg_stars) || 4.0,
+            ratingCount: w.rating_count || 0, about: w.about ?? '', pairings: [], serving: '', year: 0,
+          };
+        }
+      }
+      return null;
+    } catch {
+      return null;
+    }
   }
 
   // ── Convert image URI to base64 ──────────────────────────────────────
