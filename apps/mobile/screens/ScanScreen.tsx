@@ -54,18 +54,45 @@ export function ScanScreen() {
       const asset = result.assets[0];
       setCapturedUri(asset.uri);
 
-      // Compress before "OCR" (best-effort)
+      // Compress before OCR (best-effort)
       setState('processing');
+      let compressedUri = asset.uri;
       try {
         const ImageManipulator = await import('expo-image-manipulator');
-        await ImageManipulator.manipulateAsync(
+        const result = await ImageManipulator.manipulateAsync(
           asset.uri,
           [{ resize: { width: 1024 } }],
           { compress: 0.6, format: ImageManipulator.SaveFormat.JPEG },
         );
+        compressedUri = result.uri;
       } catch { /* compression optional */ }
 
-      // Run "OCR" (simulated for MVP — production = Google Vision endpoint)
+      // Convert image to base64 and call the OCR edge function
+      const base64 = await imageToBase64(compressedUri);
+      if (base64) {
+        // Real OCR via Supabase Edge Function → Google Vision
+        const result = await callOcrEdgeFunction(base64);
+        if (result.match) {
+          const m = result.match;
+          // Map to MockWine shape the UI expects
+          const wine: MockWine = {
+            id: m.id, slug: m.slug, name: m.name, estateId: '', estateName: m.estateName,
+            type: m.type, varietals: [], region: '', avgStars: m.avgStars,
+            ratingCount: m.ratingCount, about: m.about, pairings: [], serving: '', year: 0,
+          };
+          setOcrText(result.ocrText);
+          setMatched(wine);
+          setState('matched');
+          return;
+        } else if (result.ocrText) {
+          // OCR worked but no match in DB
+          setOcrText(result.ocrText);
+          setState('nomatch');
+          return;
+        }
+      }
+
+      // Fallback: simulated match (if OCR edge function unavailable)
       const { text, wine } = await runOcrMatch(asset.uri);
       setOcrText(text);
       if (wine) {
@@ -105,12 +132,59 @@ export function ScanScreen() {
     }, 600);
   }
 
-  // ── OCR simulation (replace with cloud endpoint in production) ──
+  // ── Convert image URI to base64 ──────────────────────────────────────
+  async function imageToBase64(uri: string): Promise<string | null> {
+    try {
+      // On web, fetch the blob and convert
+      if (Platform.OS === 'web') {
+        const res = await fetch(uri);
+        const blob = await res.blob();
+        return new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result as string);
+          reader.readAsDataURL(blob);
+        });
+      }
+      // On native, use the expo-file system (lazy import to avoid web issues)
+      // For now on native, return null and use the fallback path
+      return null;
+    } catch {
+      return null;
+    }
+  }
+
+  // ── Call the OCR edge function ───────────────────────────────────────
+  async function callOcrEdgeFunction(base64Image: string): Promise<{
+    ocrText: string;
+    match: { id: string; slug: string; name: string; type: any; avgStars: number; ratingCount: number; about: string; estateName: string } | null;
+  }> {
+    try {
+      const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL;
+      const anonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
+      if (!supabaseUrl || !anonKey) return { ocrText: '', match: null };
+
+      const res = await fetch(`${supabaseUrl}/functions/v1/ocr-wine-label`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${anonKey}`,
+          'apikey': anonKey,
+        },
+        body: JSON.stringify({ image: base64Image }),
+      });
+      const data = await res.json();
+      return {
+        ocrText: data.ocrText || '',
+        match: data.match || null,
+      };
+    } catch {
+      return { ocrText: '', match: null };
+    }
+  }
+
+  // ── Fallback: simulated match (if OCR edge function unavailable) ────
   async function runOcrMatch(_uri: string): Promise<{ text: string; wine: MockWine | null }> {
-    // Production: POST the image to a server endpoint that calls Google Vision
-    // DOCUMENT_TEXT_DETECTION (1,000/mo free), then an LLM parse, then fuzzy-
-    // match against the wine DB. Here we simulate a realistic match.
-    await new Promise((r) => setTimeout(r, 1400)); // simulate network
+    await new Promise((r) => setTimeout(r, 1400));
     const wine = MOCK_WINES[Math.floor(Math.random() * MOCK_WINES.length)];
     return {
       text: `Detected: ${wine.estateName} · ${wine.name} · ${wine.year || 'NV'} · ${wine.region}`,
