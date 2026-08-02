@@ -1,0 +1,41 @@
+acidity_profile,aliases,body_profile,character,color,created_at,id,is_signature,name,origin,sa_plantings_ha,slug,tannin_profile,type,typical_aromas
+,[],,,red,2026-08-02T13:12:32.521832+00:00,305c25d8-5f67-4b77-8e87-116905021648,False,Barbera,Italy,,barbera,,red,[]
+,[],,Cabernet or Merlot-led blends,,2026-08-02T09:49:17.39591+00:00,fbf47456-c76c-4f39-880c-3bc843e3c56c,False,Bordeaux Blend,,,bordeaux-blend,,red,"[""cassis"", ""cedar"", ""blackberry"", ""mint"", ""tobacco"", ""vanilla""]"
+,[],,World most planted noble red,,2026-08-02T09:49:17.39591+00:00,0c99c837-a814-4af4-8a32-8cca043476b6,True,Cabernet Sauvignon,,,cabernet-sauvignon,,red,"[""cassis"", ""cedar"", ""blackberry"", ""eucalyptus"", ""mint"", ""tobacco"", ""vanilla""]"
+,[],,,red,2026-08-02T13:12:32.521832+00:00,f22f0367-82d1-4198-be9c-024a2a4dde3e,False,Carignan,Spain,,carignan,,red,[]
+,[],,Hemel-en-Aarde world-class,,2026-08-02T09:49:17.39591+00:00,e3f91ff7-f29f-4cab-b216-ee9822b9016c,True,Chardonnay,,,chardonnay,,white,"[""lemon"", ""peach"", ""butter"", ""vanilla"", ""brioche"", ""hazelnut""]"
+,"[""Steen""]",,SA most planted grape,,2026-08-02T09:49:17.39591+00:00,ed732368-02fb-48f6-9f4b-69296bf2e96f,True,Chenin Blanc,,,chenin-blanc,,white,"[""apple"", ""quince"", ""honey"", ""lemon"", ""apricot""]"
+,"[""Cinsault""]",,Parent of Pinotage,,2026-08-02T09:49:17.39591+00:00,c94f24cb-0171-4b73-b98c-bbe914de51c2,False,Cinsaut,,,cinsaut,,red,"[""strawberry"", ""rose"", ""white-pepper""]"
+,"[""Colombard""]",,Value whites and brandy,,2026-08-02T09:49:17.39591+00:00,d2087141-ddd3-4a98-b270-3da888bd3cd1,False,Colombard,,,colombard,,white,"[""lemon"", ""cut-grass""]"
+,[],,,white,2026-08-02T13:12:32.521832+00:00,7081bdb1-0864-4439-b8cd-88235061c0ce,False,Gewürztraminer,Germany,,gewurztraminer,,white,[]
+,"[""Garnacha""]",,Swartland Rhone movement,,2026-08-02T09:49:17.39591+00:00,c6f64e68-59db-4c54-b052-e141be299929,False,Grenache,,,grenache,,red,"[""strawberry"", ""red-raspberry"", ""white-pepper"", ""thyme"", ""licorice""]"
+,[],,,white,2026-08-02T13:12:32.521832+00:00,f6a9bccb-7448-4c05-872b-40d179ba90f8,False,Hanepoot (Muscat d'Alexandrie),Egypt/SA,,hanepoot,,white,[]
+,[],,"Deeply coloured, plush",,2026-08-02T09:49:17.39591+00:00,28ef4718-95ba-4629-a249-3314c7a8d589,False,Malbec,,,malbec,,red,"[""cherry-black"", ""blackberry"", ""violet"", ""licorice"", ""chocolate-dark"", ""tobacco""]"
+,[],,,white,2026-08-02T13:12:32.521832+00:00,dcacf916-7052-4e9b-bb4d-4631a2dc50a0,False,Marsanne,France,,marsanne,,white,[]
+,[],,SA traditional-method sparkling,,2026-08-02T09:49:17.39591+00:00,d0e6b74b-ba09-4e29-aaa6-c7ab9e0019cd,True,MCC (Méthode Cap Classique),,,mcc,,sparkling,"[""brioche"", ""lemon"", ""apple"", ""almond"", ""biscuit""]"
+,[],,Bordeaux partner,,2026-08-02T09:49:17.39591+00:00,3f28a435-416c-4cd8-b68e-c65f7dab244d,False,Merlot,,,merlot,,red,"[""cherry-black"", ""blackberry"", ""chocolate-dark"", ""vanilla"", ""hay"", ""tobacco""]"
+,"[""Monastrell""]",,"Dark, meaty, structured",,2026-08-02T09:49:17.39591+00:00,591b2a31-6803-4094-a2b6-8b32012d086a,False,Mourvèdre,,,mourvedre,,red,"[""blackberry"", ""leather"", ""black-pepper""]"
+,[],,,white,2026-08-02T13:12:32.521832+00:00,16bdbf0f-22f7-4fdc-b538-fb50198d410f,False,Muscadel,Greece,,muscadel,,white,[]
+,[],,,red,2026-08-02T13:12:32.521832+00:00,b508ce95-3237-47dc-919b-ece5db3a08a3,False,Nebbiolo,Italy,,nebbiolo,,red,[]
+,[],,,white,2026-08-02T13:12:32.521832+00:00,c06e8145-e572-4593-b8f7-21327fd593db,False,Petit Manseng,France,,petit-manseng,,white,[]
+,[],,,red,2026-08-02T13:12:32.521832+00:00,93a52a55-03c2-4a4f-a754-af8d2749395a,False,Petit Verdot,France,,petit-verdot,,red,[]
+,[],,,white,2026-08-02T13:12:32.521832+00:00,9f9046a6-d8a4-4ba6-8bd8-8f562a46f90f,False,Pinot Blanc,France,,pinot-blanc,,white,[]
+,[],,,white,2026-08-02T13:12:32.521832+00:00,729cee87-5ccb-4522-8f97-c370b4c3ede6,False,Pinot Gris,France,,pinot-gris,,white,[]
+,[],,Heartbreak grape — Hemel-en-Aarde,,2026-08-02T09:49:17.39591+00:00,299b50ec-270c-4ced-911c-c5c747118561,False,Pinot Noir,,,pinot-noir,,red,"[""cherry-red"", ""red-raspberry"", ""forest-floor"", ""mushroom"", ""rose"", ""thyme""]"
+,[],,"SA crossing (Pinot Noir x Cinsaut, 1925)",,2026-08-02T09:49:17.39591+00:00,52c3f1f0-795e-4b2a-b6c9-c60ed41cd451,True,Pinotage,,,pinotage,,red,"[""cherry-red"", ""cherry-black"", ""leather"", ""tobacco"", ""chocolate-dark"", ""banana""]"
+,[],,Cool Elgin,,2026-08-02T09:49:17.39591+00:00,8557ae91-ece3-4e94-9800-84ced2b5e496,False,Riesling,,,riesling,,white,"[""lime"", ""lemon"", ""petrol"", ""honey""]"
+,[],,,white,2026-08-02T13:12:32.521832+00:00,97a6f298-e01e-4930-b0b8-e4576fd8eb08,False,Roussanne,France,,roussanne,,white,[]
+,[],,,red,2026-08-02T13:12:32.521832+00:00,32eabe09-c11b-401f-9ab7-40a3fdb6d3e6,False,Sangiovese,Italy,,sangiovese,,red,[]
+,[],,Cool-climate benchmarks,,2026-08-02T09:49:17.39591+00:00,1b24cdf6-5f05-47b8-8e64-ea0bbb1ed49e,True,Sauvignon Blanc,,,sauvignon-blanc,,white,"[""cut-grass"", ""passionfruit"", ""guava"", ""lemon"", ""lime"", ""asparagus"", ""black-olive""]"
+,"[""Semillon""]",,Constantia historic grape,,2026-08-02T09:49:17.39591+00:00,a738003b-16f2-43c2-86d9-e2942dd721a2,False,Sémillon,,,semillon,,white,"[""fig"", ""lemon"", ""hay"", ""honey""]"
+,"[""Syrah""]",,Swartland bush-vine world-class,,2026-08-02T09:49:17.39591+00:00,8b0d8e49-d841-498c-9172-65996608f4b7,True,Shiraz / Syrah,,,shiraz,,red,"[""blackberry"", ""black-pepper"", ""white-pepper"", ""smoke"", ""leather"", ""violet"", ""licorice""]"
+,[],,,white,2026-08-02T13:12:32.521832+00:00,70e70c09-1508-4f8a-99e7-9dfe95c01315,False,Sultana,Turkey/Middle East,,sultana,,white,[]
+,[],,,white,2026-08-02T13:12:32.521832+00:00,6a1c5c93-86f6-4bee-a5fa-6cbbee517324,False,Taminga,Australia,,taminga,,white,[]
+,[],,,red,2026-08-02T13:12:32.521832+00:00,9f59b525-9b83-4f34-89d5-4d84791c61f5,False,Tannat,France,,tannat,,red,[]
+,[],,,red,2026-08-02T13:12:32.521832+00:00,731411a1-e968-4263-a36c-211d92f86b7d,False,Tempranillo,Spain,,tempranillo,,red,[]
+,[],,Calitzdorp port-style,,2026-08-02T09:49:17.39591+00:00,be3ca5e4-0992-4b37-9da1-90385aba3e83,False,Tinta Barroca,,,tinta-barroca,,red,"[""plum"", ""cherry-black"", ""chocolate-dark""]"
+,[],,,red,2026-08-02T13:12:32.521832+00:00,d8b5c50f-277a-4170-b21d-6387bd1b4bb1,False,Tinta Roriz,Portugal,,tinta-roriz,,red,[]
+,[],,Port-style Calitzdorp,,2026-08-02T09:49:17.39591+00:00,46326631-63fb-4e74-ae6c-67f1b79bd9cc,False,Touriga Nacional,,,touriga-nacional,,red,"[""blackberry"", ""violet"", ""plum"", ""licorice""]"
+,[],,,white,2026-08-02T13:12:32.521832+00:00,d2000d33-13cd-4ab3-8a9a-80544f70e1c5,False,Verdelho,Portugal,,verdelho,,white,[]
+,[],,Swartland and Franschhoek,,2026-08-02T09:49:17.39591+00:00,e738ed93-7ad1-47ee-8378-4fa9c9af8ebb,False,Viognier,,,viognier,,white,"[""apricot"", ""orange-blossom"", ""peach"", ""ginger""]"
+,[],,,red,2026-08-02T13:12:32.521832+00:00,18276a83-0a36-428e-bfc8-7417acf95039,False,Zinfandel,Croatia/USA,,zinfandel,,red,[]
