@@ -11,7 +11,7 @@ import { TasteProfileChart, tasteProfileForVarietal } from '../components/TasteP
 import { LoadingList } from '../components/Skeleton.js';
 import { color, font, radius, space } from '../theme/tokens.js';
 import { MOCK_ESTATES, mockEstateById, type MockWine, type MockEstate } from '../lib/mockData.js';
-import { fetchWines, type Wine } from '../lib/dataAccessor.js';
+import { fetchWines, lastDataSource, type Wine } from '../lib/dataAccessor.js';
 import { VARIETALS, signatureVarietals, findWinesForFood } from '@kelder/engine';
 import type { FoodMatch } from '@kelder/engine';
 import { HERO_CELLAR, HERO_VINEYARD, wineImage, estateCover } from '../lib/imagery.js';
@@ -39,8 +39,7 @@ export function DiscoverScreen() {
       const data = await fetchWines();
       setWines(data);
       setLoading(false);
-      // If data came from Supabase (length differs from mock count), mark as live
-      setDataSource(data.length !== 41 ? 'live' : 'mock');
+      setDataSource(lastDataSource);
     })();
   }, []);
 
@@ -105,7 +104,7 @@ export function DiscoverScreen() {
   }
 
   const signature = ['chenin-blanc', 'pinotage', 'mcc'];
-  const topRated = [...wines].sort((a, b) => b.avgStars - a.avgStars).slice(0, 6);
+  const topRated = [...wines].filter(w => w.avgStars > 0).sort((a, b) => b.avgStars - a.avgStars).slice(0, 6);
   const regions = [...new Set(MOCK_ESTATES.map((e) => e.region))].slice(0, 8);
 
   return (
@@ -118,6 +117,11 @@ export function DiscoverScreen() {
           <Eyebrow>YOUR CELLAR · YOUR PALATE</Eyebrow>
           <Text style={styles.heroHeadline}>Discover South African wine.</Text>
           <Text style={styles.heroSub}>The Western Cape, in your pocket. Scan a bottle, log your tasting, let Hemelval learn your palate.</Text>
+          {dataSource === 'demo' && (
+            <Text style={[font.captionMonoSm, { color: color.warn, marginTop: space.sm }]}>
+              DEMO DATA — Showing curated reference wines. Live DB connecting…
+            </Text>
+          )}
         </View>
       </View>
 
@@ -220,6 +224,7 @@ export function DiscoverScreen() {
       </View>
 
       {/* Top rated — photo-backed cards */}
+      {topRated.length > 0 && (
       <View style={styles.section}>
         <Eyebrow>TOP RATED // 01</Eyebrow>
         <FlatList
@@ -247,6 +252,7 @@ export function DiscoverScreen() {
           }}
         />
       </View>
+      )}
 
       {/* Wine list */}
       <View style={styles.section}>
@@ -358,7 +364,7 @@ const styles = StyleSheet.create({
   hero: { paddingHorizontal: space.xl, paddingBottom: space.xl },
   heroPhoto: { height: 360, position: 'relative', justifyContent: 'flex-end' },
   heroPhotoImg: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },
-  heroOverlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(36,27,24,0.78)' },
+  heroOverlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: color.overlayStrong },
   heroContent: { padding: space.xl, paddingBottom: space.xxl },
   heroHeadline: { fontFamily: 'CormorantGaramond, Georgia, serif', fontSize: 40, fontWeight: '400', color: color.ink, letterSpacing: -1, lineHeight: 44, marginTop: space.sm },
   heroSub: { fontFamily: 'Inter, system-ui, sans-serif', fontSize: 15, color: color.body, lineHeight: 22, marginTop: space.md, maxWidth: 300 },
@@ -380,7 +386,7 @@ const styles = StyleSheet.create({
   chipRowSmall: { flexDirection: 'row', flexWrap: 'wrap', gap: space.xs, marginTop: space.sm },
   topCard: { width: 160 },
   topCardImage: { width: 160, height: 200, borderRadius: radius.sm, borderWidth: 1, borderColor: color.hairline },
-  topCardOverlay: { position: 'absolute', top: 120, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(36,27,24,0.88)', borderBottomLeftRadius: radius.sm, borderBottomRightRadius: radius.sm },
+  topCardOverlay: { position: 'absolute', top: 120, left: 0, right: 0, bottom: 0, backgroundColor: color.overlayStrong, borderBottomLeftRadius: radius.sm, borderBottomRightRadius: radius.sm },
   topCardRating: { position: 'absolute', top: 128, left: 0, right: 0, alignItems: 'center' },
   topCardScore: { color: color.gold, fontSize: 22, fontWeight: '600', fontFamily: 'Georgia, serif' },
   topCardCount: { color: color.bodyMid, fontSize: 9, fontFamily: 'GeistMono, monospace', letterSpacing: 0.5, marginTop: 2 },

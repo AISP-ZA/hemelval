@@ -133,13 +133,22 @@ export function Chip({ children, tone = 'neutral', style }: {
 // ── Star rating display ──────────────────────────────────────────────────────
 
 export function Stars({ value, count, size = 14 }: { value: number; count?: number; size?: number }) {
+  // value === 0 means "not yet rated" in the live DB — show honest label, not fake stars
+  if (!value || value === 0) {
+    return (
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}>
+        <Text style={{ color: color.bodyMid, fontSize: size, fontWeight: '400' }}>☆☆☆☆☆</Text>
+        <Text style={[font.captionMonoSm, { color: color.bodyMid }]}>Not yet rated</Text>
+      </View>
+    );
+  }
   const full = Math.floor(value);
   const half = value - full >= 0.5;
   const stars = '★'.repeat(full) + (half ? '½' : '') + '☆'.repeat(5 - full - (half ? 1 : 0));
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}>
       <Text style={{ color: color.sunset, fontSize: size, fontWeight: '600' }}>{stars}</Text>
-      {count != null && <Text style={[font.captionMonoSm, { color: color.bodyMid }]}>{value.toFixed(1)} · {count}</Text>}
+      {count != null && count > 0 && <Text style={[font.captionMonoSm, { color: color.bodyMid }]}>{value.toFixed(1)} · {count}</Text>}
     </View>
   );
 }

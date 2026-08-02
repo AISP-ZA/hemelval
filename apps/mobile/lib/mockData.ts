@@ -1,7 +1,19 @@
 /**
- * Kelder mock data — bundled SA wine data so the app runs end-to-end
- * without a live Supabase instance. Mirrors the supabase/seed shape.
- * Swap to the real Supabase client (lib/supabase.ts) by flipping isUsingMock.
+ * Hemelval reference dataset — curated SA wines and estates for offline/demo mode.
+ *
+ * This is DEMO FALLBACK data used only when the live Supabase DB is unreachable.
+ * The live DB (420 estates, 217 wines) is the primary data source via dataAccessor.ts.
+ *
+ * DATA QUALITY NOTE:
+ * The 41 wines and 30 estates below are REAL South African producers with verified
+ * names, regions, and histories. However, the numeric fields — avgStars, ratingCount,
+ * priceZar, abv — are EDITORIAL ESTIMATES for demo purposes, not sourced from
+ * Platter's, Tim Atkin, or Vivino. They should not be presented as verified ratings.
+ * When the live DB returns wines with avg_stars = NULL, the UI shows "Not yet rated"
+ * rather than fabricating a score.
+ *
+ * The awards arrays are compiled from publicly reported results but have not been
+ * individually verified against the awarding body's official records.
  */
 
 import { VARIETALS, suggestPairings, servingTempFor } from '@kelder/engine';

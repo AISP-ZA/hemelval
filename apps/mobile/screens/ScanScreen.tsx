@@ -430,7 +430,7 @@ export function ScanScreen() {
 const styles = StyleSheet.create({
   centerWrap: { flex: 1, backgroundColor: color.canvas, justifyContent: 'center', alignItems: 'center', padding: space.xl },
   processingImg: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, opacity: 0.4 },
-  processingOverlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(36,27,24,0.7)' },
+  processingOverlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'color.overlayMid' },
   optionCard: { flexDirection: 'row', alignItems: 'center', gap: space.md, backgroundColor: color.canvasCard, borderWidth: 1, borderColor: color.hairline, borderRadius: radius.sm, padding: space.md },
   optionIcon: { width: 48, height: 48, borderRadius: 9999, backgroundColor: color.canvasSoft, justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: color.hairline },
   capturedWrap: { flexDirection: 'row', gap: space.md, alignItems: 'center' },
