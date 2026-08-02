@@ -1,23 +1,32 @@
 /**
- * Hemelval theme tokens — "Deep cellar" identity.
+ * Hemelval theme tokens — "Candlelit Cellar" identity.
  *
- * A consumer wine app deserves a wine-literate palette: an even deeper
- * burgundy-black canvas that reads as wine-in-a-glass-under-low-light,
- * warm parchment text, gold + deep-wine brand accents, and a serif
- * display face for headlines (the sommelier's-notebook feel).
+ * Warm tobacco-brown canvas (#241b18), gold (#d4a86a) + wine-red (#8a2030)
+ * brand accents, Cormorant Garamond serif display / Inter body / GeistMono
+ * captions. Hairline borders carry elevation — no drop shadows. Pill geometry
+ * on every interactive element. Display weight 400.
  *
- * Still dark (no light mode). Still hairline borders, no drop shadows.
- * Display weight 400. Pill geometry on every interactive element.
- *
- * Brand accents: gold #c9a96a (primary) + deep burgundy #6b1219 (co-primary).
+ * Brand accents: gold #d4a86a (primary) + wine-red #8a2030 (co-primary).
  */
 
 export const color = {
-  // Surfaces — Candlelit Cellar: warm brown-burgundy, visible on phone screens
+  // Surfaces — Candlelit Cellar: warm tobacco-brown, visible on phone screens
   canvas: '#241b18',      // warm tobacco-brown — clearly visible, candle-lit mood
   canvasSoft: '#2e2320',  // inputs, inset surfaces
   canvasCard: '#302420',  // cards — lighter than canvas for depth
   canvasMid: '#46342c',   // mid-tone dividers/fills
+
+  // Card elevation — a barely-visible white overtone border that creates the
+  // "glass" effect on dark backgrounds. Without this, cards on a dark canvas
+  // blend invisibly into the background.
+  cardBorder: 'rgba(255,255,255,0.06)',
+  cardBorderStrong: 'rgba(255,255,255,0.10)',
+
+  // Image overlays — canvas-coloured gradients layered over photography
+  // for text legibility. Replaces the 7 hardcoded rgba(36,27,24,α) values.
+  overlayWeak: 'rgba(36,27,24,0.45)',
+  overlayMid: 'rgba(36,27,24,0.72)',
+  overlayStrong: 'rgba(36,27,24,0.88)',
 
   // Text — warm parchment
   ink: '#f0e8da',         // primary text
@@ -44,6 +53,7 @@ export const color = {
   load: '#6a8aa8',
   warn: '#c98a3a',
   crit: '#b04040',
+  critFill: 'rgba(176,64,64,0.12)',
   telemetry: '#a8b8c8',
 
   // Legacy aliases
@@ -70,22 +80,21 @@ export const radius = {
 } as const;
 
 export const font = {
-  // Display — SERIF (Cormorant Garamond → serif fallback) for the editorial,
-  // fine-wine-list feel. Weight 400. Negative tracking kept.
-  // Falls back to Georgia/serif on devices without Cormorant.
-  displayXl: { fontFamily: 'CormorantGaramond, Georgia, serif', fontSize: 44, fontWeight: '400' as const, letterSpacing: -1, lineHeight: 50 },
-  displayLg: { fontFamily: 'CormorantGaramond, Georgia, serif', fontSize: 34, fontWeight: '400' as const, letterSpacing: -0.8, lineHeight: 38 },
-  displayMd: { fontFamily: 'CormorantGaramond, Georgia, serif', fontSize: 26, fontWeight: '400' as const, letterSpacing: -0.5, lineHeight: 30 },
-  displaySm: { fontFamily: 'CormorantGaramond, Georgia, serif', fontSize: 20, fontWeight: '400' as const, letterSpacing: -0.3, lineHeight: 25 },
+  // Display — SERIF (Cormorant Garamond) for the editorial, fine-wine-list feel.
+  // Weight 400. Negative tracking. Font is loaded via expo-google-fonts in App.tsx.
+  displayXl: { fontFamily: 'CormorantGaramond', fontSize: 44, fontWeight: '400' as const, letterSpacing: -1, lineHeight: 50 },
+  displayLg: { fontFamily: 'CormorantGaramond', fontSize: 34, fontWeight: '400' as const, letterSpacing: -0.8, lineHeight: 38 },
+  displayMd: { fontFamily: 'CormorantGaramond', fontSize: 26, fontWeight: '400' as const, letterSpacing: -0.5, lineHeight: 30 },
+  displaySm: { fontFamily: 'CormorantGaramond', fontSize: 20, fontWeight: '400' as const, letterSpacing: -0.3, lineHeight: 25 },
 
   // Body — Inter (clean sans for readability)
-  bodyLg: { fontFamily: 'Inter, system-ui, sans-serif', fontSize: 18, fontWeight: '400' as const, lineHeight: 26 },
-  bodyMd: { fontFamily: 'Inter, system-ui, sans-serif', fontSize: 16, fontWeight: '400' as const, lineHeight: 24 },
-  bodySm: { fontFamily: 'Inter, system-ui, sans-serif', fontSize: 14, fontWeight: '400' as const, lineHeight: 20 },
+  bodyLg: { fontFamily: 'Inter', fontSize: 18, fontWeight: '400' as const, lineHeight: 26 },
+  bodyMd: { fontFamily: 'Inter', fontSize: 16, fontWeight: '400' as const, lineHeight: 24 },
+  bodySm: { fontFamily: 'Inter', fontSize: 14, fontWeight: '400' as const, lineHeight: 20 },
 
   // Caption mono — GeistMono, UPPERCASE, tracked (labels / eyebrows / telemetry)
-  captionMono: { fontFamily: 'GeistMono, ui-monospace, monospace', fontSize: 12, fontWeight: '400' as const, letterSpacing: 1.4, lineHeight: 16 },
-  captionMonoSm: { fontFamily: 'GeistMono, ui-monospace, monospace', fontSize: 10, fontWeight: '400' as const, letterSpacing: 1.2, lineHeight: 14 },
+  captionMono: { fontFamily: 'GeistMono', fontSize: 12, fontWeight: '400' as const, letterSpacing: 1.4, lineHeight: 16 },
+  captionMonoSm: { fontFamily: 'GeistMono', fontSize: 10, fontWeight: '400' as const, letterSpacing: 1.2, lineHeight: 14 },
 } as const;
 
 // Easing

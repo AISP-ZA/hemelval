@@ -173,10 +173,10 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: color.canvasCard,
     borderWidth: 1,
-    borderColor: color.hairline,
+    borderColor: color.cardBorder,
     borderRadius: radius.sm,
     padding: space.xl,
-    // NO shadow — hairlines carry elevation (DESIGN.md)
+    // NO shadow — cardBorder (white overtone) + hairline carry elevation
   },
   chip: {
     borderRadius: radius.pill,

@@ -19,7 +19,9 @@
     },
     "android": {
       "package": "za.co.hemelval.app",
-      "permissions": ["android.permission.CAMERA"]
+      "permissions": [
+        "android.permission.CAMERA"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -31,12 +33,19 @@
       "expo-router",
       [
         "expo-camera",
-        { "cameraPermissionText": "Hemelval uses the camera to scan wine bottle labels and barcodes." }
-      ]
+        {
+          "cameraPermissionText": "Hemelval uses the camera to scan wine bottle labels and barcodes."
+        }
+      ],
+      "expo-font"
     ],
     "extra": {
-      "eas": { "projectId": "" },
-      "router": { "origin": false }
+      "eas": {
+        "projectId": ""
+      },
+      "router": {
+        "origin": false
+      }
     },
     "owner": "aisp-za"
   }
