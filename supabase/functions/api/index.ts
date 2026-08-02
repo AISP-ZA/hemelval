@@ -677,10 +677,11 @@ app.post("/v1/scan/barcode", async (c) => {
   const { barcode } = await c.req.json();
   if (!barcode) return errorResponse("MISSING_PARAM", "barcode is required", 400);
 
+  // Query by barcode only (gtin column doesn't exist in schema)
   const { data, error } = await db()
     .from("wines")
     .select("id, slug, name, type, avg_stars, estates(slug, estate_name)")
-    .or(`barcode.eq.${barcode},gtin.eq.${barcode}`)
+    .eq("barcode", barcode)
     .maybeSingle();
   if (error) return errorResponse("QUERY_FAILED", error.message, 502);
   if (!data) return c.json({ match: null, barcode }, 404);
@@ -691,19 +692,34 @@ app.post("/v1/scan/qr", async (c) => {
   const { qr } = await c.req.json();
   if (!qr) return errorResponse("MISSING_PARAM", "qr is required", 400);
 
-  // Extract slug from QR URL patterns: hemelval.co.za/w/:slug or raw slug
-  const match = qr.match(/\/w\/([a-z0-9-]+)/i) || qr.match(/^([a-z0-9-]+)$/i);
-  const slug = match?.[1];
+  // Extract slug from QR URL patterns — support both /w/:slug (wine) and /e/:slug (estate)
+  const wineMatch = qr.match(/\/w\/([a-z0-9-]+)/i);
+  const estateMatch = qr.match(/\/e\/([a-z0-9-]+)/i);
+  const rawSlug = qr.match(/^([a-z0-9-]+)$/i)?.[1];
+  const slug = wineMatch?.[1] || estateMatch?.[1] || rawSlug;
   if (!slug) return c.json({ match: null, qr }, 404);
 
-  const { data, error } = await db()
+  // Try wine lookup first
+  const { data: wine, error: wineErr } = await db()
     .from("wines")
     .select("id, slug, name, type, avg_stars, estates(slug, estate_name)")
     .eq("slug", slug)
     .maybeSingle();
-  if (error) return errorResponse("QUERY_FAILED", error.message, 502);
-  if (!data) return c.json({ match: null, qr }, 404);
-  return c.json({ match: data, qr });
+  if (wineErr) return errorResponse("QUERY_FAILED", wineErr.message, 502);
+  if (wine) return c.json({ match: wine, qr, type: "wine" });
+
+  // If estate QR, find the estate's top wine
+  const { data: estateWine, error: estateErr } = await db()
+    .from("wines")
+    .select("id, slug, name, type, avg_stars, estates!inner(slug, estate_name)")
+    .eq("estates.slug", slug)
+    .order("avg_stars", { ascending: false, nullsFirst: false })
+    .limit(1)
+    .maybeSingle();
+  if (estateErr) return errorResponse("QUERY_FAILED", estateErr.message, 502);
+  if (estateWine) return c.json({ match: estateWine, qr, type: "estate" });
+
+  return c.json({ match: null, qr }, 404);
 });
 
 app.post("/v1/scan/label", async (c) => {
