@@ -7,6 +7,7 @@ import React, { useState, useEffect } from 'react';
 import { View, ScrollView, StyleSheet, Linking, Pressable, Image, Text, ActivityIndicator } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Eyebrow, Headline, BodyText, Card, Chip, Button, Divider } from '../components/index.js';
+import { LoadingList } from '../components/Skeleton.js';
 import { color, font, space, radius } from '../theme/tokens.js';
 import { fetchEvents, type WineEvent } from '../lib/dataAccessor.js';
 import { MOCK_EVENTS } from '../lib/mockData.js';
@@ -61,6 +62,14 @@ export function EventsScreen() {
     );
   }
 
+  if (loading) {
+    return (
+      <View style={{ flex: 1, backgroundColor: color.canvas, paddingTop: insets.top + 60 }}>
+        <LoadingList count={4} type="event" />
+      </View>
+    );
+  }
+
   return (
     <ScrollView style={{ flex: 1, backgroundColor: color.canvas }} contentContainerStyle={{ paddingTop: insets.top + 16 }}>
       <View style={{ padding: space.xl }}>
@@ -75,7 +84,7 @@ export function EventsScreen() {
         {sorted.map((ev) => {
           const photo = FESTIVAL_IMAGES[ev.id];
           return (
-            <Pressable key={ev.id} onPress={() => setSelectedEvent(ev)} style={styles.eventCard}>
+            <Pressable key={ev.id} hitSlop={8} onPress={() => setSelectedEvent(ev)} style={styles.eventCard}>
               {photo && (
                 <View style={styles.eventCoverWrap}>
                   <Image source={{ uri: photo.url }} style={styles.eventCover} resizeMode="cover" />

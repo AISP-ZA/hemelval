@@ -110,7 +110,7 @@ export function ProfileScreen() {
             <BodyText size="sm" muted>
               {mode === 'signup' ? 'Already have an account?' : "Don't have one yet?"}
             </BodyText>
-            <Pressable onPress={() => { setMode(mode === 'signup' ? 'login' : 'signup'); setError(null); }}>
+            <Pressable hitSlop={8} onPress={() => { setMode(mode === 'signup' ? 'login' : 'signup'); setError(null); }}>
               <Text style={[font.captionMonoSm, { color: color.gold, textDecorationLine: 'underline' }]}>
                 {mode === 'signup' ? 'SIGN IN' : 'SIGN UP'}
               </Text>

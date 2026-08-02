@@ -198,7 +198,7 @@ export function ScanScreen() {
   if (mode === 'barcode') {
     return (
       <View style={{ flex: 1, backgroundColor: color.canvas, paddingTop: insets.top + 16, padding: space.xl }}>
-        <Pressable onPress={reset}><Text style={[font.captionMono, { color: color.bodyMid }]}>← BACK</Text></Pressable>
+        <Pressable onPress={reset} hitSlop={8}><Text style={[font.captionMono, { color: color.bodyMid }]}>← BACK</Text></Pressable>
         <Eyebrow>ENTER BARCODE</Eyebrow>
         <Headline size="md" style={{ marginTop: space.sm }}>Type the EAN-13 barcode.</Headline>
         <BodyText muted size="sm" style={{ marginTop: space.md }}>
@@ -229,7 +229,7 @@ export function ScanScreen() {
 
       {/* Capture options */}
       <View style={{ gap: space.md, marginTop: space.xl }}>
-        <Pressable onPress={capturePhoto} style={styles.optionCard}>
+        <Pressable onPress={capturePhoto} style={styles.optionCard} hitSlop={8}>
           <View style={styles.optionIcon}><Text style={{ fontSize: 28 }}>📷</Text></View>
           <View style={{ flex: 1 }}>
             <BodyText>Photograph the label</BodyText>
@@ -238,7 +238,7 @@ export function ScanScreen() {
           <Text style={[font.captionMonoSm, { color: color.gold }]}>BEST</Text>
         </Pressable>
 
-        <Pressable onPress={() => { setMode('barcode'); setState('idle'); }} style={styles.optionCard}>
+        <Pressable hitSlop={8} onPress={() => { setMode('barcode'); setState('idle'); }} style={styles.optionCard}>
           <View style={styles.optionIcon}><Text style={{ fontSize: 28 }}>▮</Text></View>
           <View style={{ flex: 1 }}>
             <BodyText>Enter the barcode</BodyText>
@@ -246,7 +246,7 @@ export function ScanScreen() {
           </View>
         </Pressable>
 
-        <Pressable onPress={() => { setMode('qr'); setMatched(MOCK_WINES[0]); setState('matched'); }} style={styles.optionCard}>
+        <Pressable hitSlop={8} onPress={() => { setMode('qr'); setMatched(MOCK_WINES[0]); setState('matched'); }} style={styles.optionCard}>
           <View style={styles.optionIcon}><Text style={{ fontSize: 28 }}>▢</Text></View>
           <View style={{ flex: 1 }}>
             <BodyText>Scan a QR code</BodyText>

@@ -8,6 +8,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Eyebrow, Headline, BodyText, Card, Chip, Button, Stars, MatchBadge, Divider } from '../components/index.js';
 import { EstateWordmark } from '../components/EstateWordmark.js';
 import { TasteProfileChart, tasteProfileForVarietal } from '../components/TasteProfileChart.js';
+import { LoadingList } from '../components/Skeleton.js';
 import { color, font, radius, space } from '../theme/tokens.js';
 import { MOCK_ESTATES, mockEstateById, type MockWine, type MockEstate } from '../lib/mockData.js';
 import { fetchWines, type Wine } from '../lib/dataAccessor.js';
@@ -90,6 +91,19 @@ export function DiscoverScreen() {
     );
   }
 
+  // Loading state — show skeletons while data fetches
+  if (loading) {
+    return (
+      <View style={{ flex: 1, backgroundColor: color.canvas, paddingTop: insets.top + 60 }}>
+        <View style={{ paddingHorizontal: space.xl, paddingBottom: space.lg }}>
+          <View style={{ height: 20, width: 120, borderRadius: 4, backgroundColor: color.canvasMid }} />
+          <View style={{ height: 32, width: '80%', borderRadius: 4, backgroundColor: color.canvasMid, marginTop: space.sm }} />
+        </View>
+        <LoadingList count={6} />
+      </View>
+    );
+  }
+
   const signature = ['chenin-blanc', 'pinotage', 'mcc'];
   const topRated = [...wines].sort((a, b) => b.avgStars - a.avgStars).slice(0, 6);
   const regions = [...new Set(MOCK_ESTATES.map((e) => e.region))].slice(0, 8);
@@ -143,7 +157,7 @@ export function DiscoverScreen() {
         {/* Quick-pick food chips */}
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: space.xs, marginTop: space.md }}>
           {['Braai', 'Steak', 'Sushi', 'Bobotie', 'Oysters', 'Lamb', 'Curry', 'Pizza', 'Malva pudding', 'Biltong'].map((food) => (
-            <Pressable key={food} onPress={() => { setFoodQuery(food); setFoodMatch(findWinesForFood(food)); }} hitSlop={4}>
+            <Pressable key={food} hitSlop={8} onPress={() => { setFoodQuery(food); setFoodMatch(findWinesForFood(food)); }}>
               <Chip tone={foodMatch?.tags.some((t) => t.includes(food.toLowerCase().split(' ')[0])) ? 'accent' : 'neutral'}>{food}</Chip>
             </Pressable>
           ))}
@@ -160,7 +174,7 @@ export function DiscoverScreen() {
                 ))}
               </View>
             )}
-            <Pressable onPress={() => { setFoodMatch(null); setFoodQuery(''); }} hitSlop={4} style={{ marginTop: space.md }}>
+            <Pressable hitSlop={8} onPress={() => { setFoodMatch(null); setFoodQuery(''); }} style={{ marginTop: space.md }}>
               <Text style={[font.captionMonoSm, { color: color.bodyMid, textDecorationLine: 'underline' }]}>CLEAR PAIRING ✕</Text>
             </Pressable>
           </Card>
@@ -170,7 +184,7 @@ export function DiscoverScreen() {
         <Eyebrow>SIGNATURE SA GRAPES</Eyebrow>
         <View style={styles.chipRow}>
           {signatureVarietals().map((v) => (
-            <Pressable key={v.slug} onPress={() => setVarietalFilter(varietalFilter === v.slug ? null : v.slug)} hitSlop={4}>
+            <Pressable key={v.slug} hitSlop={8} onPress={() => setVarietalFilter(varietalFilter === v.slug ? null : v.slug)}>
               <Chip tone={v.type === 'red' ? 'wine' : 'accent'}>{v.name}</Chip>
             </Pressable>
           ))}
@@ -184,7 +198,7 @@ export function DiscoverScreen() {
           {VARIETALS.map((v) => {
             const active = varietalFilter === v.slug;
             return (
-              <Pressable key={v.slug} onPress={() => setVarietalFilter(active ? null : v.slug)} hitSlop={4}>
+              <Pressable key={v.slug} hitSlop={8} onPress={() => setVarietalFilter(active ? null : v.slug)}>
                 <Chip tone={active ? (v.type === 'red' ? 'wine' : 'accent') : 'neutral'}>
                   {v.name.replace(' / Syrah', '').replace(' (Méthode Cap Classique)', '')}
                 </Chip>
@@ -198,7 +212,7 @@ export function DiscoverScreen() {
             <Chip tone={VARIETALS.find((v) => v.slug === varietalFilter)?.type === 'red' ? 'wine' : 'accent'}>
               {VARIETALS.find((v) => v.slug === varietalFilter)?.name}
             </Chip>
-            <Pressable onPress={() => setVarietalFilter(null)} hitSlop={4}>
+            <Pressable hitSlop={8} onPress={() => setVarietalFilter(null)}>
               <Text style={[font.captionMonoSm, { color: color.bodyMid, textDecorationLine: 'underline' }]}>CLEAR ✕</Text>
             </Pressable>
           </View>
@@ -217,7 +231,7 @@ export function DiscoverScreen() {
           renderItem={({ item }) => {
             const img = wineImage(item.id);
             return (
-              <Pressable onPress={() => setSelected(item)} style={styles.topCard}>
+              <Pressable hitSlop={8} onPress={() => setSelected(item)} style={styles.topCard}>
                 <Image source={{ uri: img.url }} style={styles.topCardImage} resizeMode="cover" />
                 <View style={styles.topCardOverlay} />
                 <View style={styles.topCardRating}>
@@ -245,7 +259,7 @@ export function DiscoverScreen() {
                 <Image source={{ uri: img.url }} style={styles.listThumb} resizeMode="cover" />
                 <View style={{ flex: 1 }}>
                   <BodyText>{w.name} {w.year > 0 ? `'${String(w.year).slice(2)}` : ''}</BodyText>
-                  <Pressable onPress={() => {
+                  <Pressable hitSlop={8} onPress={() => {
                     const e = mockEstateById(w.estateId);
                     if (e) setEstateView(e);
                   }}>
@@ -299,7 +313,7 @@ function WineDetail({ wine, matchScore, onBack, onRate, onEstatePress }: { wine:
       <View style={{ padding: space.xl }}>
         <Eyebrow>{wine.region.toUpperCase()}</Eyebrow>
         <Text style={styles.detailName}>{wine.name}</Text>
-        <Pressable onPress={onEstatePress} hitSlop={4} style={styles.estateLink}>
+        <Pressable onPress={onEstatePress} hitSlop={8} style={styles.estateLink}>
           <EstateWordmark estateId={wine.estateId} name={wine.estateName} size="sm" style={{ marginTop: space.xs }} />
         </Pressable>
         <BodyText size="sm" muted style={{ marginTop: space.xs }}>{wine.year > 0 ? `${wine.year} · ` : ''}{wine.varietals.join(' · ')}</BodyText>

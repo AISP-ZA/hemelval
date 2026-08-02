@@ -91,7 +91,7 @@ export function EstateDetailScreen({
         {/* Wine route + map strip */}
         <View style={styles.metaStrip}>
           {estate.wineRoute && (
-            <Pressable onPress={() => estate.wineRouteUrl && Linking.openURL(estate.wineRouteUrl)}>
+            <Pressable hitSlop={8} onPress={() => estate.wineRouteUrl && Linking.openURL(estate.wineRouteUrl)}>
               <View style={styles.metaCell}>
                 <Eyebrow>WINE ROUTE</Eyebrow>
                 <BodyText size="sm" style={{ color: color.gold }}>{estate.wineRoute}</BodyText>

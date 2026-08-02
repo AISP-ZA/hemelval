@@ -168,7 +168,7 @@ export function TastingNoteScreen({
         {/* Category selector */}
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.catRow} contentContainerStyle={{ gap: space.sm }}>
           {AROMA_CATEGORIES.map((cat) => (
-            <Pressable key={cat} onPress={() => setNoseCategory(cat)} hitSlop={4}>
+            <Pressable key={cat} hitSlop={8} onPress={() => setNoseCategory(cat)}>
               <Chip tone={cat === noseCategory ? 'accent' : 'neutral'}>{CATEGORY_LABELS[cat]}</Chip>
             </Pressable>
           ))}
@@ -179,7 +179,7 @@ export function TastingNoteScreen({
           {noseAromasList.map((d) => {
             const active = noseAromas.includes(d.id);
             return (
-              <Pressable key={d.id} onPress={() => toggle(noseAromas, d.id, setNoseAromas)}>
+              <Pressable key={d.id} hitSlop={8} onPress={() => toggle(noseAromas, d.id, setNoseAromas)}>
                 <Chip tone={active ? 'systems' : 'neutral'} style={styles.descChip}>{d.label}</Chip>
               </Pressable>
             );
@@ -212,7 +212,7 @@ export function TastingNoteScreen({
           {TEXTURE.map((t) => {
             const active = textures.includes(t);
             return (
-              <Pressable key={t} onPress={() => toggle(textures, t, setTextures)}>
+              <Pressable key={t} hitSlop={8} onPress={() => toggle(textures, t, setTextures)}>
                 <Chip tone={active ? 'systems' : 'neutral'} style={styles.descChip}>{t}</Chip>
               </Pressable>
             );
@@ -231,7 +231,7 @@ export function TastingNoteScreen({
         </BodyText>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.catRow} contentContainerStyle={{ gap: space.sm }}>
           {AROMA_CATEGORIES.map((cat) => (
-            <Pressable key={cat} onPress={() => setFlavorCategory(cat)} hitSlop={4}>
+            <Pressable key={cat} hitSlop={8} onPress={() => setFlavorCategory(cat)}>
               <Chip tone={cat === flavorCategory ? 'accent' : 'neutral'}>{CATEGORY_LABELS[cat]}</Chip>
             </Pressable>
           ))}
@@ -240,7 +240,7 @@ export function TastingNoteScreen({
           {flavorAromasList.map((d) => {
             const active = flavors.includes(d.id);
             return (
-              <Pressable key={d.id} onPress={() => toggle(flavors, d.id, setFlavors)}>
+              <Pressable key={d.id} hitSlop={8} onPress={() => toggle(flavors, d.id, setFlavors)}>
                 <Chip tone={active ? 'sunset' : 'neutral'} style={styles.descChip}>{d.label}</Chip>
               </Pressable>
             );
@@ -294,7 +294,7 @@ function ScaleRow<T extends string>({
         {values.map((v) => {
           const active = current === v;
           return (
-            <Pressable key={v} onPress={() => onPick(v)}>
+            <Pressable key={v} hitSlop={8} onPress={() => onPick(v)}>
               <Chip tone={active ? 'accent' : 'neutral'} style={styles.scaleChip}>
                 {v.replace(/-/g, ' ')}
               </Chip>

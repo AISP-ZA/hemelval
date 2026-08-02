@@ -8,7 +8,7 @@ import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { color } from './theme/tokens.js';
 import { PalateProvider } from './hooks/usePalate.js';
 import { AuthProvider } from './hooks/useAuth.js';
@@ -37,28 +37,33 @@ export default function App() {
     <SafeAreaProvider>
       <AuthProvider>
         <PalateProvider>
-        <StatusBar style="light" />
-        <NavigationContainer theme={KelderTheme}>
-          <Tab.Navigator
-            screenOptions={{
-              headerShown: false,
-              tabBarActiveTintColor: color.twilight,
-              tabBarInactiveTintColor: color.bodyMid,
-              tabBarStyle: {
-                backgroundColor: color.canvas,
-                borderTopColor: color.hairline,
-                borderTopWidth: 1,
-                height: 56,
-                paddingBottom: 4,
-              },
-              tabBarLabelStyle: {
-                fontFamily: 'GeistMono',
-                fontSize: 10,
-                letterSpacing: 0.8,
-                textTransform: 'uppercase',
-              },
-            }}
-          >
+          <StatusBar style="light" />
+          <NavigationContainer theme={KelderTheme}>
+            <Tab.Navigator
+              screenOptions={{
+                headerShown: false,
+                tabBarActiveTintColor: color.gold,
+                tabBarInactiveTintColor: color.bodyMid,
+                tabBarStyle: {
+                  backgroundColor: color.canvas,
+                  borderTopColor: color.hairline,
+                  borderTopWidth: 1,
+                  height: 64,
+                  paddingBottom: 12,
+                  paddingTop: 8,
+                },
+                tabBarLabelStyle: {
+                  fontFamily: 'GeistMono',
+                  fontSize: 10,
+                  letterSpacing: 0.8,
+                  textTransform: 'uppercase',
+                  marginTop: 2,
+                },
+                tabBarItemStyle: {
+                  paddingVertical: 4,
+                },
+              }}
+            >
             <Tab.Screen name="Discover" component={DiscoverScreen} options={{ tabBarLabel: 'DISCOVER' }} />
             <Tab.Screen name="Scan" component={ScanScreen} options={{ tabBarLabel: 'SCAN' }} />
             <Tab.Screen name="Cellar" component={CellarScreen} options={{ tabBarLabel: 'CELLAR' }} />

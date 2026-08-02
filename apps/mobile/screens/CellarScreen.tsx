@@ -91,7 +91,7 @@ export function CellarScreen() {
               <Card key={t.id} style={styles.entry}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                   <View style={{ flex: 1 }}>
-                    <Pressable onPress={() => {
+                    <Pressable hitSlop={8} onPress={() => {
                       const e = MOCK_ESTATES.find((es) => es.id === wine?.estateId);
                       if (e) setEstateView(e);
                     }}>
@@ -100,7 +100,7 @@ export function CellarScreen() {
                       </BodyText>
                     </Pressable>
                     {wine && (
-                      <Pressable onPress={() => {
+                      <Pressable hitSlop={8} onPress={() => {
                         const e = MOCK_ESTATES.find((es) => es.id === wine.estateId);
                         if (e) setEstateView(e);
                       }}>
