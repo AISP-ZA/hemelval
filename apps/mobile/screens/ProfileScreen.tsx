@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
     marginTop: space.xs,
     ...font.bodyMd,
   },
-  errorBox: { marginTop: space.md, padding: space.md, backgroundColor: 'color.critFill', borderRadius: radius.sm },
+  errorBox: { marginTop: space.md, padding: space.md, backgroundColor: color.critFill, borderRadius: radius.sm },
   palateBlock: { marginTop: space.md },
   chipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: space.xs, marginTop: space.sm },
   prefGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: space.lg, marginTop: space.sm },

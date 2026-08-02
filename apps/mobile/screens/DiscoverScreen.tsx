@@ -165,16 +165,13 @@ export function DiscoverScreen() {
           renderItem={({ item }) => {
             const img = wineImage(item.id);
             return (
-              <Pressable hitSlop={8} onPress={() => setSelected(item)} style={styles.topCard}>
+              <Pressable hitSlop={8} onPress={() => setSelected(item)} style={({ pressed }) => [styles.topCard, pressed && { opacity: 0.85 }]}>
                 <Image source={{ uri: img.url }} style={styles.topCardImage} resizeMode="cover" />
                 <View style={styles.topCardOverlay} />
-                <View style={styles.topCardRating}>
-                  <Text style={styles.topCardScore}>{item.avgStars.toFixed(1)}</Text>
-                  <Text style={styles.topCardCount}>{item.ratingCount.toLocaleString()} ratings</Text>
-                </View>
-                <View style={styles.topCardText}>
+                <View style={styles.topCardContent}>
+                  <Text style={styles.topCardScore}>★ {item.avgStars.toFixed(1)}</Text>
                   <Text style={styles.topCardName} numberOfLines={1}>{item.name}</Text>
-                  <Text style={styles.topCardEstate} numberOfLines={1}>{item.estateName}</Text>
+                  <Text style={styles.topCardEstate} numberOfLines={1}>{item.estateName.toUpperCase()}</Text>
                 </View>
               </Pressable>
             );
@@ -192,23 +189,26 @@ export function DiscoverScreen() {
             <Card key={w.id} onPress={() => setSelected(w)} style={styles.listCard}>
               <View style={{ flexDirection: 'row', gap: space.md }}>
                 <Image source={{ uri: img.url }} style={styles.listThumb} resizeMode="cover" />
-                <View style={{ flex: 1 }}>
-                  <BodyText>{w.name} {w.year > 0 ? `'${String(w.year).slice(2)}` : ''}</BodyText>
-                  <Pressable hitSlop={8} onPress={() => {
-                    const e = mockEstateById(w.estateId);
-                    if (e) setEstateView(e);
+                <View style={{ flex: 1, minWidth: 0 }}>
+                  <Text style={[font.bodyMd, { color: color.ink, fontWeight: '500' }]} numberOfLines={1}>
+                    {w.name}{w.year > 0 ? ` '${String(w.year).slice(2)}` : ''}
+                  </Text>
+                  <Pressable hitSlop={8} onPress={(e) => {
+                    e.stopPropagation?.();
+                    const est = mockEstateById(w.estateId);
+                    if (est) setEstateView(est);
                   }}>
-                    <BodyText size="sm" muted>
-                      <Text style={{ textDecorationLine: 'underline', color: color.gold }}>{w.estateName}</Text> · {w.region}
-                    </BodyText>
+                    <Text style={[font.captionMonoSm, { color: color.gold, marginTop: 2 }]} numberOfLines={1}>
+                      {w.estateName.toUpperCase()}
+                    </Text>
                   </Pressable>
-                  <View style={styles.chipRowSmall}>
-                    {w.varietals.slice(0, 2).map((v) => <Chip key={v} tone="neutral">{v.replace('-', ' ')}</Chip>)}
+                  <Text style={[font.captionMonoSm, { color: color.bodyMid, marginTop: 1 }]} numberOfLines={1}>
+                    {w.region}
+                  </Text>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.md, marginTop: space.sm }}>
+                    <Stars value={w.avgStars} size={11} />
+                    <MatchBadge score={matchFor(w)} />
                   </View>
-                </View>
-                <View style={{ alignItems: 'flex-end', gap: space.xs }}>
-                  <Stars value={w.avgStars} count={w.ratingCount} size={12} />
-                  <MatchBadge score={matchFor(w)} />
                 </View>
               </View>
             </Card>
@@ -310,52 +310,111 @@ function typeColor(type: string): string {
 
 // ── Wine detail (rendered when a wine is selected) ──────────────────────────
 function WineDetail({ wine, matchScore, onBack, onRate, onEstatePress }: { wine: MockWine; matchScore: number; onBack: () => void; onRate: () => void; onEstatePress: () => void }) {
+  const insets = useSafeAreaInsets();
   const img = wineImage(wine.id);
+  const wineTypeColor = wine.type === 'red' || wine.type === 'fortified' ? color.wine : color.gold;
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: color.canvas }} contentContainerStyle={{ paddingBottom: space.huge }}>
+    <ScrollView style={{ flex: 1, backgroundColor: color.canvas }} contentContainerStyle={{ paddingBottom: insets.bottom + space.huge }}>
+      {/* Full-bleed hero: bottle photo with dark overlay, back button overlaid */}
       <View style={styles.detailHero}>
-        <Button variant="outline" onPress={onBack} style={styles.backBtn}>← BACK</Button>
-        <Image source={{ uri: img.url }} style={styles.detailBottle} resizeMode="cover" />
-      </View>
-      <View style={{ padding: space.xl }}>
-        <Eyebrow>{wine.region.toUpperCase()}</Eyebrow>
-        <Text style={styles.detailName}>{wine.name}</Text>
-        <Pressable onPress={onEstatePress} hitSlop={8} style={styles.estateLink}>
-          <EstateWordmark estateId={wine.estateId} name={wine.estateName} size="sm" style={{ marginTop: space.xs }} />
+        <Image source={{ uri: img.url }} style={styles.detailHeroImg} resizeMode="cover" />
+        <View style={styles.detailHeroOverlay} />
+        <Pressable
+          onPress={onBack}
+          hitSlop={12}
+          style={[styles.detailBackBtn, { top: Math.max(insets.top, space.md) + space.md }]}
+        >
+          <Text style={[font.captionMono, { color: color.ink }]}>← BACK</Text>
         </Pressable>
-        <BodyText size="sm" muted style={{ marginTop: space.xs }}>{wine.year > 0 ? `${wine.year} · ` : ''}{wine.varietals.join(' · ')}</BodyText>
-        <View style={styles.chipRowSmall}>
-          {wine.varietals.map((v) => <Chip key={v} tone="neutral">{v.replace('-', ' ')}</Chip>)}
+        {/* Type badge */}
+        <View style={[styles.detailTypeBadge, { borderColor: wineTypeColor }]}>
+          <Text style={[font.captionMonoSm, { color: wineTypeColor }]}>
+            {wine.type.toUpperCase()}
+          </Text>
         </View>
-        <View style={{ marginTop: space.md }}>
+        {/* Name overlay at bottom of hero */}
+        <View style={styles.detailHeroBottom}>
+          <Eyebrow style={{ color: color.body }}>{wine.region.toUpperCase()}</Eyebrow>
+          <Text style={styles.detailHeroName}>{wine.name}</Text>
+          {wine.year > 0 && (
+            <Text style={[font.captionMonoSm, { color: color.body, marginTop: 4 }]}>VINTAGE {wine.year}</Text>
+          )}
+        </View>
+      </View>
+
+      <View style={{ padding: space.xl }}>
+        {/* Estate link */}
+        <Pressable onPress={onEstatePress} hitSlop={8}>
+          <EstateWordmark estateId={wine.estateId} name={wine.estateName} size="sm" />
+        </Pressable>
+
+        {/* Varietal chips */}
+        <View style={styles.chipRowSmall}>
+          {wine.varietals.map((v) => <Chip key={v} tone="neutral">{v.replace(/-/g, ' ')}</Chip>)}
+        </View>
+
+        {/* Rating + match row */}
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.xl, marginTop: space.lg }}>
+          <Stars value={wine.avgStars} count={wine.ratingCount} size={18} />
           <MatchBadge score={matchScore} />
         </View>
+
         <Divider />
-        <Stars value={wine.avgStars} count={wine.ratingCount} size={20} />
-        <Divider />
+
         <Eyebrow>ABOUT</Eyebrow>
         <BodyText style={{ marginTop: space.sm }}>{wine.about}</BodyText>
+
         <Divider />
-        <View style={{ flexDirection: 'row', gap: space.xl }}>
-          <View><Eyebrow>ABV</Eyebrow><BodyText>{wine.abv}%</BodyText></View>
-          {wine.year > 0 && <View><Eyebrow>VINTAGE</Eyebrow><BodyText>{wine.year}</BodyText></View>}
-          {wine.priceZar && <View><Eyebrow>EST. PRICE</Eyebrow><BodyText>R{wine.priceZar}</BodyText></View>}
+
+        {/* Quick-stats row */}
+        <View style={styles.statRow}>
+          {wine.abv != null && (
+            <View style={styles.statCell}>
+              <Eyebrow>ABV</Eyebrow>
+              <Text style={styles.statValue}>{wine.abv}%</Text>
+            </View>
+          )}
+          {wine.year > 0 && (
+            <View style={styles.statCell}>
+              <Eyebrow>VINTAGE</Eyebrow>
+              <Text style={styles.statValue}>{wine.year}</Text>
+            </View>
+          )}
+          {wine.priceZar != null && (
+            <View style={styles.statCell}>
+              <Eyebrow>EST. PRICE</Eyebrow>
+              <Text style={styles.statValue}>R{wine.priceZar}</Text>
+            </View>
+          )}
         </View>
-        <Divider />
-        <Eyebrow>SERVE AT</Eyebrow>
-        <BodyText style={{ marginTop: space.xs }}>{wine.serving}</BodyText>
-        <Divider />
-        <Eyebrow>PAIRS WITH</Eyebrow>
-        <View style={styles.chipRowSmall}>
-          {wine.pairings.map((p) => <Chip key={p} tone="accent">{p.replace(/-/g, ' ')}</Chip>)}
-        </View>
+
+        {wine.serving ? (
+          <>
+            <Divider />
+            <Eyebrow>SERVE AT</Eyebrow>
+            <BodyText style={{ marginTop: space.xs }}>{wine.serving}</BodyText>
+          </>
+        ) : null}
+
+        {wine.pairings.length > 0 && (
+          <>
+            <Divider />
+            <Eyebrow>PAIRS WITH</Eyebrow>
+            <View style={styles.chipRowSmall}>
+              {wine.pairings.map((p) => <Chip key={p} tone="accent">{p.replace(/-/g, ' ')}</Chip>)}
+            </View>
+          </>
+        )}
+
         <Divider />
         <TasteProfileChart
           values={tasteProfileForVarietal(wine.varietals[0], wine.type)}
           label="TASTE PROFILE // THIS WINE"
         />
         <Divider />
+
         <Button variant="primary" style={{ marginTop: space.md }} onPress={onRate}>★ RATE & LOG THIS WINE</Button>
+        <Button variant="outline" style={{ marginTop: space.md }} onPress={onEstatePress}>VIEW ESTATE ↗</Button>
       </View>
     </ScrollView>
   );
@@ -385,20 +444,52 @@ const styles = StyleSheet.create({
   sommelierText: { fontFamily: 'CormorantGaramond, Georgia, serif', fontSize: 18, fontWeight: '400', color: color.ink, lineHeight: 26, marginTop: space.xs },
   chipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm, marginTop: space.md },
   chipRowSmall: { flexDirection: 'row', flexWrap: 'wrap', gap: space.xs, marginTop: space.sm },
-  topCard: { width: 160 },
-  topCardImage: { width: 160, height: 200, borderRadius: radius.sm, borderWidth: 1, borderColor: color.hairline },
-  topCardOverlay: { position: 'absolute', top: 120, left: 0, right: 0, bottom: 0, backgroundColor: color.overlayStrong, borderBottomLeftRadius: radius.sm, borderBottomRightRadius: radius.sm },
-  topCardRating: { position: 'absolute', top: 128, left: 0, right: 0, alignItems: 'center' },
-  topCardScore: { color: color.gold, fontSize: 22, fontWeight: '600', fontFamily: 'Georgia, serif' },
-  topCardCount: { color: color.bodyMid, fontSize: 9, fontFamily: 'GeistMono, monospace', letterSpacing: 0.5, marginTop: 2 },
-  topCardText: { position: 'absolute', top: 168, left: space.sm, right: space.sm },
+
+  // Top-rated carousel card
+  topCard: { width: 160, borderRadius: radius.sm, overflow: 'hidden', borderWidth: 1, borderColor: color.cardBorder, backgroundColor: color.canvasCard },
+  topCardImage: { width: 160, height: 200 },
+  topCardOverlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: color.overlayMid },
+  topCardContent: { position: 'absolute', bottom: 0, left: 0, right: 0, padding: space.sm, gap: 2 },
+  topCardScore: { color: color.gold, fontSize: 18, fontWeight: '600', fontFamily: 'CormorantGaramond, Georgia, serif' },
   topCardName: { color: color.ink, fontSize: 12, fontFamily: 'Inter, sans-serif', fontWeight: '500' },
-  topCardEstate: { color: color.bodyMid, fontSize: 10, fontFamily: 'Inter, sans-serif', marginTop: 2 },
+  topCardEstate: { color: color.body, fontSize: 9, fontFamily: 'GeistMono, monospace', letterSpacing: 0.5 },
+
   listThumb: { width: 56, height: 72, borderRadius: radius.sm, borderWidth: 1, borderColor: color.hairline },
   listCard: { marginVertical: space.sm },
-  detailHero: { padding: space.xl },
-  backBtn: { alignSelf: 'flex-start', marginBottom: space.lg },
-  detailBottle: { height: 320, borderRadius: radius.sm, borderWidth: 1, borderColor: color.hairline },
-  detailName: { fontFamily: 'CormorantGaramond, Georgia, serif', fontSize: 30, fontWeight: '400', color: color.ink, letterSpacing: -0.5, lineHeight: 34, marginTop: space.xs },
-  estateLink: { marginTop: space.xs },
+
+  // Wine detail — full-bleed hero
+  detailHero: { height: 340, position: 'relative' },
+  detailHeroImg: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },
+  detailHeroOverlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: color.overlayStrong },
+  detailBackBtn: {
+    position: 'absolute',
+    left: space.xl,
+    backgroundColor: 'rgba(8,3,10,0.72)',
+    borderWidth: 1,
+    borderColor: color.hairline,
+    borderRadius: radius.pill,
+    paddingHorizontal: space.md,
+    paddingVertical: space.sm,
+  },
+  detailTypeBadge: {
+    position: 'absolute',
+    right: space.xl,
+    borderWidth: 1,
+    borderRadius: radius.pill,
+    paddingHorizontal: space.sm,
+    paddingVertical: 3,
+    bottom: space.lg + 60,
+  },
+  detailHeroBottom: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    padding: space.xl,
+    paddingBottom: space.lg,
+  },
+  detailHeroName: { fontFamily: 'CormorantGaramond, Georgia, serif', fontSize: 32, fontWeight: '400', color: color.ink, letterSpacing: -0.5, lineHeight: 36, marginTop: space.xs },
+  statRow: { flexDirection: 'row', gap: space.xxl, marginTop: space.sm },
+  statCell: { gap: space.xs },
+  statValue: { fontFamily: 'CormorantGaramond, Georgia, serif', fontSize: 22, color: color.ink, fontWeight: '400' },
 });

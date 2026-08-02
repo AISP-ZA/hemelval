@@ -25,6 +25,19 @@ import { ProfileScreen } from './screens/ProfileScreen.js';
 
 const Tab = createBottomTabNavigator();
 
+const linking = {
+  prefixes: [],
+  config: {
+    screens: {
+      Discover: 'Discover',
+      Scan: 'Scan',
+      Cellar: 'Cellar',
+      Events: 'Events',
+      Profile: 'Profile',
+    },
+  },
+};
+
 const KelderTheme = {
   ...DarkTheme,
   colors: {
@@ -62,7 +75,7 @@ export default function App() {
       <AuthProvider>
         <PalateProvider>
           <StatusBar style="light" />
-          <NavigationContainer theme={KelderTheme}>
+          <NavigationContainer theme={KelderTheme} linking={linking}>
             <Tab.Navigator
               screenOptions={({ route }) => ({
                 headerShown: false,

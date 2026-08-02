@@ -196,10 +196,19 @@ export function EventDetailScreen({
 
 const styles = StyleSheet.create({
   header: { paddingHorizontal: space.xl, paddingBottom: space.sm },
-  backBtn: { alignSelf: 'flex-start', marginBottom: space.md },
+  backBtn: {
+    alignSelf: 'flex-start',
+    marginBottom: space.md,
+    backgroundColor: 'rgba(8,3,10,0.72)',
+    borderWidth: 1,
+    borderColor: color.hairline,
+    borderRadius: radius.pill,
+    paddingHorizontal: space.md,
+    paddingVertical: space.sm,
+  },
   coverWrap: { height: 280, borderRadius: radius.sm, overflow: 'hidden', position: 'relative' },
   coverImg: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },
-  coverOverlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'color.overlayMid' },
+  coverOverlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: color.overlayMid },
   coverContent: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, padding: space.xl, justifyContent: 'flex-end' },
   coverMonth: { color: color.gold, fontSize: 12, fontFamily: 'GeistMono, monospace', letterSpacing: 1.5 },
   coverName: { color: color.ink, fontFamily: 'CormorantGaramond, Georgia, serif', fontSize: 30, fontWeight: '400', marginTop: space.xs, letterSpacing: -0.5 },

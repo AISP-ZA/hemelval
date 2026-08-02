@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
   },
   eventCoverWrap: { height: 140, position: 'relative' },
   eventCover: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },
-  eventCoverOverlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'color.overlayWeak' },
+  eventCoverOverlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: color.overlayMid },
   eventBody: { padding: space.md },
   dateBlock: {
     width: 52, height: 52, borderRadius: 9999, borderWidth: 1, borderColor: color.goldSoft,
