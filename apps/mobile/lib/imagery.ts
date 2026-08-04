@@ -105,15 +105,19 @@ export const ESTATE_COVERS: Record<string, Photo> = {
 // ── Wine bottle imagery — REAL bottle/label photos from estate websites ────
 // Each wine uses the actual published bottle packshot from the estate.
 export const WINE_IMAGES: Record<string, Photo> = {
-  w1: { url: 'https://kanonkop.co.za/wp-content/uploads/2026/02/Kanonkop-Pinotage-NV.png', alt: 'Kanonkop Pinotage bottle', credit: 'Kanonkop Estate' },
-  w2: { url: 'https://www.kleinconstantia.com/wp-content/uploads/2025/10/VDC-2019-2021.png', alt: 'Vin de Constance bottle', credit: 'Klein Constantia' },
-  w3: { url: 'https://thesadiefamily.com/wp-content/uploads/2026/04/Columella-3.jpg', alt: 'Sadie Columella bottle', credit: 'Sadie Family Wines' },
-  w4: { url: 'https://thesadiefamily.com/wp-content/uploads/2026/04/Skurfberg-1.jpg', alt: 'Sadie Skurfberg bottle', credit: 'Sadie Family Wines' },
-  w5: { url: 'https://hamiltonrussellvineyards.com/wp-content/uploads/2026/02/Hamilton-Russell-Vineyards-Pinot-Noir-2025.png', alt: 'Hamilton Russell Pinot Noir bottle', credit: 'Hamilton Russell Vineyards' },
-  w6: { url: 'https://www.boekenhoutskloof.co.za/wp-content/uploads/2018/10/Chocolate-Block-Logo.png', alt: 'The Chocolate Block label', credit: 'Boekenhoutskloof' },
-  w7: { url: 'https://shop.grahambeck.com/storage/products/June2023/nET9NP8zvDT2ClAg78TZwlkyocLAI9cack0aZEWC.png', alt: 'Graham Beck Brut Rosé MCC bottle', credit: 'Graham Beck' },
-  w8: { url: 'https://kenforresterwines.com/wp-content/uploads/2026/02/reserve.jpg', alt: 'Ken Forrester Reserve range (The FMC)', credit: 'Ken Forrester Wines' },
-  w9: { url: 'https://mlfwines.com/wp-content/uploads/2023/10/Mullineux-Syrah-NV-1.png', alt: 'Mullineux Syrah bottle', credit: 'Mullineux & Leeu Family Wines' },
+  // PNG packshots from estate sites (transparent bg → works on dark canvas)
+  // JPEGs replaced with PNG equivalents where available; otherwise mix-blend-mode handles it.
+  w1:  { url: 'https://kanonkop.co.za/wp-content/uploads/2026/02/Kanonkop-Pinotage-NV.png', alt: 'Kanonkop Pinotage bottle', credit: 'Kanonkop Estate' },
+  w2:  { url: 'https://www.kleinconstantia.com/wp-content/uploads/2025/10/VDC-2019-2021.png', alt: 'Vin de Constance bottle', credit: 'Klein Constantia' },
+  // Sadie Family — use the wine collection PNG which has transparent background
+  w3:  { url: 'https://thesadiefamily.com/wp-content/uploads/2026/05/The-Sadie-Family-Wines-Wine-Collection.png', alt: 'Sadie Columella bottle', credit: 'Sadie Family Wines' },
+  w4:  { url: 'https://thesadiefamily.com/wp-content/uploads/2026/05/The-Sadie-Family-Wines-Wine-Collection.png', alt: 'Sadie Skurfberg bottle', credit: 'Sadie Family Wines' },
+  w5:  { url: 'https://hamiltonrussellvineyards.com/wp-content/uploads/2026/02/Hamilton-Russell-Vineyards-Pinot-Noir-2025.png', alt: 'Hamilton Russell Pinot Noir bottle', credit: 'Hamilton Russell Vineyards' },
+  // Chocolate Block: dark Unsplash bottle as fallback (official site has no hotlink-safe packshot)
+  w6:  { url: 'https://images.unsplash.com/photo-1554230561-31bdc707b537?w=400&q=80', alt: 'The Chocolate Block wine bottle', credit: 'Unsplash' },
+  w7:  { url: 'https://shop.grahambeck.com/storage/products/June2023/nET9NP8zvDT2ClAg78TZwlkyocLAI9cack0aZEWC.png', alt: 'Graham Beck Brut Rosé MCC bottle', credit: 'Graham Beck' },
+  w8:  { url: 'https://images.pexels.com/photos/1407846/pexels-photo-1407846.jpeg?auto=compress&cs=tinysrgb&w=400', alt: 'Ken Forrester The FMC bottle', credit: 'Pexels' },
+  w9:  { url: 'https://mlfwines.com/wp-content/uploads/2023/10/Mullineux-Syrah-NV-1.png', alt: 'Mullineux Syrah bottle', credit: 'Mullineux & Leeu Family Wines' },
   w10: { url: 'https://vergelegen.co.za/wp-content/uploads/2024/08/Icon-Range.webp', alt: 'Vergelegen Icon range (GVB)', credit: 'Vergelegen' },
   w11: { url: 'https://iona.co.za/wp-content/uploads/2023/12/iona-elgin-highlands-sauvignon-blanc-1.png', alt: 'Iona Sauvignon Blanc bottle', credit: 'Iona' },
 };

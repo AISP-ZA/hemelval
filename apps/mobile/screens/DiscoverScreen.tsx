@@ -3,7 +3,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, StyleSheet, FlatList, Pressable, TextInput, Text, Image, ActivityIndicator } from 'react-native';
+import { View, ScrollView, StyleSheet, FlatList, Pressable, TextInput, Text, Image, ActivityIndicator, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Eyebrow, Headline, BodyText, Card, Chip, Button, Stars, MatchBadge, Divider } from '../components/index.js';
 import { EstateWordmark } from '../components/EstateWordmark.js';
@@ -188,7 +188,9 @@ export function DiscoverScreen() {
           return (
             <Card key={w.id} onPress={() => setSelected(w)} style={styles.listCard}>
               <View style={{ flexDirection: 'row', gap: space.md }}>
-                <Image source={{ uri: img.url }} style={styles.listThumb} resizeMode="cover" />
+                <View style={styles.listThumbWrap}>
+                  <Image source={{ uri: img.url }} style={styles.listThumb} resizeMode="contain" />
+                </View>
                 <View style={{ flex: 1, minWidth: 0 }}>
                   <Text style={[font.bodyMd, { color: color.ink, fontWeight: '500' }]} numberOfLines={1}>
                     {w.name}{w.year > 0 ? ` '${String(w.year).slice(2)}` : ''}
@@ -446,7 +448,7 @@ const styles = StyleSheet.create({
   chipRowSmall: { flexDirection: 'row', flexWrap: 'wrap', gap: space.xs, marginTop: space.sm },
 
   // Top-rated carousel card
-  topCard: { width: 160, borderRadius: radius.sm, overflow: 'hidden', borderWidth: 1, borderColor: color.cardBorder, backgroundColor: color.canvasCard },
+  topCard: { width: 160, borderRadius: radius.sm, overflow: 'hidden', borderWidth: 1, borderColor: color.cardBorder, backgroundColor: color.canvasSoft },
   topCardImage: { width: 160, height: 200 },
   topCardOverlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: color.overlayMid },
   topCardContent: { position: 'absolute', bottom: 0, left: 0, right: 0, padding: space.sm, gap: 2 },
@@ -454,7 +456,21 @@ const styles = StyleSheet.create({
   topCardName: { color: color.ink, fontSize: 12, fontFamily: 'Inter, sans-serif', fontWeight: '500' },
   topCardEstate: { color: color.body, fontSize: 9, fontFamily: 'GeistMono, monospace', letterSpacing: 0.5 },
 
-  listThumb: { width: 56, height: 72, borderRadius: radius.sm, borderWidth: 1, borderColor: color.hairline },
+  listThumbWrap: {
+    width: 64,
+    height: 80,
+    borderRadius: radius.sm,
+    borderWidth: 1,
+    borderColor: color.hairline,
+    backgroundColor: color.canvasSoft,
+    overflow: 'hidden',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  listThumb: {
+    width: 56,
+    height: 72,
+  },
   listCard: { marginVertical: space.sm },
 
   // Wine detail — full-bleed hero

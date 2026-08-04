@@ -12,6 +12,7 @@ import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { Platform, View, StyleSheet } from 'react-native';
 import { DiscoverIcon, ScanIcon, CellarIcon, EventsIcon, ProfileIcon } from './components/TabIcons.js';
 import { useFonts } from 'expo-font';
 import { color } from './theme/tokens.js';
@@ -70,7 +71,7 @@ export default function App() {
     return null; // Splash — fonts must load before first paint to prevent fallback flash
   }
 
-  return (
+  const appContent = (
     <SafeAreaProvider>
       <AuthProvider>
         <PalateProvider>
@@ -117,4 +118,35 @@ export default function App() {
       </AuthProvider>
     </SafeAreaProvider>
   );
+
+  if (Platform.OS === 'web') {
+    return (
+      <View style={webStyles.outer}>
+        <View style={webStyles.frame}>
+          {appContent}
+        </View>
+      </View>
+    );
+  }
+
+  return appContent;
 }
+
+const webStyles = StyleSheet.create({
+  outer: {
+    flex: 1,
+    backgroundColor: '#000000',
+    alignItems: 'center',
+    justifyContent: 'stretch',
+  },
+  frame: {
+    flex: 1,
+    width: '100%',
+    maxWidth: 480,
+    backgroundColor: '#08030a',
+    // Box shadow via CSS on web — React Native Web accepts these as camelCase
+    ...(({
+      boxShadow: '0 0 120px rgba(0,0,0,0.95), 0 0 1px rgba(196,151,60,0.15)',
+    }) as any),
+  },
+});
