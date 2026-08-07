@@ -193,7 +193,7 @@ export function CellarScreen() {
           </>
         )}
 
-        <View style={{ height: space.huge }} />
+        <View style={{ height: 120 }} />
       </View>
     </ScrollView>
   );
@@ -228,7 +228,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   statValue: {
-    fontFamily: 'Cormorant Garamond',
+    fontFamily: 'CormorantGaramond',
     fontSize: 30,
     fontWeight: '400',
     color: color.ink,
@@ -311,7 +311,7 @@ const styles = StyleSheet.create({
     height: 48,
   },
   journalWineName: {
-    fontFamily: 'Cormorant Garamond', fontSize: 18, fontWeight: '400',
+    fontFamily: 'CormorantGaramond', fontSize: 18, fontWeight: '400',
     color: color.gold, lineHeight: 22,
   },
   journalEstate: {
@@ -362,7 +362,7 @@ const styles = StyleSheet.create({
     padding: space.lg,
   },
   emptyWordmark: {
-    fontFamily: 'Cormorant Garamond',
+    fontFamily: 'CormorantGaramond',
     fontWeight: '400',
     fontSize: 28,
     letterSpacing: 5,

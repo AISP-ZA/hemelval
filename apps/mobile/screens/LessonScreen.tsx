@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
     marginBottom: space.xs,
   },
   heroTitle: {
-    fontFamily: 'Cormorant Garamond',
+    fontFamily: 'CormorantGaramond',
     fontWeight: '400',
     fontSize: 30,
     color: color.ink,

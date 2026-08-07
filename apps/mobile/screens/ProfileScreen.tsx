@@ -232,7 +232,7 @@ export function ProfileScreen({ onBack }: { onBack?: () => void } = {}) {
         </Card>
 
         <Button variant="outline" style={{ marginTop: space.lg }} onPress={() => signOut()}>SIGN OUT</Button>
-        <View style={{ height: space.huge }} />
+        <View style={{ height: 120 }} />
       </View>
     </ScrollView>
   );

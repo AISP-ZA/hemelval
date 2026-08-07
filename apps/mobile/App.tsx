@@ -11,7 +11,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Platform, View, StyleSheet, Dimensions, Animated, Image, Text } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -82,6 +82,50 @@ const tabIconComponents: Record<string, React.FC<{ size?: number; color: string;
   Events: EventsIcon,
   Learn: LearnIcon,
 };
+
+// ── Tab navigator with safe-area-aware tab bar ──────────────────────────────
+function AppTabNavigator() {
+  const insets = useSafeAreaInsets();
+  const tabBarHeight = 56 + (insets.bottom || 0);
+  return (
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        headerShown: false,
+        tabBarActiveTintColor: color.gold,
+        tabBarInactiveTintColor: color.bodyMid,
+        tabBarStyle: {
+          backgroundColor: color.canvas,
+          borderTopColor: color.hairline,
+          borderTopWidth: 1,
+          height: tabBarHeight,
+          paddingBottom: insets.bottom || 8,
+          paddingTop: 8,
+        },
+        tabBarLabelStyle: {
+          fontFamily: 'GeistMono',
+          fontSize: 11,
+          letterSpacing: 0.8,
+          textTransform: 'uppercase',
+          marginTop: 2,
+        },
+        tabBarIcon: ({ color: iconColor, focused }) => {
+          const Icon = tabIconComponents[route.name];
+          if (!Icon) return null;
+          return <Icon size={24} color={iconColor} focused={focused} />;
+        },
+        tabBarItemStyle: {
+          paddingVertical: 6,
+        },
+      })}
+    >
+      <Tab.Screen name="Discover" component={DiscoverScreen} options={{ tabBarLabel: 'DISCOVER' }} />
+      <Tab.Screen name="Scan" component={ScanScreen} options={{ tabBarLabel: 'SCAN' }} />
+      <Tab.Screen name="Cellar" component={CellarScreen} options={{ tabBarLabel: 'CELLAR' }} />
+      <Tab.Screen name="Events" component={EventsScreen} options={{ tabBarLabel: 'EVENTS' }} />
+      <Tab.Screen name="Learn" component={LearnScreen} options={{ tabBarLabel: 'LEARN' }} />
+    </Tab.Navigator>
+  );
+}
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -161,42 +205,7 @@ export default function App() {
         <PalateProvider>
           <StatusBar style="light" />
           <NavigationContainer theme={KelderTheme} linking={linking}>
-            <Tab.Navigator
-              screenOptions={({ route }) => ({
-                headerShown: false,
-                tabBarActiveTintColor: color.gold,
-                tabBarInactiveTintColor: color.bodyMid,
-                tabBarStyle: {
-                  backgroundColor: color.canvas,
-                  borderTopColor: color.hairline,
-                  borderTopWidth: 1,
-                  height: 64,
-                  paddingBottom: 12,
-                  paddingTop: 8,
-                },
-                tabBarLabelStyle: {
-                  fontFamily: 'GeistMono',
-                  fontSize: 10,
-                  letterSpacing: 0.8,
-                  textTransform: 'uppercase',
-                  marginTop: 2,
-                },
-                tabBarIcon: ({ color: iconColor, focused }) => {
-                  const Icon = tabIconComponents[route.name];
-                  if (!Icon) return null;
-                  return <Icon size={22} color={iconColor} focused={focused} />;
-                },
-                tabBarItemStyle: {
-                  paddingVertical: 4,
-                },
-              })}
-            >
-              <Tab.Screen name="Discover" component={DiscoverScreen} options={{ tabBarLabel: 'DISCOVER' }} />
-              <Tab.Screen name="Scan" component={ScanScreen} options={{ tabBarLabel: 'SCAN' }} />
-              <Tab.Screen name="Cellar" component={CellarScreen} options={{ tabBarLabel: 'CELLAR' }} />
-              <Tab.Screen name="Events" component={EventsScreen} options={{ tabBarLabel: 'EVENTS' }} />
-              <Tab.Screen name="Learn" component={LearnScreen} options={{ tabBarLabel: 'LEARN' }} />
-            </Tab.Navigator>
+            <AppTabNavigator />
           </NavigationContainer>
         </PalateProvider>
       </AuthProvider>

@@ -403,7 +403,7 @@ const styles = StyleSheet.create({
     padding: space.lg,
   },
   wordmark: {
-    fontFamily: 'Cormorant Garamond',
+    fontFamily: 'CormorantGaramond',
     fontWeight: '400',
     fontSize: 32,
     letterSpacing: 6,
@@ -492,7 +492,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(212,148,44,0.04)',
   },
   price: {
-    fontFamily: 'Cormorant Garamond',
+    fontFamily: 'CormorantGaramond',
     fontWeight: '400',
     fontSize: 48,
     color: color.gold,

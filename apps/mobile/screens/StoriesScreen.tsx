@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
     marginBottom: space.xs,
   },
   heroTitle: {
-    fontFamily: 'Cormorant Garamond',
+    fontFamily: 'CormorantGaramond',
     fontWeight: '400',
     fontSize: 28,
     color: color.ink,
@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
     padding: space.md,
   },
   storyCardTitle: {
-    fontFamily: 'Cormorant Garamond',
+    fontFamily: 'CormorantGaramond',
     fontWeight: '400',
     fontSize: 18,
     color: color.ink,

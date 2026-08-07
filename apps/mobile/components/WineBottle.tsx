@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   labelEstate: {
-    fontFamily: 'GeistMono, monospace',
+    fontFamily: 'GeistMono',
     fontSize: 5,
     fontWeight: '400',
     letterSpacing: 0.4,
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
     lineHeight: 6,
   },
   labelName: {
-    fontFamily: 'CormorantGaramond, Georgia, serif',
+    fontFamily: 'CormorantGaramond',
     fontSize: 7,
     fontWeight: '400',
     color: '#0a0410',
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   labelYear: {
-    fontFamily: 'GeistMono, monospace',
+    fontFamily: 'GeistMono',
     fontSize: 4,
     color: '#785848',
     marginTop: 2,

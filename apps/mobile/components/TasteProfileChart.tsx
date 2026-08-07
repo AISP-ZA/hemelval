@@ -322,7 +322,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: space.md,
   },
   poleText: {
-    fontFamily: 'GeistMono, monospace',
+    fontFamily: 'GeistMono',
     fontSize: 9,
     color: color.bodyMid,
     letterSpacing: 0.5,
@@ -342,7 +342,7 @@ const styles = StyleSheet.create({
     borderRadius: 3,
   },
   legendText: {
-    fontFamily: 'GeistMono, monospace',
+    fontFamily: 'GeistMono',
     fontSize: 9,
     color: color.bodyMid,
     letterSpacing: 0.8,

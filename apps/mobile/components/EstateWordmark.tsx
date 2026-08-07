@@ -25,11 +25,11 @@ type WordmarkFamily = 'serif-heritage' | 'serif-scholarly' | 'modern-cult' | 'fo
 const FAMILY_FONTS: Record<WordmarkFamily, { fontFamily: string; letterSpacing: number; textTransform: 'none' | 'uppercase' }> = {
   'serif-heritage': { fontFamily: 'Georgia, serif', letterSpacing: 2, textTransform: 'uppercase' },
   'serif-scholarly': { fontFamily: 'Georgia, serif', letterSpacing: 0.5, textTransform: 'none' },
-  'modern-cult': { fontFamily: 'Inter, system-ui, sans-serif', letterSpacing: 4, textTransform: 'uppercase' },
+  'modern-cult': { fontFamily: 'Inter', letterSpacing: 4, textTransform: 'uppercase' },
   'formal-prestige': { fontFamily: 'Georgia, serif', letterSpacing: 6, textTransform: 'uppercase' },
   'warm-personal': { fontFamily: 'Georgia, serif', letterSpacing: -0.5, textTransform: 'none' },
-  'craft-emblem': { fontFamily: 'Inter, system-ui, sans-serif', letterSpacing: 1, textTransform: 'uppercase' },
-  'cool-modern': { fontFamily: 'Inter, system-ui, sans-serif', letterSpacing: 8, textTransform: 'uppercase' },
+  'craft-emblem': { fontFamily: 'Inter', letterSpacing: 1, textTransform: 'uppercase' },
+  'cool-modern': { fontFamily: 'Inter', letterSpacing: 8, textTransform: 'uppercase' },
 };
 
 const ESTATE_FAMILY: Record<string, WordmarkFamily> = {

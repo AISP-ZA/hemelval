@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   title: {
-    fontFamily: 'CormorantGaramond, Georgia, serif',
+    fontFamily: 'CormorantGaramond',
     fontSize: 34,
     fontWeight: '400',
     letterSpacing: -0.8,

@@ -496,7 +496,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center', alignItems: 'center',
   },
   routeStopNumText: {
-    fontFamily: 'Cormorant Garamond', fontSize: 16, color: color.gold,
+    fontFamily: 'CormorantGaramond', fontSize: 16, color: color.gold,
   },
   routeStopArrow: {
     color: color.bodyMid, fontSize: 18,

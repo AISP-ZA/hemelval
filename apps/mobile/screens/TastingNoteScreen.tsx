@@ -414,7 +414,7 @@ const styles = StyleSheet.create({
     marginBottom: space.sm,
   },
   headerWineName: {
-    fontFamily: 'Cormorant Garamond',
+    fontFamily: 'CormorantGaramond',
     fontSize: 22,
     fontWeight: '400',
     color: color.ink,

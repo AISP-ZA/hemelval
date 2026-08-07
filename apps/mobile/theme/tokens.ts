@@ -48,8 +48,8 @@ export const color = {
   ink: '#f2e4cc',         // primary text — warm ivory
   inkHover: '#faf0d8',
   body: '#b89878',        // secondary text — warm sand
-  bodyMid: '#785848',     // muted captions
-  mute: '#785848',
+  bodyMid: '#9a7858',     // muted captions — lifted to meet WCAG AA (4.5:1)
+  mute: '#9a7858',
 
   // Lines — deep aubergine hairline (not grey — chosen)
   hairline: '#2a1420',
@@ -156,7 +156,7 @@ export const font = {
 
   // Caption mono — GeistMono, UPPERCASE, tracked (labels / eyebrows / telemetry)
   captionMono: { fontFamily: 'GeistMono', fontSize: 12, fontWeight: '400' as const, letterSpacing: 1.4, lineHeight: 16 },
-  captionMonoSm: { fontFamily: 'GeistMono', fontSize: 10, fontWeight: '400' as const, letterSpacing: 1.2, lineHeight: 14 },
+  captionMonoSm: { fontFamily: 'GeistMono', fontSize: 11, fontWeight: '400' as const, letterSpacing: 1.2, lineHeight: 15 },
 } as const;
 
 // Easing

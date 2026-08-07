@@ -58,15 +58,26 @@ export function DiscoverScreen() {
   const [wines, setWines] = useState<Wine[]>([]);
   const [loading, setLoading] = useState(true);
   const [dataSource, setDataSource] = useState('mock');
+  const [fetchError, setFetchError] = useState(false);
 
   // Fetch wines from live Supabase (falls back to mock)
   useEffect(() => {
+    let cancelled = false;
     (async () => {
-      const data = await fetchWines();
-      setWines(data);
-      setLoading(false);
-      setDataSource(lastDataSource);
+      try {
+        const data = await fetchWines();
+        if (cancelled) return;
+        setWines(data);
+        setDataSource(lastDataSource);
+      } catch (e) {
+        if (cancelled) return;
+        console.warn('[Discover] fetchWines failed:', e);
+        setFetchError(true);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
     })();
+    return () => { cancelled = true; };
   }, []);
 
   const filtered = wines.filter((w) => {
@@ -156,6 +167,23 @@ export function DiscoverScreen() {
           <View style={{ height: 32, width: '80%', borderRadius: 4, backgroundColor: color.canvasMid, marginTop: space.sm }} />
         </View>
         <LoadingList count={6} />
+      </View>
+    );
+  }
+
+  // Error state — fetch failed, show retry
+  if (fetchError && wines.length === 0) {
+    return (
+      <View style={{ flex: 1, backgroundColor: color.canvas, justifyContent: 'center', alignItems: 'center', padding: space.xl }}>
+        <Headline size="md" style={{ textAlign: 'center' }}>Couldn't reach the cellar.</Headline>
+        <BodyText muted style={{ textAlign: 'center', marginTop: space.md, maxWidth: 280 }}>
+          Check your connection and try again.
+        </BodyText>
+        <Button variant="primary" style={{ marginTop: space.xl }} onPress={() => {
+          setFetchError(false);
+          setLoading(true);
+          fetchWines().then((data) => { setWines(data); setDataSource(lastDataSource); }).catch(() => setFetchError(true)).finally(() => setLoading(false));
+        }}>RETRY</Button>
       </View>
     );
   }
@@ -383,7 +411,7 @@ export function DiscoverScreen() {
         )}
       </View>
 
-      <View style={{ height: space.huge }} />
+      <View style={{ height: 120 }} />
     </ScrollView>
   );
 }
@@ -780,8 +808,8 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   heroContent: { padding: space.xl, paddingBottom: space.xxl },
-  heroHeadline: { fontFamily: 'CormorantGaramond, Georgia, serif', fontSize: 40, fontWeight: '400', color: color.ink, letterSpacing: -1, lineHeight: 44, marginTop: space.sm },
-  heroSub: { fontFamily: 'Inter, system-ui, sans-serif', fontSize: 15, color: color.body, lineHeight: 22, marginTop: space.md, maxWidth: 300 },
+  heroHeadline: { fontFamily: 'CormorantGaramond', fontSize: 40, fontWeight: '400', color: color.ink, letterSpacing: -1, lineHeight: 44, marginTop: space.sm },
+  heroSub: { fontFamily: 'Inter', fontSize: 15, color: color.body, lineHeight: 22, marginTop: space.md, maxWidth: 300 },
   curatedBadge: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -800,7 +828,7 @@ const styles = StyleSheet.create({
     fontSize: 7,
   },
   curatedBadgeText: {
-    fontFamily: 'GeistMono, monospace',
+    fontFamily: 'GeistMono',
     fontSize: 9,
     fontWeight: '400',
     letterSpacing: 1.2,
@@ -844,9 +872,9 @@ const styles = StyleSheet.create({
     ...font.bodyMd,
   },
   section: { paddingHorizontal: space.xl, paddingVertical: space.lg },
-  sectionHeadline: { fontFamily: 'CormorantGaramond, Georgia, serif', fontSize: 26, fontWeight: '400', color: color.ink, marginTop: space.xs, letterSpacing: -0.5 },
+  sectionHeadline: { fontFamily: 'CormorantGaramond', fontSize: 26, fontWeight: '400', color: color.ink, marginTop: space.xs, letterSpacing: -0.5 },
   foodSearchRow: { flexDirection: 'row', alignItems: 'center', marginTop: space.md },
-  sommelierText: { fontFamily: 'CormorantGaramond, Georgia, serif', fontSize: 18, fontWeight: '400', color: color.ink, lineHeight: 26, marginTop: space.xs },
+  sommelierText: { fontFamily: 'CormorantGaramond', fontSize: 18, fontWeight: '400', color: color.ink, lineHeight: 26, marginTop: space.xs },
   chipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm, marginTop: space.md },
   chipRowSmall: { flexDirection: 'row', flexWrap: 'wrap', gap: space.xs, marginTop: space.sm },
 
@@ -855,9 +883,9 @@ const styles = StyleSheet.create({
   topCardImage: { width: 160, height: 200 },
   topCardOverlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: color.overlayMid },
   topCardContent: { position: 'absolute', bottom: 0, left: 0, right: 0, padding: space.sm, gap: 2 },
-  topCardScore: { color: color.gold, fontSize: 18, fontWeight: '600', fontFamily: 'CormorantGaramond, Georgia, serif' },
-  topCardName: { color: color.ink, fontSize: 12, fontFamily: 'Inter, sans-serif', fontWeight: '500' },
-  topCardEstate: { color: color.body, fontSize: 9, fontFamily: 'GeistMono, monospace', letterSpacing: 0.5 },
+  topCardScore: { color: color.gold, fontSize: 18, fontWeight: '600', fontFamily: 'CormorantGaramond' },
+  topCardName: { color: color.ink, fontSize: 12, fontFamily: 'Inter', fontWeight: '500' },
+  topCardEstate: { color: color.body, fontSize: 9, fontFamily: 'GeistMono', letterSpacing: 0.5 },
 
   listThumbWrap: {
     width: 64,
@@ -916,10 +944,10 @@ const styles = StyleSheet.create({
     padding: space.xl,
     paddingBottom: space.lg,
   },
-  detailHeroName: { fontFamily: 'CormorantGaramond, Georgia, serif', fontSize: 32, fontWeight: '400', color: color.ink, letterSpacing: -0.5, lineHeight: 36, marginTop: space.xs },
+  detailHeroName: { fontFamily: 'CormorantGaramond', fontSize: 32, fontWeight: '400', color: color.ink, letterSpacing: -0.5, lineHeight: 36, marginTop: space.xs },
   statRow: { flexDirection: 'row', gap: space.xxl, marginTop: space.sm },
   statCell: { gap: space.xs },
-  statValue: { fontFamily: 'CormorantGaramond, Georgia, serif', fontSize: 22, color: color.ink, fontWeight: '400' },
+  statValue: { fontFamily: 'CormorantGaramond', fontSize: 22, color: color.ink, fontWeight: '400' },
 
   // Tasting notes — immersive detail
   tastingRow: {
@@ -929,7 +957,7 @@ const styles = StyleSheet.create({
     alignItems: 'baseline',
   },
   tastingLabel: {
-    fontFamily: 'GeistMono, monospace',
+    fontFamily: 'GeistMono',
     fontSize: 9,
     fontWeight: '400',
     letterSpacing: 1.2,
@@ -938,13 +966,13 @@ const styles = StyleSheet.create({
   },
   tastingText: {
     flex: 1,
-    fontFamily: 'Inter, system-ui, sans-serif',
+    fontFamily: 'Inter',
     fontSize: 14,
     color: color.body,
     lineHeight: 20,
   },
   tastingSummary: {
-    fontFamily: 'CormorantGaramond, Georgia, serif',
+    fontFamily: 'CormorantGaramond',
     fontSize: 16,
     fontWeight: '400',
     color: color.ink,
@@ -974,7 +1002,7 @@ const styles = StyleSheet.create({
   },
   pairingText: {
     flex: 1,
-    fontFamily: 'Inter, system-ui, sans-serif',
+    fontFamily: 'Inter',
     fontSize: 13,
     color: color.body,
   },
@@ -999,19 +1027,19 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(212,148,44,0.06)',
   },
   vintageYear: {
-    fontFamily: 'CormorantGaramond, Georgia, serif',
+    fontFamily: 'CormorantGaramond',
     fontSize: 22,
     fontWeight: '400',
     color: color.ink,
   },
   vintageStar: {
-    fontFamily: 'GeistMono, monospace',
+    fontFamily: 'GeistMono',
     fontSize: 10,
     color: color.gold,
     marginTop: 2,
   },
   vintageTag: {
-    fontFamily: 'GeistMono, monospace',
+    fontFamily: 'GeistMono',
     fontSize: 7,
     color: color.bodyMid,
     marginTop: 4,
@@ -1033,7 +1061,7 @@ const styles = StyleSheet.create({
     lineHeight: 26, marginTop: space.xs,
   },
   storiesEntrySub: {
-    fontFamily: 'Inter, system-ui, sans-serif',
+    fontFamily: 'Inter',
     fontSize: 13, color: color.body, lineHeight: 18,
     marginTop: space.xs,
   },

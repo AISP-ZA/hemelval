@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
     marginBottom: space.xs,
   },
   heroTitle: {
-    fontFamily: 'Cormorant Garamond',
+    fontFamily: 'CormorantGaramond',
     fontWeight: '400',
     fontSize: 30,
     color: color.ink,
@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
 
   // Blocks
   blockHeading: {
-    fontFamily: 'Cormorant Garamond',
+    fontFamily: 'CormorantGaramond',
     fontWeight: '400',
     fontSize: 24,
     color: color.ink,
@@ -295,7 +295,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(212,148,44,0.04)',
   },
   estateLinkTitle: {
-    fontFamily: 'Cormorant Garamond',
+    fontFamily: 'CormorantGaramond',
     fontWeight: '400',
     fontSize: 22,
     color: color.ink,

@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   journeyCount: {
-    fontFamily: 'Cormorant Garamond',
+    fontFamily: 'CormorantGaramond',
     fontSize: 22,
     color: color.gold,
   },
@@ -299,7 +299,7 @@ const styles = StyleSheet.create({
     flex: 1, padding: space.md,
   },
   lessonCardTitle: {
-    fontFamily: 'Cormorant Garamond',
+    fontFamily: 'CormorantGaramond',
     fontSize: 18,
     fontWeight: '400',
     color: color.ink,
@@ -366,7 +366,7 @@ const styles = StyleSheet.create({
     padding: space.sm,
   },
   varietalTitle: {
-    fontFamily: 'Cormorant Garamond',
+    fontFamily: 'CormorantGaramond',
     fontSize: 18,
     color: color.ink,
     lineHeight: 20,

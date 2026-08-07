@@ -94,7 +94,7 @@ export function WineShelf({
                 {w.name}{w.year > 0 ? ` '${String(w.year).slice(2)}` : ''}
               </Text>
               <Text style={styles.cardEstate} numberOfLines={1}>{w.estateName.toUpperCase()}</Text>
-              <Stars value={w.avgStars} size={9} />
+              <Stars value={w.avgStars} size={11} />
             </Pressable>
           );
         })}
@@ -112,9 +112,9 @@ export function WineShelf({
   );
 }
 
-const CARD_W = 132;
-const THUMB_W = 104;
-const THUMB_H = 132;
+const CARD_W = 148;
+const THUMB_W = 116;
+const THUMB_H = 140;
 
 const styles = StyleSheet.create({
   shelf: {
@@ -143,14 +143,14 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   title: {
-    fontFamily: 'GeistMono, monospace',
+    fontFamily: 'GeistMono',
     fontSize: 13,
     fontWeight: '400',
     letterSpacing: 1.6,
     textTransform: 'uppercase',
   },
   subtitle: {
-    fontFamily: 'Inter, system-ui, sans-serif',
+    fontFamily: 'Inter',
     fontSize: 12,
     color: color.bodyMid,
     marginTop: 2,
@@ -177,8 +177,10 @@ const styles = StyleSheet.create({
     top: 8, left: 8,
   },
   cardDot: {
-    width: 6, height: 6,
+    width: 8, height: 8,
     borderRadius: 99,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.15)',
   },
   cardThumbWrap: {
     width: THUMB_W,
@@ -197,20 +199,20 @@ const styles = StyleSheet.create({
     height: THUMB_H - 12,
   },
   cardName: {
-    fontFamily: 'Inter, system-ui, sans-serif',
-    fontSize: 11,
+    fontFamily: 'Inter',
+    fontSize: 13,
     fontWeight: '500',
     color: color.ink,
-    lineHeight: 14,
-    minHeight: 28,
+    lineHeight: 16,
+    minHeight: 32,
     textAlign: 'center',
     marginTop: space.xxs,
   },
   cardEstate: {
-    fontFamily: 'GeistMono, monospace',
-    fontSize: 8,
+    fontFamily: 'GeistMono',
+    fontSize: 10,
     fontWeight: '400',
-    letterSpacing: 0.6,
+    letterSpacing: 0.5,
     color: color.gold,
     marginTop: 2,
     marginBottom: 2,
