@@ -12,7 +12,7 @@ import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { Platform, View, StyleSheet } from 'react-native';
+import { Platform, View, StyleSheet, Dimensions } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DiscoverIcon, ScanIcon, CellarIcon, EventsIcon, LearnIcon } from './components/TabIcons.js';
 import { useFonts } from 'expo-font';
@@ -25,8 +25,28 @@ import { CellarScreen } from './screens/CellarScreen.js';
 import { EventsScreen } from './screens/EventsScreen.js';
 import { LearnScreen } from './screens/LearnScreen.js';
 import { OnboardingScreen } from './screens/OnboardingScreen.js';
+import { LandingScreen } from './screens/LandingScreen.js';
 
 const ONBOARDED_KEY = 'decanta.onboarded.v1';
+const ENTERED_KEY = 'decanta.entered.v1';
+
+/**
+ * On web, only apply the desktop centering frame on wide viewports (>520px).
+ * Mobile phones get full-width — the frame was leaking desktop assumptions onto mobile.
+ */
+function useDesktopFrame(): boolean {
+  const [isWide, setIsWide] = useState(() => {
+    if (Platform.OS !== 'web') return false;
+    return Dimensions.get('window').width > 520;
+  });
+  useEffect(() => {
+    if (Platform.OS !== 'web') return;
+    const handler = ({ window: w }: { window: { width: number } }) => setIsWide(w.width > 520);
+    const sub = Dimensions.addEventListener('change', handler);
+    return () => { sub?.remove?.(); };
+  }, []);
+  return isWide;
+}
 
 const Tab = createBottomTabNavigator();
 
@@ -71,20 +91,26 @@ export default function App() {
     GeistMono: require('./theme/assets/GeistMono-Regular.ttf'),
   });
 
-  // First-run onboarding gate.
-  // On web, ?onboard=1 forces the flow for testing/review.
+  // First-run landing + onboarding gate.
+  // On web: LandingScreen → Enter → Onboarding → App
+  // On native: Onboarding → App (app store listing is the landing page)
   const [onboarded, setOnboarded] = useState<boolean | null>(null);
+  const [entered, setEntered] = useState<boolean>(Platform.OS !== 'web'); // native = already entered
   useEffect(() => {
     (async () => {
       // Dev override: ?onboard=1 shows the flow even if already complete
       if (Platform.OS === 'web' && typeof window !== 'undefined' && window.location?.search?.includes('onboard=1')) {
+        setEntered(true);
         setOnboarded(false);
         return;
       }
       try {
+        const ent = await AsyncStorage.getItem(ENTERED_KEY);
+        setEntered(ent === '1' || Platform.OS !== 'web');
         const v = await AsyncStorage.getItem(ONBOARDED_KEY);
         setOnboarded(v === '1');
       } catch {
+        setEntered(true);
         setOnboarded(true); // storage failure → don't block the app
       }
     })();
@@ -95,8 +121,37 @@ export default function App() {
     setOnboarded(true);
   };
 
+  const enterApp = () => {
+    AsyncStorage.setItem(ENTERED_KEY, '1').catch(() => {});
+    setEntered(true);
+  };
+
+  const showDesktopFrame = useDesktopFrame();
+
   if (!fontsLoaded || onboarded === null) {
     return null; // Splash — fonts + onboarding flag must load before first paint
+  }
+
+  // ── Landing page (web first-time visitors only) ──
+  // Shows a premium marketing surface before entering the app.
+  // On native, the app store listing is the landing page — skip straight in.
+  if (!entered && Platform.OS === 'web') {
+    const landingContent = (
+      <SafeAreaProvider>
+        <StatusBar style="light" />
+        <LandingScreen onEnter={enterApp} />
+      </SafeAreaProvider>
+    );
+    if (showDesktopFrame) {
+      return (
+        <View style={webStyles.outer}>
+          <View style={webStyles.frame}>
+            {landingContent}
+          </View>
+        </View>
+      );
+    }
+    return landingContent;
   }
 
   // Onboarding renders outside the PalateProvider (it reads/writes the palate
@@ -110,7 +165,7 @@ export default function App() {
         </PalateProvider>
       </SafeAreaProvider>
     );
-    if (Platform.OS === 'web') {
+    if (showDesktopFrame) {
       return (
         <View style={webStyles.outer}>
           <View style={webStyles.frame}>
@@ -170,7 +225,7 @@ export default function App() {
     </SafeAreaProvider>
   );
 
-  if (Platform.OS === 'web') {
+  if (showDesktopFrame) {
     return (
       <View style={webStyles.outer}>
         <View style={webStyles.frame}>
