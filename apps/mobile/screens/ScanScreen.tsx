@@ -16,7 +16,7 @@
  *  - DB: live Supabase wines table with fuzzy name/estate matching
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Pressable, Image, Text, ActivityIndicator, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Eyebrow, Headline, BodyText, Card, Button, Chip, Divider } from '../components/index.js';
@@ -25,7 +25,9 @@ import { CameraIcon, BarcodeIcon, QrIcon } from '../components/ScanIcons.js';
 import { color, font, space, radius } from '../theme/tokens.js';
 import { MOCK_WINES, type MockWine } from '../lib/mockData.js';
 import { isSupabaseConfigured } from '../lib/supabase.js';
+import { useAuth } from '../hooks/useAuth.js';
 import { TastingNoteScreen } from './TastingNoteScreen.js';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type ScanMode = 'photo' | 'barcode' | 'qr';
 type ScanState = 'idle' | 'capturing' | 'processing' | 'matched' | 'nomatch';
@@ -36,8 +38,13 @@ interface WineAlternative {
   estateName: string;
 }
 
+const DAILY_SCAN_LIMIT = 10;
+const SCAN_COUNT_KEY = 'decanta.scanCount';
+
 export function ScanScreen() {
   const insets = useSafeAreaInsets();
+  const { profile } = useAuth();
+  const isPro = profile.isPro;
   const [mode, setMode] = useState<ScanMode | null>(null);
   const [state, setState] = useState<ScanState>('idle');
   const [capturedUri, setCapturedUri] = useState<string | null>(null);
@@ -46,9 +53,41 @@ export function ScanScreen() {
   const [tasting, setTasting] = useState<MockWine | null>(null);
   const [ocrText, setOcrText] = useState<string>('');
   const [extractedInfo, setExtractedInfo] = useState<string>('');
+  const [scanCount, setScanCount] = useState(0);
+  const [showScanLimit, setShowScanLimit] = useState(false);
+
+  // Load today's scan count
+  useEffect(() => {
+    (async () => {
+      const today = new Date().toISOString().slice(0, 10);
+      const stored = await AsyncStorage.getItem(SCAN_COUNT_KEY);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (parsed.date === today) {
+          setScanCount(parsed.count);
+        } else {
+          // New day — reset
+          await AsyncStorage.setItem(SCAN_COUNT_KEY, JSON.stringify({ date: today, count: 0 }));
+        }
+      }
+    })();
+  }, []);
+
+  function incrementScanCount() {
+    if (isPro) return; // Pro = unlimited
+    const today = new Date().toISOString().slice(0, 10);
+    const newCount = scanCount + 1;
+    setScanCount(newCount);
+    AsyncStorage.setItem(SCAN_COUNT_KEY, JSON.stringify({ date: today, count: newCount }));
+  }
 
   // ── PHOTO LABEL PATH ──
   async function capturePhoto() {
+    if (!isPro && scanCount >= DAILY_SCAN_LIMIT) {
+      setShowScanLimit(true);
+      return;
+    }
+    incrementScanCount();
     setState('capturing');
     try {
       const ImagePicker = await import('expo-image-picker');
@@ -452,6 +491,28 @@ export function ScanScreen() {
             ))}
           </>
         )}
+      </View>
+    );
+  }
+
+  // ── Scan limit reached (non-Pro) ──
+  if (showScanLimit) {
+    return (
+      <View style={{ flex: 1, backgroundColor: color.canvas, justifyContent: 'center', alignItems: 'center', padding: space.xl, paddingTop: insets.top + 40 }}>
+        <Headline size="md" style={{ textAlign: 'center' }}>You're tasting a lot today. 🍷</Headline>
+        <BodyText muted style={{ textAlign: 'center', marginTop: space.md, maxWidth: 300, lineHeight: 22 }}>
+          You've used all {DAILY_SCAN_LIMIT} free scans today. Come back tomorrow, or go Pro for unlimited scans.
+        </BodyText>
+        <View style={{ marginTop: space.xl, backgroundColor: color.canvasCard, borderWidth: 1, borderColor: 'rgba(212,148,44,0.15)', borderRadius: radius.sm, padding: space.lg, width: '100%', maxWidth: 320 }}>
+          <Text style={[font.captionMonoSm, { color: color.gold, letterSpacing: 1.5 }]}>DECANTA PRO · R89/MO</Text>
+          <View style={{ marginTop: space.md, gap: space.sm }}>
+            <BodyText size="sm">✓ Unlimited label & barcode scans</BodyText>
+            <BodyText size="sm">✓ Advanced palate analytics</BodyText>
+            <BodyText size="sm">✓ Cellar vault with ageability alerts</BodyText>
+          </View>
+          <Text style={[font.captionMonoSm, { color: color.bodyMid, marginTop: space.md }]}>14-day free trial · Cancel anytime</Text>
+        </View>
+        <Button variant="primary" style={{ marginTop: space.lg, alignSelf: 'center' }} onPress={() => setShowScanLimit(false)}>MAYBE LATER</Button>
       </View>
     );
   }

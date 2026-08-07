@@ -20,10 +20,12 @@ import { aromaLabel } from '@kelder/engine';
 import { usePalate } from '../hooks/usePalate.js';
 import { MOCK_WINES, MOCK_ESTATES, type MockEstate } from '../lib/mockData.js';
 import { EstateDetailScreen } from './EstateDetailScreen.js';
+import { useAuth } from '../hooks/useAuth.js';
 
 export function CellarScreen() {
   const insets = useSafeAreaInsets();
   const { notes, profile, wineForNote, removeNote } = usePalate();
+  const { isRegistered } = useAuth();
   const [estateView, setEstateView] = useState<MockEstate | null>(null);
 
   const avgRating = profile.noteCount > 0
@@ -65,6 +67,17 @@ export function CellarScreen() {
           </View>
         </View>
       </GradientSurface>
+
+      {/* Guest banner — local-only notes, gentle nudge to create account */}
+      {!isRegistered && notes.length > 0 && (
+        <View style={styles.guestBanner}>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.guestBannerTitle}>Saved locally</Text>
+            <Text style={styles.guestBannerBody}>Create a free cellar to sync across devices.</Text>
+          </View>
+          <Text style={styles.guestBannerCta}>SIGN UP →</Text>
+        </View>
+      )}
 
       <View style={{ padding: space.xl }}>
         {/* Palate profile — animated radar visualization */}
@@ -215,6 +228,41 @@ function EmptyHeroImage() {
 
 const styles = StyleSheet.create({
   // Stat cards — real filled warm-plum surfaces
+  // Guest banner
+  guestBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: space.md,
+    marginHorizontal: space.xl,
+    marginTop: space.md,
+    paddingHorizontal: space.md,
+    paddingVertical: space.sm,
+    backgroundColor: 'rgba(212,148,44,0.06)',
+    borderWidth: 1,
+    borderColor: 'rgba(212,148,44,0.15)',
+    borderRadius: radius.sm,
+  },
+  guestBannerTitle: {
+    fontFamily: 'GeistMono',
+    fontSize: 11,
+    fontWeight: '400',
+    letterSpacing: 1,
+    color: color.gold,
+  },
+  guestBannerBody: {
+    fontFamily: 'Inter',
+    fontSize: 12,
+    color: color.body,
+    marginTop: 2,
+  },
+  guestBannerCta: {
+    fontFamily: 'GeistMono',
+    fontSize: 11,
+    fontWeight: '400',
+    letterSpacing: 1,
+    color: color.gold,
+  },
+
   statRow: {
     flexDirection: 'row', gap: space.md, marginTop: space.xl,
   },

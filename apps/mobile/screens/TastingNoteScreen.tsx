@@ -31,6 +31,7 @@ import {
 } from '@kelder/engine';
 import type { MockWine } from '../lib/mockData.js';
 import { usePalate } from '../hooks/usePalate.js';
+import { useAuth } from '../hooks/useAuth.js';
 
 const CATEGORY_LABELS: Record<AromaCategory, string> = {
   fruity: 'Fruity',
@@ -71,7 +72,8 @@ export function TastingNoteScreen({
 }) {
   const insets = useSafeAreaInsets();
   const { addNote, profile } = usePalate();
-
+  const { isRegistered } = useAuth();
+  const [showGuestPrompt, setShowGuestPrompt] = useState(false);
   const [step, setStep] = useState(1);
   const [stars, setStars] = useState(0);
   const [noseAromas, setNoseAromas] = useState<string[]>([]);
@@ -151,7 +153,36 @@ export function TastingNoteScreen({
       setError(result.error ?? 'Could not save tasting note.');
       return;
     }
-    setSaved(true);
+    // Guest users: save locally, then show the "create your cellar" soft prompt
+    if (!isRegistered) {
+      setShowGuestPrompt(true);
+    } else {
+      setSaved(true);
+    }
+  }
+
+  // ── Guest soft prompt: "Your tasting is saved. Create a cellar to sync." ──
+  if (showGuestPrompt) {
+    return (
+      <View style={[styles.wrap, { paddingTop: insets.top + 24 }]}>
+        <View style={styles.savedCard}>
+          <Eyebrow>TASTING SAVED ✓</Eyebrow>
+          <Headline size="lg" style={{ marginTop: space.md }}>Your palate is taking shape.</Headline>
+          <BodyText muted style={{ marginTop: space.md }}>
+            {wine.name} is saved on this device. Decanta has updated your palate profile — your match scores just got smarter.
+          </BodyText>
+          <Divider />
+          <View style={{ backgroundColor: 'rgba(212,148,44,0.06)', borderRadius: radius.sm, padding: space.lg, marginTop: space.sm }}>
+            <Headline size="sm" style={{ color: color.gold }}>Create your free cellar</Headline>
+            <BodyText muted size="sm" style={{ marginTop: space.xs, lineHeight: 19 }}>
+              Sync your tastings across devices, build a full palate profile, and get personalised recommendations.
+            </BodyText>
+          </View>
+          <Button variant="primary" style={{ marginTop: space.lg }} onPress={onClose}>CREATE MY CELLAR →</Button>
+          <Button variant="outline" style={{ marginTop: space.md }} onPress={() => { setShowGuestPrompt(false); setSaved(true); }}>SAVE ANYWAY</Button>
+        </View>
+      </View>
+    );
   }
 
   // ── Saved success screen ──
