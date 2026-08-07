@@ -2,22 +2,41 @@
  * Discover — the home screen. Hero, signature SA varietals, top wines, estates by region.
  */
 
-import React, { useState, useEffect } from 'react';
-import { View, ScrollView, StyleSheet, FlatList, Pressable, TextInput, Text, Image, ActivityIndicator, Platform } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, ScrollView, StyleSheet, FlatList, Pressable, TextInput, Text, Image, ActivityIndicator, Platform, Animated } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Eyebrow, Headline, BodyText, Card, Chip, Button, Stars, MatchBadge, Divider } from '../components/index.js';
 import { EstateWordmark } from '../components/EstateWordmark.js';
+import { GradientSurface, GradientScrim } from '../components/GradientSurface.js';
+import { SurfaceCard } from '../components/SurfaceCard.js';
+import { WineShelf } from '../components/WineShelf.js';
+import { WineTypeList } from '../components/WineTypeList.js';
 import { TasteProfileChart, tasteProfileForVarietal } from '../components/TasteProfileChart.js';
 import { LoadingList } from '../components/Skeleton.js';
-import { color, font, radius, space } from '../theme/tokens.js';
+import { color, font, radius, space, wineTypeColor } from '../theme/tokens.js';
 import { MOCK_ESTATES, mockEstateById, type MockWine, type MockEstate } from '../lib/mockData.js';
 import { fetchWines, lastDataSource, type Wine } from '../lib/dataAccessor.js';
-import { VARIETALS, signatureVarietals, findWinesForFood } from '@kelder/engine';
+import { signatureVarietals, findWinesForFood } from '@kelder/engine';
 import type { FoodMatch } from '@kelder/engine';
-import { HERO_CELLAR, HERO_VINEYARD, wineImage, estateCover } from '../lib/imagery.js';
+import { HERO_CELLAR, wineImage } from '../lib/imagery.js';
 import { usePalate } from '../hooks/usePalate.js';
 import { TastingNoteScreen } from './TastingNoteScreen.js';
 import { EstateDetailScreen } from './EstateDetailScreen.js';
+import { EstateBrowseScreen } from './EstateBrowseScreen.js';
+import { StoriesScreen } from './StoriesScreen.js';
+import { ProfileScreen } from './ProfileScreen.js';
+import { useLocation } from '../hooks/useLocation.js';
+import { sortByDistance, formatDistance } from '../lib/geo.js';
+
+// Cellar-shelf metadata — one entry per wine type that has data. The accent
+// colour comes from wineTypeColor(meta.type). Order = shelf order on Discover.
+const SHELF_META: ReadonlyArray<{ type: string; title: string; subtitle: string }> = [
+  { type: 'red', title: 'REDS', subtitle: 'Bold, structured, age-worthy' },
+  { type: 'white', title: 'WHITES', subtitle: 'From steely Chenin to rich Chardonnay' },
+  { type: 'sparkling', title: 'SPARKLING', subtitle: 'Méthode Cap Classique' },
+  { type: 'fortified', title: 'FORTIFIED & DESSERT', subtitle: 'Port-style, late-harvest, Noble' },
+  { type: 'dessert', title: 'DESSERT', subtitle: 'Late-harvest & Noble' },
+];
 
 export function DiscoverScreen() {
   const insets = useSafeAreaInsets();
@@ -28,6 +47,11 @@ export function DiscoverScreen() {
   const [selected, setSelected] = useState<Wine | null>(null);
   const [tasting, setTasting] = useState<Wine | null>(null);
   const [estateView, setEstateView] = useState<MockEstate | null>(null);
+  const [showProfile, setShowProfile] = useState(false);
+  const [showEstateBrowse, setShowEstateBrowse] = useState(false);
+  const [showStories, setShowStories] = useState(false);
+  const [typeBrowse, setTypeBrowse] = useState<string | null>(null);
+  const { location, permission, request: requestLocation } = useLocation();
   const { matchFor } = usePalate();
   const [wines, setWines] = useState<Wine[]>([]);
   const [loading, setLoading] = useState(true);
@@ -72,6 +96,36 @@ export function DiscoverScreen() {
       />
     );
   }
+  if (showProfile) {
+    return <ProfileScreen onBack={() => setShowProfile(false)} />;
+  }
+  if (showStories) {
+    return <StoriesScreen onBack={() => setShowStories(false)} />;
+  }
+  if (showEstateBrowse) {
+    return <EstateBrowseScreen onBack={() => setShowEstateBrowse(false)} />;
+  }
+  // Wine-type "browse all" — full bounded list of one type (opened from a shelf)
+  if (typeBrowse) {
+    const meta = SHELF_META.find((m) => m.type === typeBrowse);
+    if (meta) {
+      return (
+        <WineTypeList
+          type={meta.type}
+          title={meta.title}
+          accentColor={wineTypeColor(meta.type)}
+          wines={wines.filter((w) => w.type === meta.type)}
+          onBack={() => setTypeBrowse(null)}
+          onWinePress={(w) => setSelected(w)}
+          onEstatePress={(eid) => {
+            const e = mockEstateById(eid);
+            if (e) setEstateView(e);
+          }}
+          matchFor={matchFor}
+        />
+      );
+    }
+  }
   if (tasting) {
     return <TastingNoteScreen wine={tasting} onClose={() => { setTasting(null); setSelected(null); }} />;
   }
@@ -103,16 +157,31 @@ export function DiscoverScreen() {
     );
   }
 
-  const signature = ['chenin-blanc', 'pinotage', 'mcc'];
+  // Top-rated carousel (calm — no type colour on these cards)
   const topRated = [...wines].filter(w => w.avgStars > 0).sort((a, b) => b.avgStars - a.avgStars).slice(0, 6);
-  const regions = [...new Set(MOCK_ESTATES.map((e) => e.region))].slice(0, 8);
+
+  // Group wines by type for the cellar shelves. Only types that have data appear.
+  // The wine-type colour lives on the SHELF HEADER + a small card dot — never on
+  // the card fill. This is the anti-christmas-tree invariant.
+  const shelves = SHELF_META
+    .map((m) => ({ meta: m, wines: wines.filter((w) => w.type === m.type) }))
+    .filter((s) => s.wines.length > 0);
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: color.canvas }} contentContainerStyle={{ paddingTop: insets.top }}>
       {/* Editorial hero — full-bleed photo with overlay */}
       <View style={styles.heroPhoto}>
         <Image source={{ uri: HERO_CELLAR.url }} style={styles.heroPhotoImg} resizeMode="cover" />
-        <View style={styles.heroOverlay} />
+        <GradientScrim />
+        {/* Profile access — gear icon top-right (Profile moved out of tab bar to make room for Learn) */}
+        <Pressable
+          hitSlop={12}
+          onPress={() => setShowProfile(true)}
+          style={[styles.profileBtn, { top: Math.max(insets.top, space.md) + space.sm }]}
+          accessibilityLabel="Profile"
+        >
+          <Text style={styles.profileBtnText}>⊙</Text>
+        </Pressable>
         <View style={styles.heroContent}>
           <Eyebrow>YOUR CELLAR · YOUR PALATE</Eyebrow>
           <Text style={styles.heroHeadline}>Discover South African wine.</Text>
@@ -152,7 +221,7 @@ export function DiscoverScreen() {
         </View>
       </View>
 
-      {/* Top rated — discovery carousel */}
+      {/* Top rated — discovery carousel (moved up; calm cards, no type colour) */}
       {topRated.length > 0 && (
       <View style={styles.section}>
         <Eyebrow>TOP RATED // 01</Eyebrow>
@@ -180,78 +249,83 @@ export function DiscoverScreen() {
       </View>
       )}
 
-      {/* Wine list — the core browsing experience */}
-      <View style={styles.section}>
-        <Eyebrow>{query ? `RESULTS · ${filtered.length}` : 'ALL WINES'}</Eyebrow>
-        {filtered.map((w) => {
-          const img = wineImage(w.id);
-          return (
-            <Card key={w.id} onPress={() => setSelected(w)} style={styles.listCard}>
-              <View style={{ flexDirection: 'row', gap: space.md }}>
-                <View style={styles.listThumbWrap}>
-                  <Image source={{ uri: img.url }} style={styles.listThumb} resizeMode="contain" />
-                </View>
-                <View style={{ flex: 1, minWidth: 0 }}>
-                  <Text style={[font.bodyMd, { color: color.ink, fontWeight: '500' }]} numberOfLines={1}>
-                    {w.name}{w.year > 0 ? ` '${String(w.year).slice(2)}` : ''}
-                  </Text>
-                  <Pressable hitSlop={8} onPress={(e) => {
-                    e.stopPropagation?.();
-                    const est = mockEstateById(w.estateId);
-                    if (est) setEstateView(est);
-                  }}>
-                    <Text style={[font.captionMonoSm, { color: color.gold, marginTop: 2 }]} numberOfLines={1}>
-                      {w.estateName.toUpperCase()}
-                    </Text>
-                  </Pressable>
-                  <Text style={[font.captionMonoSm, { color: color.bodyMid, marginTop: 1 }]} numberOfLines={1}>
-                    {w.region}
-                  </Text>
-                  <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.md, marginTop: space.sm }}>
-                    <Stars value={w.avgStars} size={11} />
-                    <MatchBadge score={matchFor(w)} />
-                  </View>
-                </View>
-              </View>
-            </Card>
-          );
-        })}
-      </View>
-
-      {/* Browse by varietal — deeper grape education */}
-      <View style={styles.section}>
-        <Eyebrow>BROWSE BY VARIETAL // {VARIETALS.length}</Eyebrow>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: space.sm, marginTop: space.md }}>
-          {VARIETALS.map((v) => {
-            const active = varietalFilter === v.slug;
-            return (
-              <Pressable key={v.slug} hitSlop={8} onPress={() => setVarietalFilter(active ? null : v.slug)}>
-                <Chip tone={active ? (v.type === 'red' ? 'wine' : 'accent') : 'neutral'}>
-                  {v.name.replace(' / Syrah', '').replace(' (Méthode Cap Classique)', '')}
-                </Chip>
+      {/* ── The cellar shelves OR a flat filtered-results list ─────────────────
+          When the user types a query or picks a grape, results mix types and
+          colour-coding is meaningless — so we show a calm flat list. Otherwise
+          we show one horizontal shelf per wine type: colour names the shelf,
+          cards stay calm. Replaces the old ALL WINES vertical dump. */}
+      {query.trim().length > 0 || varietalFilter ? (
+        <View style={styles.section}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+            <Eyebrow>{query ? `RESULTS · ${filtered.length}` : 'FILTERED'}</Eyebrow>
+            {varietalFilter && (
+              <Pressable hitSlop={8} onPress={() => setVarietalFilter(null)}>
+                <Text style={[font.captionMonoSm, { color: color.bodyMid, textDecorationLine: 'underline' }]}>
+                  CLEAR ✕
+                </Text>
               </Pressable>
-            );
-          })}
-        </ScrollView>
-        {varietalFilter && (
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm, marginTop: space.md }}>
-            <BodyText size="sm" muted>Filtered by: </BodyText>
-            <Chip tone={VARIETALS.find((v) => v.slug === varietalFilter)?.type === 'red' ? 'wine' : 'accent'}>
-              {VARIETALS.find((v) => v.slug === varietalFilter)?.name}
-            </Chip>
-            <Pressable hitSlop={8} onPress={() => setVarietalFilter(null)}>
-              <Text style={[font.captionMonoSm, { color: color.bodyMid, textDecorationLine: 'underline' }]}>CLEAR ✕</Text>
-            </Pressable>
+            )}
           </View>
-        )}
+          {filtered.length === 0 ? (
+            <BodyText muted style={{ marginTop: space.md }}>
+              No wines match. Try a grape, estate, or region.
+            </BodyText>
+          ) : (
+            filtered.map((w) => (
+              <CalmWineRow
+                key={w.id}
+                wine={w}
+                matchScore={matchFor(w)}
+                onPress={() => setSelected(w)}
+                onEstatePress={() => {
+                  const est = mockEstateById(w.estateId);
+                  if (est) setEstateView(est);
+                }}
+              />
+            ))
+          )}
+        </View>
+      ) : (
+        shelves.map(({ meta, wines: typeWines }) => (
+          <WineShelf
+            key={meta.type}
+            title={meta.title}
+            subtitle={meta.subtitle}
+            accentColor={wineTypeColor(meta.type)}
+            wines={typeWines}
+            totalCount={typeWines.length}
+            onWinePress={(w) => setSelected(w)}
+            onBrowseAll={() => setTypeBrowse(meta.type)}
+          />
+        ))
+      )}
+
+      {/* Stories — editorial entry point */}
+      <View style={styles.section}>
+        <Pressable hitSlop={4} onPress={() => setShowStories(true)} style={styles.storiesEntryCard}>
+          <View style={styles.storiesEntryLeft}>
+            <Eyebrow style={{ color: color.gold }}>STORIES // WESTERN CAPE</Eyebrow>
+            <Text style={styles.storiesEntryTitle}>The people behind the wine.</Text>
+            <Text style={styles.storiesEntrySub}>Winemaker profiles, heritage & transformation stories.</Text>
+            <Text style={styles.storiesEntryCta}>READ STORIES →</Text>
+          </View>
+          <View style={styles.storiesEntryThumb}>
+            <Image source={{ uri: 'https://images.unsplash.com/photo-1585803085621-7eea6581caec?w=200&q=80' }} style={styles.storiesEntryThumbImg} resizeMode="cover" />
+            <View style={styles.storiesEntryThumbScrim} />
+            <Text style={styles.storiesEntryThumbLabel}>6 STORIES</Text>
+          </View>
+        </Pressable>
       </View>
 
-      {/* Regions */}
+      {/* Wineries Near You — replaces the inert Regions section */}
       <View style={styles.section}>
-        <Eyebrow>WESTERN CAPE REGIONS</Eyebrow>
-        <View style={styles.chipRow}>
-          {regions.map((r) => <Chip key={r} tone="neutral">{r}</Chip>)}
-        </View>
+        <Eyebrow>WINERIES NEAR YOU</Eyebrow>
+        <NearYouCard
+          location={location}
+          permission={permission}
+          onEnableLocation={requestLocation}
+          onBrowseAll={() => setShowEstateBrowse(true)}
+        />
       </View>
 
       {/* Food pairing — small section at the bottom */}
@@ -302,31 +376,102 @@ export function DiscoverScreen() {
   );
 }
 
-function typeColor(type: string): string {
-  if (type === 'red') return color.redWine;
-  if (type === 'white') return color.whiteWine;
-  if (type === 'rose') return color.roseWine;
-  if (type === 'sparkling') return color.sparkling;
-  return color.canvasMid;
+// ── Calm wine row — the shared card for flat filtered lists (search + varietal) ─
+// Uniform warm-neutral surface + a small type-colour dot. Never a per-card tint:
+// on a mixed result set, colour coding only reads as noise (anti-christmas-tree).
+function CalmWineRow({ wine, matchScore, onPress, onEstatePress }: {
+  wine: Wine; matchScore: number; onPress: () => void; onEstatePress: () => void;
+}) {
+  const img = wineImage(wine.id);
+  return (
+    <SurfaceCard
+      onPress={onPress}
+      surface="calm"
+      wineType={wine.type}
+      typeDot
+      style={{ marginVertical: space.xs, padding: space.md }}
+    >
+      <View style={{ flexDirection: 'row', gap: space.md }}>
+        <View style={styles.listThumbWrap}>
+          <Image source={{ uri: img.url }} style={styles.listThumb} resizeMode="contain" />
+        </View>
+        <View style={{ flex: 1, minWidth: 0 }}>
+          <Text style={[font.bodyMd, { color: color.ink, fontWeight: '500' }]} numberOfLines={1}>
+            {wine.name}{wine.year > 0 ? ` '${String(wine.year).slice(2)}` : ''}
+          </Text>
+          <Pressable hitSlop={8} onPress={(e) => { e.stopPropagation?.(); onEstatePress(); }}>
+            <Text style={[font.captionMonoSm, { color: color.gold, marginTop: 2 }]} numberOfLines={1}>
+              {wine.estateName.toUpperCase()}
+            </Text>
+          </Pressable>
+          <Text style={[font.captionMonoSm, { color: color.bodyMid, marginTop: 1 }]} numberOfLines={1}>
+            {wine.region}
+          </Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.md, marginTop: space.sm }}>
+            <Stars value={wine.avgStars} size={11} />
+            <MatchBadge score={matchScore} wineType={wine.type} />
+          </View>
+        </View>
+      </View>
+    </SurfaceCard>
+  );
 }
 
 // ── Wine detail (rendered when a wine is selected) ──────────────────────────
+// Cinematic: parallax hero, gradient scrim, fade-in content, circular back.
 function WineDetail({ wine, matchScore, onBack, onRate, onEstatePress }: { wine: MockWine; matchScore: number; onBack: () => void; onRate: () => void; onEstatePress: () => void }) {
   const insets = useSafeAreaInsets();
   const img = wineImage(wine.id);
-  const wineTypeColor = wine.type === 'red' || wine.type === 'fortified' ? color.wine : color.gold;
+  const wineTypeColor = wine.type === 'red' || wine.type === 'fortified' ? color.redWine
+    : wine.type === 'white' ? color.whiteWine
+    : wine.type === 'rose' ? color.roseWine
+    : wine.type === 'sparkling' ? color.sparklingWine
+    : color.gold;
+
+  // Parallax: hero image translates at 0.5× scroll rate
+  const scrollY = useRef(new Animated.Value(0)).current;
+  const heroTranslate = scrollY.interpolate({
+    inputRange: [-340, 0, 340],
+    outputRange: [170, 0, -170],
+    extrapolate: 'clamp',
+  });
+
+  // Fade-in: content body fades + slides up on mount
+  const contentFade = useRef(new Animated.Value(0)).current;
+  useEffect(() => {
+    Animated.timing(contentFade, {
+      toValue: 1,
+      duration: 500,
+      delay: 200,
+      useNativeDriver: true,
+    }).start();
+  }, []);
+
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: color.canvas }} contentContainerStyle={{ paddingBottom: insets.bottom + space.huge }}>
-      {/* Full-bleed hero: bottle photo with dark overlay, back button overlaid */}
+    <Animated.ScrollView
+      style={{ flex: 1, backgroundColor: color.canvas }}
+      contentContainerStyle={{ paddingBottom: insets.bottom + space.huge }}
+      onScroll={Animated.event(
+        [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+        { useNativeDriver: true }
+      )}
+      scrollEventThrottle={16}
+    >
+      {/* Cinematic hero: parallax bottle photo + layered gradient scrim */}
       <View style={styles.detailHero}>
-        <Image source={{ uri: img.url }} style={styles.detailHeroImg} resizeMode="cover" />
-        <View style={styles.detailHeroOverlay} />
+        <Animated.Image
+          source={{ uri: img.url }}
+          style={[styles.detailHeroImg, { transform: [{ translateY: heroTranslate }] }]}
+          resizeMode="cover"
+        />
+        <GradientScrim />
+        {/* Circular back button */}
         <Pressable
           onPress={onBack}
           hitSlop={12}
           style={[styles.detailBackBtn, { top: Math.max(insets.top, space.md) + space.md }]}
         >
-          <Text style={[font.captionMono, { color: color.ink }]}>← BACK</Text>
+          <Text style={styles.detailBackIcon}>‹</Text>
         </Pressable>
         {/* Type badge */}
         <View style={[styles.detailTypeBadge, { borderColor: wineTypeColor }]}>
@@ -344,7 +489,8 @@ function WineDetail({ wine, matchScore, onBack, onRate, onEstatePress }: { wine:
         </View>
       </View>
 
-      <View style={{ padding: space.xl }}>
+      {/* Content body — fades + slides up on entry */}
+      <Animated.View style={{ padding: space.xl, opacity: contentFade, transform: [{ translateY: contentFade.interpolate({ inputRange: [0, 1], outputRange: [30, 0] }) }] }}>
         {/* Estate link */}
         <Pressable onPress={onEstatePress} hitSlop={8}>
           <EstateWordmark estateId={wine.estateId} name={wine.estateName} size="sm" />
@@ -358,7 +504,7 @@ function WineDetail({ wine, matchScore, onBack, onRate, onEstatePress }: { wine:
         {/* Rating + match row */}
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.xl, marginTop: space.lg }}>
           <Stars value={wine.avgStars} count={wine.ratingCount} size={18} />
-          <MatchBadge score={matchScore} />
+          <MatchBadge score={matchScore} wineType={wine.type} />
         </View>
 
         <Divider />
@@ -417,8 +563,66 @@ function WineDetail({ wine, matchScore, onBack, onRate, onEstatePress }: { wine:
 
         <Button variant="primary" style={{ marginTop: space.md }} onPress={onRate}>★ RATE & LOG THIS WINE</Button>
         <Button variant="outline" style={{ marginTop: space.md }} onPress={onEstatePress}>VIEW ESTATE ↗</Button>
+      </Animated.View>
+    </Animated.ScrollView>
+  );
+}
+
+// ── Near You card (Discover preview) ────────────────────────────────────────
+
+function NearYouCard({
+  location, permission, onEnableLocation, onBrowseAll,
+}: {
+  location: { lat: number; lng: number; isFallback: boolean } | null;
+  permission: string;
+  onEnableLocation: () => void;
+  onBrowseAll: () => void;
+}) {
+  if (!location) {
+    return (
+      <View style={styles.nearYouCard}>
+        <BodyText muted style={{ marginBottom: space.md }}>
+          Enable location to find Western Cape wineries near you.
+        </BodyText>
+        <Button variant="primary" onPress={onEnableLocation}>ENABLE LOCATION</Button>
       </View>
-    </ScrollView>
+    );
+  }
+
+  const nearest = sortByDistance(MOCK_ESTATES, location.lat, location.lng).slice(0, 3);
+  const nearbyCount = sortByDistance(MOCK_ESTATES, location.lat, location.lng).length;
+  // Small static map thumbnail
+  const tileUrl = `https://staticmap.openstreetmap.de/staticmap.php?center=${location.lat.toFixed(4)},${location.lng.toFixed(4)}&zoom=12&size=600x200&maptype=darkmatter`;
+
+  return (
+    <Pressable hitSlop={4} onPress={onBrowseAll} style={styles.nearYouCard}>
+      <View style={styles.nearYouMapWrap}>
+        <Image source={{ uri: tileUrl }} style={styles.nearYouMap} resizeMode="cover" />
+        <View style={styles.nearYouMapScrim} />
+        <View style={styles.nearYouUserPin} />
+        {nearest.map(({ estate }) => {
+          const dLat = estate.lat - location.lat;
+          const dLng = estate.lng - location.lng;
+          const left = Math.max(8, Math.min(92, 50 + dLng * 80));
+          const top = Math.max(10, Math.min(90, 50 - dLat * 80));
+          return (
+            <View key={estate.id} style={[styles.nearYouEstatePin, { left: `${left}%`, top: `${top}%` }]} />
+          );
+        })}
+      </View>
+      <View style={{ padding: space.md }}>
+        <Headline size="sm" style={{ color: color.gold }}>
+          {nearbyCount} WINERIES NEARBY
+        </Headline>
+        {nearest.map(({ estate, distanceKm }) => (
+          <View key={estate.id} style={styles.nearYouEstateRow}>
+            <BodyText size="sm" style={{ flex: 1 }}>{estate.name}</BodyText>
+            <Text style={styles.nearYouDist}>{formatDistance(distanceKm).toUpperCase()}</Text>
+          </View>
+        ))}
+        <Text style={styles.nearYouBrowse}>BROWSE ALL WINERIES →</Text>
+      </View>
+    </Pressable>
   );
 }
 
@@ -427,6 +631,18 @@ const styles = StyleSheet.create({
   heroPhoto: { height: 360, position: 'relative', justifyContent: 'flex-end' },
   heroPhotoImg: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },
   heroOverlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: color.overlayStrong },
+  profileBtn: {
+    position: 'absolute', right: space.lg, zIndex: 10,
+    width: 36, height: 36, borderRadius: 9999,
+    borderWidth: 1, borderColor: 'rgba(196,151,60,0.3)',
+    backgroundColor: 'rgba(8,3,10,0.6)',
+    justifyContent: 'center', alignItems: 'center',
+  },
+  profileBtnText: {
+    color: color.gold,
+    fontSize: 18,
+    lineHeight: 20,
+  },
   heroContent: { padding: space.xl, paddingBottom: space.xxl },
   heroHeadline: { fontFamily: 'CormorantGaramond, Georgia, serif', fontSize: 40, fontWeight: '400', color: color.ink, letterSpacing: -1, lineHeight: 44, marginTop: space.sm },
   heroSub: { fontFamily: 'Inter, system-ui, sans-serif', fontSize: 15, color: color.body, lineHeight: 22, marginTop: space.md, maxWidth: 300 },
@@ -474,18 +690,26 @@ const styles = StyleSheet.create({
   listCard: { marginVertical: space.sm },
 
   // Wine detail — full-bleed hero
-  detailHero: { height: 340, position: 'relative' },
-  detailHeroImg: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },
-  detailHeroOverlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: color.overlayStrong },
+  detailHero: { height: 340, position: 'relative', overflow: 'hidden' },
+  detailHeroImg: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, width: '100%', height: 340 },
   detailBackBtn: {
     position: 'absolute',
     left: space.xl,
+    width: 38,
+    height: 38,
+    borderRadius: 9999,
     backgroundColor: 'rgba(8,3,10,0.72)',
     borderWidth: 1,
     borderColor: color.hairline,
-    borderRadius: radius.pill,
-    paddingHorizontal: space.md,
-    paddingVertical: space.sm,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  detailBackIcon: {
+    fontSize: 28,
+    fontWeight: '300',
+    color: color.ink,
+    lineHeight: 30,
+    marginTop: -3,
   },
   detailTypeBadge: {
     position: 'absolute',
@@ -508,4 +732,77 @@ const styles = StyleSheet.create({
   statRow: { flexDirection: 'row', gap: space.xxl, marginTop: space.sm },
   statCell: { gap: space.xs },
   statValue: { fontFamily: 'CormorantGaramond, Georgia, serif', fontSize: 22, color: color.ink, fontWeight: '400' },
+
+  // Stories entry card
+  storiesEntryCard: {
+    flexDirection: 'row',
+    borderWidth: 1, borderColor: 'rgba(196,151,60,0.25)',
+    borderRadius: radius.sm, overflow: 'hidden',
+    backgroundColor: 'rgba(196,151,60,0.04)',
+  },
+  storiesEntryLeft: { flex: 1, padding: space.lg },
+  storiesEntryTitle: {
+    fontFamily: 'Cormorant Garamond, Georgia, serif',
+    fontSize: 22, fontWeight: '400', color: color.ink,
+    lineHeight: 26, marginTop: space.xs,
+  },
+  storiesEntrySub: {
+    fontFamily: 'Inter, system-ui, sans-serif',
+    fontSize: 13, color: color.body, lineHeight: 18,
+    marginTop: space.xs,
+  },
+  storiesEntryCta: {
+    ...font.captionMonoSm,
+    color: color.gold, letterSpacing: 1.5,
+    marginTop: space.md,
+  },
+  storiesEntryThumb: {
+    width: 100, position: 'relative',
+  },
+  storiesEntryThumbImg: {
+    ...StyleSheet.absoluteFillObject,
+  },
+  storiesEntryThumbScrim: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(8,3,10,0.5)',
+  },
+  storiesEntryThumbLabel: {
+    ...font.captionMonoSm,
+    color: color.gold,
+    position: 'absolute', bottom: space.sm, left: space.sm,
+    letterSpacing: 1,
+  },
+
+  // Near You card
+  nearYouCard: {
+    borderWidth: 1, borderColor: color.hairline, borderRadius: radius.sm,
+    overflow: 'hidden', backgroundColor: color.canvasCard,
+  },
+  nearYouMapWrap: { height: 140, position: 'relative' },
+  nearYouMap: { ...StyleSheet.absoluteFillObject },
+  nearYouMapScrim: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(8,3,10,0.50)' },
+  nearYouUserPin: {
+    position: 'absolute', left: '50%', top: '50%',
+    width: 12, height: 12, borderRadius: 9999,
+    backgroundColor: color.gold, borderWidth: 2, borderColor: color.canvas,
+    transform: [{ translateX: -6 }, { translateY: -6 }],
+    zIndex: 10,
+  },
+  nearYouEstatePin: {
+    position: 'absolute',
+    width: 8, height: 8, borderRadius: 9999,
+    backgroundColor: color.wineBright, borderWidth: 1, borderColor: color.gold,
+    transform: [{ translateX: -4 }, { translateY: -4 }],
+  },
+  nearYouEstateRow: {
+    flexDirection: 'row', alignItems: 'center', marginTop: space.xs,
+  },
+  nearYouDist: {
+    ...font.captionMonoSm, color: color.gold, letterSpacing: 1,
+  },
+  nearYouBrowse: {
+    ...font.captionMonoSm, color: color.gold, letterSpacing: 1.5,
+    marginTop: space.md, paddingTop: space.sm,
+    borderTopWidth: 1, borderTopColor: color.hairline,
+  },
 });

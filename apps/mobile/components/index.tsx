@@ -12,7 +12,7 @@ import {
   View, Text, Pressable, StyleSheet, type ViewStyle, type TextStyle,
   type PressableProps, ActivityIndicator,
 } from 'react-native';
-import { color, font, radius, space } from '../theme/tokens.js';
+import { color, font, radius, space, wineTypeColor } from '../theme/tokens.js';
 
 // ── Eyebrow (caption-mono, the AISP section label) ──────────────────────────
 
@@ -161,8 +161,11 @@ export function Divider({ style }: { style?: ViewStyle }) {
 
 // ── Match score badge ────────────────────────────────────────────────────────
 
-export function MatchBadge({ score }: { score: number }) {
-  const tone = score >= 60 ? color.gold : color.mute;
+export function MatchBadge({ score, wineType }: { score: number; wineType?: string }) {
+  // Tiered colour: strong matches get the wine-type spectrum colour,
+  // mid matches get gold, weak matches stay muted.
+  const typeCol = wineType ? wineTypeColor(wineType) : color.gold;
+  const tone = score >= 60 ? typeCol : score >= 40 ? color.gold : color.mute;
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.xs }}>
       <Text style={[font.captionMonoSm, { color: tone }]}>{score}% MATCH</Text>

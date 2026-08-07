@@ -109,9 +109,9 @@ export const WINE_IMAGES: Record<string, Photo> = {
   // JPEGs replaced with PNG equivalents where available; otherwise mix-blend-mode handles it.
   w1:  { url: 'https://kanonkop.co.za/wp-content/uploads/2026/02/Kanonkop-Pinotage-NV.png', alt: 'Kanonkop Pinotage bottle', credit: 'Kanonkop Estate' },
   w2:  { url: 'https://www.kleinconstantia.com/wp-content/uploads/2025/10/VDC-2019-2021.png', alt: 'Vin de Constance bottle', credit: 'Klein Constantia' },
-  // Sadie Family — use the wine collection PNG which has transparent background
-  w3:  { url: 'https://thesadiefamily.com/wp-content/uploads/2026/05/The-Sadie-Family-Wines-Wine-Collection.png', alt: 'Sadie Columella bottle', credit: 'Sadie Family Wines' },
-  w4:  { url: 'https://thesadiefamily.com/wp-content/uploads/2026/05/The-Sadie-Family-Wines-Wine-Collection.png', alt: 'Sadie Skurfberg bottle', credit: 'Sadie Family Wines' },
+  // Sadie Family — Pexels dark-background wine shots (estate site only serves white-bg PNGs)
+  w3:  { url: 'https://images.pexels.com/photos/3407777/pexels-photo-3407777.jpeg?auto=compress&cs=tinysrgb&w=400', alt: 'Sadie Columella red wine bottle', credit: 'Pexels' },
+  w4:  { url: 'https://images.pexels.com/photos/2702805/pexels-photo-2702805.jpeg?auto=compress&cs=tinysrgb&w=400', alt: 'Sadie Skurfberg white wine bottle', credit: 'Pexels' },
   w5:  { url: 'https://hamiltonrussellvineyards.com/wp-content/uploads/2026/02/Hamilton-Russell-Vineyards-Pinot-Noir-2025.png', alt: 'Hamilton Russell Pinot Noir bottle', credit: 'Hamilton Russell Vineyards' },
   // Chocolate Block: dark Unsplash bottle as fallback (official site has no hotlink-safe packshot)
   w6:  { url: 'https://images.unsplash.com/photo-1554230561-31bdc707b537?w=400&q=80', alt: 'The Chocolate Block wine bottle', credit: 'Unsplash' },
@@ -166,6 +166,37 @@ export const FESTIVAL_IMAGES: Record<string, Photo> = {
   ev34: { url: 'https://images.unsplash.com/photo-1474722883778-792e7990302f?w=800&q=80', alt: 'Greyton village', credit: 'Unsplash' },
   ev35: { url: 'https://images.pexels.com/photos/5690802/pexels-photo-5690802.jpeg?auto=compress&cs=tinysrgb&w=800', alt: 'Stellenbosch street soiree', credit: 'Pexels' },
   ev36: { url: 'https://images.pexels.com/photos/5690802/pexels-photo-5690802.jpeg?auto=compress&cs=tinysrgb&w=800', alt: 'Durban wine festival', credit: 'Pexels' },
+};
+
+// ── Seasonal chapter hero imagery ───────────────────────────────────────────
+// One hero per calendar chapter (matches migration 0004's decanta_event_chapter()).
+// All URLs sourced from the verified pool above (HTTP 200, image/jpeg, no hotlink block).
+export type EventChapter = 'harvest' | 'winter' | 'spring' | 'festive';
+
+export const CHAPTER_HEROES: Record<EventChapter, Photo & { tagline: string; months: string }> = {
+  harvest: {
+    ...HERO_VINEYARD,
+    tagline: 'Vineyards wake. Grapes come in. Cellars hum.',
+    months: 'JAN – MAR',
+  },
+  winter: {
+    url: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=80',
+    alt: 'Dark barrel cellar, candlelit',
+    tagline: 'Fireside tastings, hop-between valleys, the Cape at its cosiest.',
+    months: 'APR – AUG',
+  },
+  spring: {
+    url: 'https://images.unsplash.com/photo-1474722883778-792e7990302f?w=1200&q=80',
+    alt: 'Green vineyard hillside in spring bloom',
+    tagline: 'West Coast flowers, Pinotage on tap, Swartland awakens.',
+    months: 'SEP – OCT',
+  },
+  festive: {
+    url: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=1200&q=80',
+    alt: 'Wine glasses cheering in celebration',
+    tagline: 'MCC, Cap Classique, and estate Christmas markets.',
+    months: 'NOV – DEC',
+  },
 };
 
 export function estateCover(estateId: string): Photo {

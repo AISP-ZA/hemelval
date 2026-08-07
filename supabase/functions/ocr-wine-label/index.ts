@@ -31,7 +31,7 @@ const ALLOWED_ORIGINS = [
   "https://decanta-app.vercel.app",
   "https://decanta.vercel.app",
   "https://decanta.co.za",
-  "https://decanta-app.vercel.app", // legacy URL until Vercel project renamed
+  "http://localhost:8081", // Expo web preview (primary dev)
   "http://localhost:8086",
   "http://localhost:8083",
   "http://localhost:3000",

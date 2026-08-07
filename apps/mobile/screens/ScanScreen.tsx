@@ -21,6 +21,7 @@ import { View, StyleSheet, Pressable, Image, Text, ActivityIndicator, Platform }
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Eyebrow, Headline, BodyText, Card, Button, Chip, Divider } from '../components/index.js';
 import { BarcodeScanner } from '../components/BarcodeScanner.js';
+import { CameraIcon, BarcodeIcon, QrIcon } from '../components/ScanIcons.js';
 import { color, font, space, radius } from '../theme/tokens.js';
 import { MOCK_WINES, type MockWine } from '../lib/mockData.js';
 import { isSupabaseConfigured } from '../lib/supabase.js';
@@ -29,12 +30,19 @@ import { TastingNoteScreen } from './TastingNoteScreen.js';
 type ScanMode = 'photo' | 'barcode' | 'qr';
 type ScanState = 'idle' | 'capturing' | 'processing' | 'matched' | 'nomatch';
 
+interface WineAlternative {
+  slug: string;
+  name: string;
+  estateName: string;
+}
+
 export function ScanScreen() {
   const insets = useSafeAreaInsets();
   const [mode, setMode] = useState<ScanMode | null>(null);
   const [state, setState] = useState<ScanState>('idle');
   const [capturedUri, setCapturedUri] = useState<string | null>(null);
   const [matched, setMatched] = useState<MockWine | null>(null);
+  const [alternatives, setAlternatives] = useState<WineAlternative[]>([]);
   const [tasting, setTasting] = useState<MockWine | null>(null);
   const [ocrText, setOcrText] = useState<string>('');
   const [extractedInfo, setExtractedInfo] = useState<string>('');
@@ -78,12 +86,14 @@ export function ScanScreen() {
         if (result.match) {
           setExtractedInfo(result.extractedText);
           setMatched(result.match);
+          setAlternatives(result.alternatives);
           setState('matched');
           return;
         } else if (result.extractedText) {
-          // Gemini extracted data but no DB match
+          // Gemini extracted data but no DB match — keep alternatives for "did you mean?"
           setExtractedInfo(result.extractedText);
           setOcrText(`Detected: ${result.extractedText}`);
+          setAlternatives(result.alternatives);
           setState('nomatch');
           return;
         }
@@ -193,11 +203,12 @@ export function ScanScreen() {
   async function callGeminiEdgeFunction(base64Image: string): Promise<{
     extractedText: string;
     match: MockWine | null;
+    alternatives: WineAlternative[];
   }> {
     try {
       const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL;
       const anonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
-      if (!supabaseUrl || !anonKey) return { extractedText: '', match: null };
+      if (!supabaseUrl || !anonKey) return { extractedText: '', match: null, alternatives: [] };
 
       const res = await fetch(`${supabaseUrl}/functions/v1/ocr-wine-label`, {
         method: 'POST',
@@ -208,7 +219,12 @@ export function ScanScreen() {
         },
         body: JSON.stringify({ image: base64Image }),
       });
-      if (!res.ok) return { extractedText: '', match: null };
+      if (!res.ok) {
+        // Surface the failure so the user knows why we fell back to Tesseract/OCR.
+        // (A 503 = GOOGLE_API_KEY not set on the edge function; 502 = Gemini API error.)
+        console.warn('[scan] edge function returned', res.status);
+        return { extractedText: '', match: null, alternatives: [] };
+      }
       const data = await res.json();
 
       // Build extracted text from Gemini's structured output
@@ -227,12 +243,17 @@ export function ScanScreen() {
             avgStars: m.avgStars ?? 0, ratingCount: m.ratingCount ?? 0,
             about: m.about ?? '', pairings: [], serving: '', year: ex.vintage ? Number(ex.vintage) : 0,
           },
+          alternatives: Array.isArray(data.alternatives) ? data.alternatives : [],
         };
       }
 
-      return { extractedText: parts, match: null };
+      return {
+        extractedText: parts,
+        match: null,
+        alternatives: Array.isArray(data.alternatives) ? data.alternatives : [],
+      };
     } catch {
-      return { extractedText: '', match: null };
+      return { extractedText: '', match: null, alternatives: [] };
     }
   }
 
@@ -371,6 +392,7 @@ export function ScanScreen() {
     setState('idle');
     setCapturedUri(null);
     setMatched(null);
+    setAlternatives([]);
     setOcrText('');
     setExtractedInfo('');
   }
@@ -412,6 +434,32 @@ export function ScanScreen() {
           ✓ YES — RATE & LOG
         </Button>
         <Button variant="outline" style={{ marginTop: space.md }} onPress={reset}>NO — TRY AGAIN</Button>
+
+        {/* Did you mean? — alternative candidates from the DB match */}
+        {alternatives.length > 0 && (
+          <>
+            <Divider style={{ marginTop: space.xl }} />
+            <Eyebrow>DID YOU MEAN?</Eyebrow>
+            {alternatives.map((alt) => (
+              <Pressable
+                key={alt.slug}
+                hitSlop={6}
+                onPress={async () => {
+                  // Fetch the full wine record for the chosen alternative
+                  const w = await lookupWineBySlug(alt.slug);
+                  if (w) { setMatched(w); setAlternatives([]); }
+                }}
+                style={styles.altRow}
+              >
+                <View style={{ flex: 1 }}>
+                  <BodyText size="sm">{alt.name}</BodyText>
+                  <BodyText size="sm" muted>{alt.estateName}</BodyText>
+                </View>
+                <Text style={[font.captionMonoSm, { color: color.gold }]}>SELECT →</Text>
+              </Pressable>
+            ))}
+          </>
+        )}
       </View>
     );
   }
@@ -507,7 +555,7 @@ export function ScanScreen() {
 
       <View style={{ gap: space.md, marginTop: space.xl }}>
         <Pressable onPress={capturePhoto} style={styles.optionCard} hitSlop={8}>
-          <View style={styles.optionIcon}><Text style={{ fontSize: 28 }}>📷</Text></View>
+          <View style={styles.optionIcon}><CameraIcon size={24} color={color.gold} /></View>
           <View style={{ flex: 1 }}>
             <BodyText>Photograph the label</BodyText>
             <BodyText size="sm" muted>AI reads the label — producer, wine, vintage.</BodyText>
@@ -516,7 +564,7 @@ export function ScanScreen() {
         </Pressable>
 
         <Pressable hitSlop={8} onPress={() => { setMode('barcode'); setState('idle'); }} style={styles.optionCard}>
-          <View style={styles.optionIcon}><Text style={{ fontSize: 28 }}>▮</Text></View>
+          <View style={styles.optionIcon}><BarcodeIcon size={24} color={color.gold} /></View>
           <View style={{ flex: 1 }}>
             <BodyText>Scan the barcode</BodyText>
             <BodyText size="sm" muted>Live camera scan of the EAN-13 code.</BodyText>
@@ -524,7 +572,7 @@ export function ScanScreen() {
         </Pressable>
 
         <Pressable hitSlop={8} onPress={() => { setMode('qr'); setState('idle'); }} style={styles.optionCard}>
-          <View style={styles.optionIcon}><Text style={{ fontSize: 28 }}>▢</Text></View>
+          <View style={styles.optionIcon}><QrIcon size={24} color={color.gold} /></View>
           <View style={{ flex: 1 }}>
             <BodyText>Scan a QR code</BodyText>
             <BodyText size="sm" muted>Estate tasting menus, bottle neck labels, event posters.</BodyText>
@@ -549,4 +597,9 @@ const styles = StyleSheet.create({
   optionIcon: { width: 48, height: 48, borderRadius: 9999, backgroundColor: color.canvasSoft, justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: color.hairline },
   capturedWrap: { flexDirection: 'row', gap: space.md, alignItems: 'center' },
   capturedImg: { width: 80, height: 100, borderRadius: radius.sm, borderWidth: 1, borderColor: color.hairline },
+  altRow: {
+    flexDirection: 'row', alignItems: 'center', gap: space.md,
+    paddingVertical: space.sm,
+    borderBottomWidth: 1, borderBottomColor: color.hairline,
+  },
 });

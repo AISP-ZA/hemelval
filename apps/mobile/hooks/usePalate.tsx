@@ -88,6 +88,8 @@ interface PalateContextValue {
   profile: PalateProfile;
   addNote: (note: Omit<TastingNote, 'id' | 'userId' | 'tastedAt'>) => { ok: boolean; error?: string };
   removeNote: (id: string) => void;
+  /** Seed synthetic notes from onboarding quiz answers. Replaces any prior seed. */
+  setOnboardingSeed: (seed: TastingNote[]) => void;
   /** Match score 0–100 for a candidate wine against the current palate. */
   matchFor: (wine: MockWine) => number;
   /** Lookup wine metadata for a note's vintage. */
@@ -184,6 +186,18 @@ export function PalateProvider({ children }: { children: React.ReactNode }) {
     setNotes((prev) => prev.filter((n) => n.id !== id));
   }, []);
 
+  // Onboarding quiz seed: insert synthetic notes (replacing any prior seed),
+  // keeping them at the back so real notes always surface first in the journal.
+  const ONBOARD_SEED_IDS = new Set(['onboard-type-red', 'onboard-type-white']);
+  const setOnboardingSeed = useCallback((seed: TastingNote[]) => {
+    setNotes((prev) => {
+      const real = prev.filter((n) => !ONBOARD_SEED_IDS.has(n.id));
+      const oldSeed = prev.filter((n) => ONBOARD_SEED_IDS.has(n.id) && false); // always drop old seed
+      void oldSeed;
+      return [...real, ...seed];
+    });
+  }, []);
+
   const matchFor = useCallback(
     (wine: MockWine): number => {
       return matchScore(profile, {
@@ -206,6 +220,7 @@ export function PalateProvider({ children }: { children: React.ReactNode }) {
     profile,
     addNote,
     removeNote,
+    setOnboardingSeed,
     matchFor,
     wineForNote,
   };

@@ -103,7 +103,7 @@ export async function fetchWinesByEstate(estateId: string): Promise<Wine[]> {
         wo_appellations ( name )
       `)
       .eq('estate_id', estateId)
-      .order('avg_stars', { ascending: false, nullsfirst: false })
+      .order('avg_stars', { ascending: false, nullsFirst: false })
       .limit(20);
     if (error) { console.warn('[dataAccessor] wines-by-estate error:', error.message); return MOCK_WINES.filter((w) => w.estateId === estateId); }
     if (!data || data.length === 0) return MOCK_WINES.filter((w) => w.estateId === estateId);
@@ -241,11 +241,17 @@ export async function saveTastingNote(note: {
   try {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return false;
+    // Schema note: the canonical 0003 table uses `wine_id` (FK → wines).
+    // The mock wine ids (e.g. 'w1') won't match a live UUID, so only persist
+    // when the id looks like a real Supabase wine PK. Mock ids fall back to
+    // local-only storage (handled by usePalate), which is correct for demo.
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(note.vintageId);
+    if (!isUuid) return false; // mock wine — stay local
     const { error } = await supabase
       .from('tasting_notes')
       .insert({
         user_id: user.id,
-        vintage_id: note.vintageId,
+        wine_id: note.vintageId,
         stars: note.stars,
         nose: note.nose,
         palate: note.palate,
@@ -269,7 +275,12 @@ export async function fetchTastingNotes(): Promise<any[] | null> {
       .order('tasted_at', { ascending: false })
       .limit(100);
     if (error || !data) return null;
-    return data;
+    // Normalize: the 0003 table uses `wine_id`; expose it as `vintage_id` too
+    // so usePalate's mapping (which expects vintage_id) works for both schemas.
+    return data.map((row: any) => ({
+      ...row,
+      vintage_id: row.vintage_id ?? row.wine_id,
+    }));
   } catch {
     return null;
   }

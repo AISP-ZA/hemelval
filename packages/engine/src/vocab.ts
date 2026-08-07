@@ -73,12 +73,15 @@ export const AROMA_DESCRIPTORS: readonly AromaDescriptor[] = [
   { id: 'strawberry', category: 'fruity', label: 'Strawberry' },
   { id: 'cassis', category: 'fruity', label: 'Blackcurrant / Cassis' },
   { id: 'cranberry', category: 'fruity', label: 'Cranberry' },
+  { id: 'raspberry', category: 'fruity', label: 'Raspberry' }, // Grenache, Pinot Noir
   { id: 'cherry-red', category: 'fruity', label: 'Red Cherry' },
   { id: 'cherry-black', category: 'fruity', label: 'Black Cherry' },
+  { id: 'plum', category: 'fruity', label: 'Plum' }, // Malbec, Touriga, Shiraz
   // Fruity — tree / stone / tropical
   { id: 'apricot', category: 'fruity', label: 'Apricot' },
   { id: 'peach', category: 'fruity', label: 'Peach' },
   { id: 'apple', category: 'fruity', label: 'Apple' },
+  { id: 'green-apple', category: 'fruity', label: 'Green Apple' }, // Chenin, Colombard, Riesling
   { id: 'pear', category: 'fruity', label: 'Pear' },
   { id: 'quince', category: 'fruity', label: 'Quince' },
   { id: 'pineapple', category: 'fruity', label: 'Pineapple' },
@@ -146,6 +149,7 @@ export const AROMA_DESCRIPTORS: readonly AromaDescriptor[] = [
   { id: 'truffle', category: 'earthy', label: 'Truffle' },
   { id: 'dust', category: 'earthy', label: 'Dusty' },
   { id: 'beetroot', category: 'earthy', label: 'Beetroot' },
+  { id: 'game', category: 'earthy', label: 'Gamey' }, // Mourvèdre, Syrah — meaty/savoury
 
   // Caramel
   { id: 'honey', category: 'caramel', label: 'Honey' },
@@ -154,6 +158,7 @@ export const AROMA_DESCRIPTORS: readonly AromaDescriptor[] = [
   { id: 'caramel', category: 'caramel', label: 'Caramel' },
   { id: 'toffee', category: 'caramel', label: 'Toffee' },
   { id: 'molasses', category: 'caramel', label: 'Molasses' },
+  { id: 'wax', category: 'caramel', label: 'Beeswax' }, // Sémillon lanolin
 
   // Nutty
   { id: 'almond', category: 'nutty', label: 'Almond' },

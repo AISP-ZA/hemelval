@@ -25,6 +25,7 @@ import { color, font, space, radius } from '../theme/tokens.js';
 import { CERT_INFO, type MockEstate, type MockAward } from '../lib/mockData.js';
 import { fetchWinesByEstate, type Wine } from '../lib/dataAccessor.js';
 import { estateCover } from '../lib/imagery.js';
+import { EstateMap } from '../components/EstateMap.js';
 import { usePalate } from '../hooks/usePalate.js';
 
 export function EstateDetailScreen({
@@ -107,20 +108,10 @@ export function EstateDetailScreen({
               </View>
             </Pressable>
           )}
-          <View style={styles.metaCell}>
-            <Eyebrow>LOCATION</Eyebrow>
-            <BodyText size="sm">{estate.lat.toFixed(3)}, {estate.lng.toFixed(3)}</BodyText>
-          </View>
         </View>
 
-        {/* Map placeholder — a stylised "you are here" tile */}
-        <View style={styles.mapTile}>
-          <View style={styles.mapGrid} />
-          <View style={[styles.mapPin, { left: '50%', top: '50%' }]} />
-          <Text style={[font.captionMonoSm, { color: color.bodyMid, marginTop: space.sm }]}>
-            {estate.region.toUpperCase()} · WESTERN CAPE
-          </Text>
-        </View>
+        {/* Location map — real tile if geo present, premium contour fallback otherwise */}
+        <EstateMap lat={estate.lat} lng={estate.lng} region={estate.region} wineRoute={estate.wineRoute} />
 
         <Divider />
 
@@ -274,9 +265,6 @@ const styles = StyleSheet.create({
   coverRegion: { color: color.body, fontSize: 11, fontFamily: 'GeistMono, monospace', letterSpacing: 1, marginTop: space.md },
   metaStrip: { flexDirection: 'row', gap: space.xl, marginTop: space.lg },
   metaCell: { flex: 1, gap: space.xs },
-  mapTile: { marginTop: space.lg, height: 160, backgroundColor: color.canvasSoft, borderWidth: 1, borderColor: color.hairline, borderRadius: radius.sm, justifyContent: 'center', alignItems: 'center', overflow: 'hidden' },
-  mapGrid: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, opacity: 0.3 },
-  mapPin: { position: 'absolute', width: 14, height: 14, borderRadius: 9999, backgroundColor: color.gold, transform: [{ translateX: -7 }, { translateY: -7 }], borderWidth: 2, borderColor: color.canvas },
   chipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: space.xs, marginTop: space.lg },
   awardGallery: { flexDirection: 'row', flexWrap: 'wrap', gap: space.lg, marginTop: space.md, paddingBottom: space.sm },
   awardRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: space.md },

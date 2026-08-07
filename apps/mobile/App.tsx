@@ -7,13 +7,14 @@
  * (caption mono) via expo-google-fonts before rendering the navigator.
  */
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Platform, View, StyleSheet } from 'react-native';
-import { DiscoverIcon, ScanIcon, CellarIcon, EventsIcon, ProfileIcon } from './components/TabIcons.js';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { DiscoverIcon, ScanIcon, CellarIcon, EventsIcon, LearnIcon } from './components/TabIcons.js';
 import { useFonts } from 'expo-font';
 import { color } from './theme/tokens.js';
 import { PalateProvider } from './hooks/usePalate.js';
@@ -22,7 +23,10 @@ import { DiscoverScreen } from './screens/DiscoverScreen.js';
 import { ScanScreen } from './screens/ScanScreen.js';
 import { CellarScreen } from './screens/CellarScreen.js';
 import { EventsScreen } from './screens/EventsScreen.js';
-import { ProfileScreen } from './screens/ProfileScreen.js';
+import { LearnScreen } from './screens/LearnScreen.js';
+import { OnboardingScreen } from './screens/OnboardingScreen.js';
+
+const ONBOARDED_KEY = 'decanta.onboarded.v1';
 
 const Tab = createBottomTabNavigator();
 
@@ -34,7 +38,7 @@ const linking = {
       Scan: 'Scan',
       Cellar: 'Cellar',
       Events: 'Events',
-      Profile: 'Profile',
+      Learn: 'Learn',
     },
   },
 };
@@ -57,7 +61,7 @@ const tabIconComponents: Record<string, React.FC<{ size?: number; color: string;
   Scan: ScanIcon,
   Cellar: CellarIcon,
   Events: EventsIcon,
-  Profile: ProfileIcon,
+  Learn: LearnIcon,
 };
 
 export default function App() {
@@ -67,8 +71,55 @@ export default function App() {
     GeistMono: require('./theme/assets/GeistMono-Regular.ttf'),
   });
 
-  if (!fontsLoaded) {
-    return null; // Splash — fonts must load before first paint to prevent fallback flash
+  // First-run onboarding gate.
+  // On web, ?onboard=1 forces the flow for testing/review.
+  const [onboarded, setOnboarded] = useState<boolean | null>(null);
+  useEffect(() => {
+    (async () => {
+      // Dev override: ?onboard=1 shows the flow even if already complete
+      if (Platform.OS === 'web' && typeof window !== 'undefined' && window.location?.search?.includes('onboard=1')) {
+        setOnboarded(false);
+        return;
+      }
+      try {
+        const v = await AsyncStorage.getItem(ONBOARDED_KEY);
+        setOnboarded(v === '1');
+      } catch {
+        setOnboarded(true); // storage failure → don't block the app
+      }
+    })();
+  }, []);
+
+  const completeOnboarding = () => {
+    AsyncStorage.setItem(ONBOARDED_KEY, '1').catch(() => {});
+    setOnboarded(true);
+  };
+
+  if (!fontsLoaded || onboarded === null) {
+    return null; // Splash — fonts + onboarding flag must load before first paint
+  }
+
+  // Onboarding renders outside the PalateProvider (it reads/writes the palate
+  // store, so it must be inside one). Wrap it in its own minimal provider.
+  if (!onboarded) {
+    const onboardingContent = (
+      <SafeAreaProvider>
+        <PalateProvider>
+          <StatusBar style="light" />
+          <OnboardingScreen onComplete={completeOnboarding} />
+        </PalateProvider>
+      </SafeAreaProvider>
+    );
+    if (Platform.OS === 'web') {
+      return (
+        <View style={webStyles.outer}>
+          <View style={webStyles.frame}>
+            {onboardingContent}
+          </View>
+        </View>
+      );
+    }
+    return onboardingContent;
   }
 
   const appContent = (
@@ -111,7 +162,7 @@ export default function App() {
               <Tab.Screen name="Scan" component={ScanScreen} options={{ tabBarLabel: 'SCAN' }} />
               <Tab.Screen name="Cellar" component={CellarScreen} options={{ tabBarLabel: 'CELLAR' }} />
               <Tab.Screen name="Events" component={EventsScreen} options={{ tabBarLabel: 'EVENTS' }} />
-              <Tab.Screen name="Profile" component={ProfileScreen} options={{ tabBarLabel: 'PROFILE' }} />
+              <Tab.Screen name="Learn" component={LearnScreen} options={{ tabBarLabel: 'LEARN' }} />
             </Tab.Navigator>
           </NavigationContainer>
         </PalateProvider>
@@ -137,7 +188,7 @@ const webStyles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#000000',
     alignItems: 'center',
-    justifyContent: 'stretch',
+    justifyContent: 'flex-start',
   },
   frame: {
     flex: 1,

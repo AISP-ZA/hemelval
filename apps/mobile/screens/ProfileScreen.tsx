@@ -15,7 +15,7 @@ import { aromaLabel } from '@kelder/engine';
 import { usePalate } from '../hooks/usePalate.js';
 import { useAuth } from '../hooks/useAuth.js';
 
-export function ProfileScreen() {
+export function ProfileScreen({ onBack }: { onBack?: () => void } = {}) {
   const insets = useSafeAreaInsets();
   const { profile: palateProfile, notes } = usePalate();
   const { profile, isRegistered, register, signIn, signOut, authError } = useAuth();
@@ -46,6 +46,11 @@ export function ProfileScreen() {
   if (!isRegistered) {
     return (
       <ScrollView style={{ flex: 1, backgroundColor: color.canvas }} contentContainerStyle={{ paddingTop: insets.top + 16 }}>
+        {onBack && (
+          <Pressable hitSlop={12} onPress={onBack} style={{ paddingHorizontal: space.xl, paddingTop: space.md }}>
+            <Text style={[font.captionMono, { color: color.body }]}>← BACK</Text>
+          </Pressable>
+        )}
         <View style={{ padding: space.xl }}>
           <Eyebrow>JOIN DECANTA</Eyebrow>
           <Headline size="xl" style={{ marginTop: space.sm }}>
@@ -129,6 +134,11 @@ export function ProfileScreen() {
   // ── Logged in: show profile ────────────────────────────────────────────
   return (
     <ScrollView style={{ flex: 1, backgroundColor: color.canvas }} contentContainerStyle={{ paddingTop: insets.top + 16 }}>
+      {onBack && (
+        <Pressable hitSlop={12} onPress={onBack} style={{ paddingHorizontal: space.xl, paddingTop: space.md }}>
+          <Text style={[font.captionMono, { color: color.body }]}>← BACK</Text>
+        </Pressable>
+      )}
       <View style={{ padding: space.xl }}>
         <Eyebrow>YOUR PROFILE</Eyebrow>
         <Headline size="xl" style={{ marginTop: space.sm }}>{profile.displayName || 'Wine lover'}</Headline>

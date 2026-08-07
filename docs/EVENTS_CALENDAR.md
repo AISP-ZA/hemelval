@@ -124,5 +124,61 @@ into **proactive seasonal planning** — a natural extension of the Experience D
 1. **Reorganise EventsScreen** into 4 seasonal chapters (not flat list)
 2. **Add `typical_month` field** to events table for recurrence forecasting
 3. **Build weekly cron scraper** against diary.wine.co.za
-4. **Add confirmation workflow** for auto-imported dates
+4. **Add confirmation workflow** for auto-imported events
 5. **Build forecast layer** — "coming up this season" proactive recommendations
+
+---
+
+## Dynamic ingestion pipeline (built 2026-08-05)
+
+Code-complete. Deploy the three artifacts below to light up self-updating events.
+
+### Artifacts
+| File | Purpose |
+|---|---|
+| `supabase/migrations/0004_events_ingestion.sql` | Adds source tracking, verification workflow, seasonal chapter, ingestion log. Tightens RLS so `pending` events are hidden from users. Backfills the 41 curated events to `published`. |
+| `supabase/functions/ingest-events/index.ts` | Deno edge function. Fetches `diary.wine.co.za` + `sa-venues.com`, normalises, dedupes by `source_name`+`source_event_id`, inserts new events as `verification_status='pending'`. Logs every run. |
+| (schedule) | A Supabase cron trigger that calls the function weekly. |
+
+### Deploy steps (CEO or ops)
+```bash
+# 1. Run the migration
+supabase db push                       # or paste into SQL Editor
+
+# 2. Set the auth secret
+supabase secrets set INGEST_SECRET=$(openssl rand -hex 24)
+
+# 3. Deploy the function
+supabase functions deploy ingest-events --no-verify-jwt
+
+# 4. Test once manually (should return JSON run summary)
+curl -X POST "$SUPABASE_URL/functions/v1/ingest-events" \
+  -H "Authorization: Bearer $SERVICE_ROLE_KEY" \
+  -H "Content-Type: application/json" -d '{}'
+
+# 5. Schedule weekly (Sunday 22:00 UTC = Monday 00:00 SAST)
+supabase schedule add ingest-events-cron \
+  --function ingest-events --cron "0 22 * * 0" --payload '{}'
+```
+
+### How verification works
+- **Existing 41 events**: stay `published` (visible). Backfilled by the migration.
+- **New imported events**: land as `verification_status='pending'` → **invisible to app users** (RLS hides them).
+- **Admin publishes**: from the merchant portal (Phase 2), or a one-line SQL update for now:
+  ```sql
+  UPDATE events SET verification_status='published', confidence='verified'
+    WHERE id = '<uuid>';
+  ```
+- **Re-runs are safe**: dedupe on `source_name`+`source_event_id` prevents duplicates; changed ticket URLs refresh `last_synced_at`.
+
+### Tuning the scraper (first run)
+The HTML parsers in `ingest-events/index.ts` are best-effort guesses against common event-listing patterns. After the first manual run (step 4 above), inspect the log:
+```sql
+SELECT source_name, status, events_fetched, events_inserted, error_message
+  FROM events_ingestion_log ORDER BY ran_at DESC LIMIT 10;
+```
+If a source returns `events_fetched=0`, its selectors need tuning against the live HTML. Open `supabase/functions/ingest-events/index.ts`, find `parseWineCoZaHtml` / `parseSaVenuesHtml`, adjust the regex anchors to match the real markup, redeploy. The pipeline stays safe throughout — a bad parse yields an empty result and a `partial` log entry, never bad data.
+
+### Mobile impact
+**None.** `fetchEvents()` in `apps/mobile/lib/dataAccessor.ts` already reads the `events` table; the RLS change automatically hides `pending` rows from the anon key the app uses. No code change required.
+

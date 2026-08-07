@@ -42,3 +42,6 @@ runs.jsonl
 .vscode/
 .idea/
 *.swp
+
+# ZCode session data
+.zcode/

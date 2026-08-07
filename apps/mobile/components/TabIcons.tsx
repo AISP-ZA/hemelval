@@ -7,7 +7,7 @@
  */
 
 import React from 'react';
-import { Svg, Path, type FillProps } from 'react-native-svg';
+import { Svg, Path } from 'react-native-svg';
 
 interface IconProps {
   size?: number;
@@ -23,7 +23,7 @@ const stroke = (color: string) => ({
   fill: 'none' as const,
 });
 
-const fill = (color: string): FillProps => ({ fill });
+const fill = (color: string) => ({ fill: color });
 
 export function DiscoverIcon({ size = 24, color, focused }: IconProps) {
   return (
@@ -75,6 +75,18 @@ export function ProfileIcon({ size = 24, color, focused }: IconProps) {
     <Svg width={size} height={size} viewBox="0 0 24 24">
       <Path {...s} d="M12 12a4 4 0 100-8 4 4 0 000 8z" />
       <Path {...s} d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8" />
+    </Svg>
+  );
+}
+
+export function LearnIcon({ size = 24, color, focused }: IconProps) {
+  const s = stroke(color);
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24">
+      {/* Open book — academy mark */}
+      <Path {...s} d="M12 6c-1.5-1.2-4-2-7-2v13c3 0 5.5.8 7 2 1.5-1.2 4-2 7-2V4c-3 0-5.5.8-7 2z" />
+      <Path {...s} d="M12 6v13" />
+      {focused && <Path {...fill(color)} d="M9 9.5c-1.2-.3-2.5-.4-4-.4v.8c1.5 0 2.8.1 4 .4v-.8zM15 9.5c1.2-.3 2.5-.4 4-.4v.8c-1.5 0-2.8.1-4 .4v-.8z" />}
     </Svg>
   );
 }
