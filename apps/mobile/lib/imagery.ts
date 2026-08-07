@@ -247,3 +247,12 @@ export function estateCover(estateId: string): Photo {
 export function wineImage(wineId: string, type?: string): Photo {
   return WINE_IMAGES[wineId] ?? (type ? (BOTTLE_BY_TYPE[type] ?? BOTTLE_DARK) : BOTTLE_DARK);
 }
+
+/**
+ * Returns true ONLY if a verified real photo exists for this wine.
+ * When false, the caller should render the WineBottle component instead
+ * of a generic stock photo.
+ */
+export function hasRealPhoto(wineId: string): boolean {
+  return wineId in WINE_IMAGES;
+}

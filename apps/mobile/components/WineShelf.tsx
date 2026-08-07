@@ -16,7 +16,8 @@ import React from 'react';
 import { View, Text, Pressable, ScrollView, Image, StyleSheet } from 'react-native';
 import { color, font, radius, space } from '../theme/tokens.js';
 import { Stars, Eyebrow } from './index.js';
-import { wineImage } from '../lib/imagery.js';
+import { wineImage, hasRealPhoto } from '../lib/imagery.js';
+import { WineBottle } from './WineBottle.js';
 import type { Wine } from '../lib/dataAccessor.js';
 
 interface WineShelfProps {
@@ -62,7 +63,8 @@ export function WineShelf({
         contentContainerStyle={styles.shelfScroll}
       >
         {preview.map((w) => {
-          const img = wineImage(w.id, w.type);
+          const realPhoto = hasRealPhoto(w.id);
+          const img = realPhoto ? wineImage(w.id, w.type) : null;
           return (
             <Pressable
               key={w.id}
@@ -75,7 +77,18 @@ export function WineShelf({
                 <View style={[styles.cardDot, { backgroundColor: accentColor }]} />
               </View>
               <View style={styles.cardThumbWrap}>
-                <Image source={{ uri: img.url }} style={styles.cardThumb} resizeMode="contain" />
+                {realPhoto && img ? (
+                  <Image source={{ uri: img.url }} style={styles.cardThumb} resizeMode="contain" />
+                ) : (
+                  <WineBottle
+                    wineName={w.name}
+                    estateName={w.estateName}
+                    type={w.type}
+                    year={w.year}
+                    width={90}
+                    height={115}
+                  />
+                )}
               </View>
               <Text style={styles.cardName} numberOfLines={2}>
                 {w.name}{w.year > 0 ? ` '${String(w.year).slice(2)}` : ''}

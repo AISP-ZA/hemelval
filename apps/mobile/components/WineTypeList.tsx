@@ -17,7 +17,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { color, font, radius, space, surfaceCalm } from '../theme/tokens.js';
 import { Stars, MatchBadge } from './index.js';
 import { SurfaceCard } from './SurfaceCard.js';
-import { wineImage } from '../lib/imagery.js';
+import { wineImage, hasRealPhoto } from '../lib/imagery.js';
+import { WineBottle } from './WineBottle.js';
 import type { Wine } from '../lib/dataAccessor.js';
 
 interface WineTypeListProps {
@@ -70,7 +71,8 @@ export function WineTypeList({
         {/* Wine cards — calm surface + type dot, never a per-card fill */}
         <View style={styles.list}>
           {shown.map((w) => {
-            const img = wineImage(w.id, w.type);
+            const realPhoto = hasRealPhoto(w.id);
+            const img = realPhoto ? wineImage(w.id, w.type) : null;
             return (
               <SurfaceCard
                 key={w.id}
@@ -82,7 +84,18 @@ export function WineTypeList({
               >
                 <View style={{ flexDirection: 'row', gap: space.md }}>
                   <View style={styles.thumbWrap}>
-                    <Image source={{ uri: img.url }} style={styles.thumb} resizeMode="contain" />
+                    {realPhoto && img ? (
+                      <Image source={{ uri: img.url }} style={styles.thumb} resizeMode="contain" />
+                    ) : (
+                      <WineBottle
+                        wineName={w.name}
+                        estateName={w.estateName}
+                        type={w.type}
+                        year={w.year}
+                        width={48}
+                        height={64}
+                      />
+                    )}
                   </View>
                   <View style={{ flex: 1, minWidth: 0 }}>
                     <Text style={[font.bodyMd, { color: color.ink, fontWeight: '500' }]} numberOfLines={1}>

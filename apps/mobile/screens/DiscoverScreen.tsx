@@ -11,6 +11,7 @@ import { GradientSurface, GradientScrim } from '../components/GradientSurface.js
 import { SurfaceCard } from '../components/SurfaceCard.js';
 import { WineShelf } from '../components/WineShelf.js';
 import { WineTypeList } from '../components/WineTypeList.js';
+import { WineBottle } from '../components/WineBottle.js';
 import { TasteProfileChart, tasteProfileForVarietal } from '../components/TasteProfileChart.js';
 import { LoadingList } from '../components/Skeleton.js';
 import { color, font, radius, space, wineTypeColor } from '../theme/tokens.js';
@@ -18,7 +19,7 @@ import { MOCK_ESTATES, mockEstateById, type MockWine, type MockEstate } from '..
 import { fetchWines, lastDataSource, type Wine } from '../lib/dataAccessor.js';
 import { signatureVarietals, findWinesForFood, resolveVarietal, aromaLabel, suggestPairings, PAIRINGS } from '@kelder/engine';
 import type { FoodMatch } from '@kelder/engine';
-import { HERO_CELLAR, wineImage } from '../lib/imagery.js';
+import { HERO_CELLAR, wineImage, hasRealPhoto } from '../lib/imagery.js';
 import { usePalate } from '../hooks/usePalate.js';
 import { TastingNoteScreen } from './TastingNoteScreen.js';
 import { EstateDetailScreen } from './EstateDetailScreen.js';
@@ -392,7 +393,8 @@ export function DiscoverScreen() {
 function CalmWineRow({ wine, matchScore, onPress, onEstatePress }: {
   wine: Wine; matchScore: number; onPress: () => void; onEstatePress: () => void;
 }) {
-  const img = wineImage(wine.id, wine.type);
+  const realPhoto = hasRealPhoto(wine.id);
+  const img = realPhoto ? wineImage(wine.id, wine.type) : null;
   return (
     <SurfaceCard
       onPress={onPress}
@@ -403,7 +405,11 @@ function CalmWineRow({ wine, matchScore, onPress, onEstatePress }: {
     >
       <View style={{ flexDirection: 'row', gap: space.md }}>
         <View style={styles.listThumbWrap}>
-          <Image source={{ uri: img.url }} style={styles.listThumb} resizeMode="contain" />
+          {realPhoto && img ? (
+            <Image source={{ uri: img.url }} style={styles.listThumb} resizeMode="contain" />
+          ) : (
+            <WineBottle wineName={wine.name} estateName={wine.estateName} type={wine.type} year={wine.year} width={48} height={64} />
+          )}
         </View>
         <View style={{ flex: 1, minWidth: 0 }}>
           <Text style={[font.bodyMd, { color: color.ink, fontWeight: '500' }]} numberOfLines={1}>
@@ -433,7 +439,8 @@ function WineDetail({ wine, wines, matchScore, onBack, onRate, onEstatePress }: 
   wine: MockWine; wines: Wine[]; matchScore: number; onBack: () => void; onRate: () => void; onEstatePress: () => void;
 }) {
   const insets = useSafeAreaInsets();
-  const img = wineImage(wine.id, wine.type);
+  const realPhoto = hasRealPhoto(wine.id);
+  const img = realPhoto ? wineImage(wine.id, wine.type) : null;
   const wineTypeColor = wine.type === 'red' || wine.type === 'fortified' ? color.redWine
     : wine.type === 'white' ? color.whiteWine
     : wine.type === 'rose' ? color.roseWine
@@ -499,13 +506,26 @@ function WineDetail({ wine, wines, matchScore, onBack, onRate, onEstatePress }: 
       )}
       scrollEventThrottle={16}
     >
-      {/* Cinematic hero: parallax bottle photo + layered gradient scrim */}
+      {/* Cinematic hero: parallax bottle + layered gradient scrim */}
       <View style={styles.detailHero}>
-        <Animated.Image
-          source={{ uri: img.url }}
-          style={[styles.detailHeroImg, { transform: [{ translateY: heroTranslate }] }]}
-          resizeMode="cover"
-        />
+        {realPhoto && img ? (
+          <Animated.Image
+            source={{ uri: img.url }}
+            style={[styles.detailHeroImg, { transform: [{ translateY: heroTranslate }] }]}
+            resizeMode="cover"
+          />
+        ) : (
+          <View style={[styles.detailHeroBottleWrap, { transform: [{ translateY: heroTranslate }] }]}>
+            <WineBottle
+              wineName={wine.name}
+              estateName={wine.estateName}
+              type={wine.type}
+              year={wine.year}
+              width={140}
+              height={200}
+            />
+          </View>
+        )}
         <GradientScrim />
         {/* Circular back button */}
         <Pressable
@@ -848,6 +868,7 @@ const styles = StyleSheet.create({
   // Wine detail — full-bleed hero
   detailHero: { height: 340, position: 'relative', overflow: 'hidden' },
   detailHeroImg: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, width: '100%', height: 340 },
+  detailHeroBottleWrap: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center' },
   detailBackBtn: {
     position: 'absolute',
     left: space.xl,

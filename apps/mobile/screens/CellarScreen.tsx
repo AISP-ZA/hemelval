@@ -13,8 +13,9 @@ import { Eyebrow, Headline, BodyText, Card, Chip, Button, Stars, Divider } from 
 import { color, font, space, radius, wineTypeColor } from '../theme/tokens.js';
 import { GradientSurface } from '../components/GradientSurface.js';
 import { SurfaceCard } from '../components/SurfaceCard.js';
+import { WineBottle } from '../components/WineBottle.js';
 import { TasteProfileChart, aggregateTasteValues } from '../components/TasteProfileChart.js';
-import { HERO_VINEYARD, wineImage } from '../lib/imagery.js';
+import { HERO_VINEYARD, wineImage, hasRealPhoto } from '../lib/imagery.js';
 import { aromaLabel } from '@kelder/engine';
 import { usePalate } from '../hooks/usePalate.js';
 import { MOCK_WINES, MOCK_ESTATES, type MockEstate } from '../lib/mockData.js';
@@ -125,7 +126,8 @@ export function CellarScreen() {
               notes.map((t) => {
                 const wine = wineForNote(t);
                 const tCol = wine ? wineTypeColor(wine.type) : color.gold;
-                const img = wine ? wineImage(wine.id, wine.type) : null;
+                const realPhoto = wine ? hasRealPhoto(wine.id) : false;
+                const img = (realPhoto && wine) ? wineImage(wine.id, wine.type) : null;
                 return (
                   <SurfaceCard
                     key={t.id}
@@ -136,9 +138,13 @@ export function CellarScreen() {
                   >
                     <View style={styles.journalHeader}>
                       {/* Bottle thumbnail — brings the cellar to life */}
-                      {img && (
+                      {wine && (
                         <View style={styles.journalThumbWrap}>
-                          <Image source={{ uri: img.url }} style={styles.journalThumb} resizeMode="contain" />
+                          {realPhoto && img ? (
+                            <Image source={{ uri: img.url }} style={styles.journalThumb} resizeMode="contain" />
+                          ) : (
+                            <WineBottle wineName={wine.name} estateName={wine.estateName} type={wine.type} year={wine.year} width={36} height={48} />
+                          )}
                         </View>
                       )}
                       <View style={{ flex: 1 }}>
