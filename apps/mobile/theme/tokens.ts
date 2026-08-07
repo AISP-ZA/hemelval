@@ -1,8 +1,9 @@
 /**
- * Decanta theme tokens — "Extended Grand Cru" identity.
+ * Decanta theme tokens — "Velvet Vineyard" identity.
  *
- * Near-black canvas with a whisper of magenta. Antique gold (#c4973c) is the
- * brand identity colour. The Extended palette adds:
+ * Deep aubergine-black canvas (#0a0410) with rich amber-gold (#d4942c).
+ * The plum warmth of Grand Cru deepened, the gold pushed toward amber —
+ * aged oak barrels in candlelight. Warmest, most luxurious palette.
  *
  *  - WINE-TYPE SPECTRUM: garnet reds, champagne whites, blush rosé, bright-gold
  *    MCC, tawny fortified. Applied on wine cards, type badges, match meters.
@@ -14,78 +15,77 @@
  * Cormorant Garamond serif display / Inter body / GeistMono captions.
  * Pill geometry on every interactive element. Display weight 400.
  *
- * Brand accents: antique gold #c4973c (identity) + cardinal #6b1228 (CTA fill).
+ * Brand accents: amber gold #d4942c (identity) + cardinal #8a1830 (CTA fill).
  */
 
 export const color = {
-  // Surfaces — Grand Cru: near-black with a whisper of magenta
-  canvas: '#08030a',      // near-pure black — the void, a private cellar
-  canvasSoft: '#0f0610',  // inputs, inset surfaces — barely lighter
-  canvasCard: 'rgba(196,151,60,0.04)',  // glass card — plum-gold tint, just enough to lift
-  canvasCardRaised: '#14091a',  // raised card — visible warm-plum surface (for stat cards, journal entries)
-  canvasCardActive: '#1a0c22',  // active/pressed card — brightest warm surface
-  canvasMid: '#2a1428',   // deep plum for dividers/mid-fills
+  // Surfaces — Velvet Vineyard: deep aubergine-black
+  canvas: '#0a0410',      // aubergine-plum black — the void, a private cellar
+  canvasSoft: '#120818',  // inputs, inset surfaces — barely lighter
+  canvasCard: 'rgba(212,148,44,0.05)',  // glass card — amber-gold tint, just enough to lift
+  canvasCardRaised: '#1c0e18',  // raised card — visible aubergine surface (for stat cards, journal entries)
+  canvasCardActive: '#240e1c',  // active/pressed card — brightest warm surface
+  canvasMid: '#2a1420',   // deep aubergine for dividers/mid-fills
 
   // Gradient surfaces — subtle two-tone lifts replacing flat black on heroes.
   // Applied via LinearGradient at the top of hero sections so the canvas
   // doesn't read as monotone across long scrolls.
-  heroGradientTop: '#0d0612',      // barely lifted from canvas — warm plum
-  heroGradientMid: '#0a040e',      // transition
-  heroGradientBottom: '#08030a',   // back to canvas
+  heroGradientTop: '#100618',      // barely lifted from canvas — warm aubergine
+  heroGradientMid: '#0c0414',      // transition
+  heroGradientBottom: '#0a0410',   // back to canvas
 
   // Card elevation — gold hairline border carries elevation on the glass surface.
-  // A white-overtone border would read warm-grey here; gold reads as chosen.
-  cardBorder: 'rgba(196,151,60,0.22)',
-  cardBorderStrong: 'rgba(196,151,60,0.38)',
+  cardBorder: 'rgba(212,148,44,0.22)',
+  cardBorderStrong: 'rgba(212,148,44,0.38)',
 
   // Image overlays — canvas-coloured gradients layered over photography
   // for text legibility.
-  overlayWeak: 'rgba(8,3,10,0.45)',
-  overlayMid: 'rgba(8,3,10,0.72)',
-  overlayStrong: 'rgba(8,3,10,0.88)',
+  overlayWeak: 'rgba(10,4,16,0.45)',
+  overlayMid: 'rgba(10,4,16,0.72)',
+  overlayStrong: 'rgba(10,4,16,0.88)',
 
-  // Text — warm parchment on near-black
-  ink: '#ede0cc',         // primary text — warm parchment
-  inkHover: '#f5ecd8',
-  body: '#c4b49a',        // secondary text
-  bodyMid: '#7a6858',     // muted captions
-  mute: '#7a6858',
+  // Text — warm sand parchment on aubergine-black
+  ink: '#f2e4cc',         // primary text — warm ivory
+  inkHover: '#faf0d8',
+  body: '#b89878',        // secondary text — warm sand
+  bodyMid: '#785848',     // muted captions
+  mute: '#785848',
 
-  // Lines — deep plum hairline (not grey — chosen)
-  hairline: '#2a1428',
+  // Lines — deep aubergine hairline (not grey — chosen)
+  hairline: '#2a1420',
 
   // Fills — cardinal burgundy CTA + gold label on top
-  primary: '#6b1228',     // cardinal burgundy — the CTA fill
-  onPrimary: '#c4973c',   // antique gold text on cardinal button
+  primary: '#8a1830',     // cardinal burgundy — the CTA fill
+  onPrimary: '#d4942c',   // amber gold text on cardinal button
 
   // Decanta brand accents
-  gold: '#c4973c',        // antique gold — the identity colour
-  wine: '#6b1228',        // cardinal co-primary
-  wineBright: '#8a1a30',  // brighter wine for badges
-  goldSoft: '#9a7828',
+  gold: '#d4942c',        // rich amber-gold — the identity colour
+  wine: '#8a1830',        // cardinal co-primary
+  wineBright: '#a8283c',  // brighter wine for badges
+  goldSoft: '#b07828',
 
   // Semantic — desaturated so they never compete with the gold identity
-  systems: '#c4973c',              // gold: used for "good" states (Pro badge, high match)
-  load: '#686878',                 // neutral grey-blue
-  warn: '#7a6858',                 // same as mute — info only, not alarming
-  crit: '#7a3030',                 // dark desaturated red — readable as danger, not festive
-  critFill: 'rgba(122,48,48,0.10)',
-  telemetry: '#787878',
+  systems: '#d4942c',              // amber gold: used for "good" states (Pro badge, high match)
+  load: '#786868',                 // neutral warm-grey
+  warn: '#785848',                 // same as mute — info only, not alarming
+  crit: '#8a3030',                 // dark desaturated red — readable as danger, not festive
+  critFill: 'rgba(138,48,48,0.10)',
+  telemetry: '#786868',
 
   // Aliases
-  sunset: '#c4973c',               // gold
-  twilight: 'rgba(196,151,60,0.65)', // gold at 65% — for subtext on dark surfaces
-  dusk: '#6b1228',                 // cardinal
+  sunset: '#d4942c',               // amber gold
+  twilight: 'rgba(212,148,44,0.65)', // gold at 65% — for subtext on dark surfaces
+  dusk: '#8a1830',                 // cardinal
 
   // ── EXTENDED: Wine-type spectrum ──────────────────────────────────────────
   // Full colour identity per wine type. Applied on type badges, match meters,
   // star ratings, card accent borders. Each type now reads as distinct at a glance.
-  redWine: '#7a1528',       // garnet — saturated but not bright
-  whiteWine: '#d4af37',     // champagne gold — brighter than brand gold
-  roseWine: '#c47a7a',      // blush pink — dry Provence-style
-  sparklingWine: '#e0b546', // bright gold — celebratory, MCC
-  fortifiedWine: '#8a4a1a', // tawny — port-style, warm amber-brown
-  dessertWine: '#c4973c',   // antique gold (same as brand) — honeyed
+  redWine: '#a8283c',       // brighter garnet — saturated, rich
+  whiteWine: '#d8b048',     // champagne gold — brighter than brand gold
+  roseWine: '#c87a8a',      // blush pink — dry Provence-style
+  sparklingWine: '#e0b840', // bright amber gold — celebratory, MCC
+  fortifiedWine: '#9a5222', // tawny — port-style, warm amber-brown
+  dessertWine: '#d4942c',   // amber gold (same as brand) — honeyed
 
   // ── Cape Modern: bold colour-coded surface fills per wine type ─────────────
   // Two-stop linear gradients for card backgrounds. Applied via SurfaceCard.
@@ -111,21 +111,21 @@ export const color = {
   // The wine-type colour lives on the SECTION HEADER + a 6px card dot, never on
   // the card fill. This is what keeps Discover from reading as a colour salad.
   // Used by SurfaceCard surface="calm" mode + WineShelf compact cards.
-  surfaceCalmTop: '#1a1216',       // warm plum-neutral
-  surfaceCalmBottom: '#120c0f',
+  surfaceCalmTop: '#1c0e18',       // aubergine-neutral
+  surfaceCalmBottom: '#120810',
 
   // ── EXTENDED: Seasonal chapter colours ────────────────────────────────────
   // One colour per Events chapter. Applied on chapter hero overlays, the
   // "in season now" badge, and chapter labels. Drives the seasonal arc.
-  chapterHarvest: '#b8862f',  // amber — sun, ripe grapes, autumn fields
+  chapterHarvest: '#c89230',  // amber — sun, ripe grapes, autumn fields
   chapterWinter: '#2d3561',   // deep indigo — cold nights, fireside
   chapterSpring: '#5a7a4e',   // sage green — new growth, flowers
-  chapterFestive: '#9a2030',  // cranberry — celebration, MCC, Christmas
+  chapterFestive: '#a8283c',  // cranberry — celebration, MCC, Christmas
 
   // ── EXTENDED: Story category tints ────────────────────────────────────────
   // Subtle background wash on story cards by category.
-  storyWinemaker: 'rgba(122,21,40,0.12)',    // garnet wash
-  storyHeritage: 'rgba(196,134,47,0.12)',    // amber wash
+  storyWinemaker: 'rgba(168,40,60,0.12)',    // garnet wash
+  storyHeritage: 'rgba(200,134,47,0.12)',    // amber wash
   storyTransformation: 'rgba(90,122,78,0.12)', // sage wash
   storyHistory: 'rgba(45,53,97,0.15)',       // indigo wash
 } as const;

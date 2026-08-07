@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
   backBtn: {
     alignSelf: 'flex-start',
     marginBottom: space.md,
-    backgroundColor: 'rgba(8,3,10,0.72)',
+    backgroundColor: 'rgba(10,4,16,0.72)',
     borderWidth: 1,
     borderColor: color.hairline,
     borderRadius: radius.pill,

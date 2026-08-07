@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
   },
   scrim: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(8,3,10,0.35)',
+    backgroundColor: 'rgba(10,4,16,0.35)',
   },
   pinWrap: {
     position: 'absolute',

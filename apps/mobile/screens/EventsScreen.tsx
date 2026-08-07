@@ -176,7 +176,7 @@ export function EventsScreen() {
               <View style={styles.chapterHeroWrap}>
                 <Image source={{ uri: hero.url }} style={styles.chapterHeroImg} resizeMode="cover" />
                 {/* Seasonal colour-tinted overlay replaces flat dark scrim */}
-                <View style={[styles.chapterHeroOverlay, { backgroundColor: 'rgba(8,3,10,0.72)' }]} />
+                <View style={[styles.chapterHeroOverlay, { backgroundColor: 'rgba(10,4,16,0.72)' }]} />
                 <View style={[styles.chapterTint, { backgroundColor: chCol, opacity: 0.18 }]} />
                 {isNow && <View style={[styles.nowDot, { backgroundColor: chCol }]} />}
                 <View style={styles.chapterHeroBody}>
@@ -257,9 +257,9 @@ const styles = StyleSheet.create({
     borderColor: color.hairline,
   },
   chapterNow: {
-    borderColor: 'rgba(196,151,60,0.45)',
+    borderColor: 'rgba(212,148,44,0.45)',
     // Subtle gold lift on the current-chapter card — the only place we brighten a border.
-    shadowColor: 'rgba(196,151,60,0.10)',
+    shadowColor: 'rgba(212,148,44,0.10)',
     shadowOpacity: 1,
     shadowRadius: 12,
     shadowOffset: { width: 0, height: 0 },
@@ -274,7 +274,7 @@ const styles = StyleSheet.create({
   },
   chapterHeroOverlay: {
     position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
-    backgroundColor: 'rgba(8,3,10,0.72)',
+    backgroundColor: 'rgba(10,4,16,0.72)',
   },
   chapterTint: {
     position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
@@ -332,7 +332,7 @@ const styles = StyleSheet.create({
     marginLeft: 'auto',
   },
   chapterList: {
-    backgroundColor: 'rgba(8,3,10,0.5)',
+    backgroundColor: 'rgba(10,4,16,0.5)',
     paddingHorizontal: space.md,
     paddingVertical: space.sm,
   },
@@ -360,7 +360,7 @@ const styles = StyleSheet.create({
     position: 'absolute', bottom: space.md, left: space.md,
     width: 48, height: 48, borderRadius: 9999, borderWidth: 1, borderColor: color.goldSoft,
     justifyContent: 'center', alignItems: 'center',
-    backgroundColor: 'rgba(8,3,10,0.85)',
+    backgroundColor: 'rgba(10,4,16,0.85)',
   },
   chipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: space.xs, marginTop: space.sm },
 });

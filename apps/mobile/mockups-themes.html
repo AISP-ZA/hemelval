@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Decanta — Theme Colour Directions</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #050308; padding: 40px 20px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+  .header { text-align: center; margin-bottom: 40px; }
+  .header h1 { font-size: 32px; font-weight: 300; color: #c4973c; letter-spacing: -0.5px; font-family: Georgia, serif; }
+  .header p { font-size: 11px; letter-spacing: 2px; color: #7a6858; margin-top: 8px; font-family: 'SF Mono', Menlo, monospace; text-transform: uppercase; }
+
+  .grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 40px; max-width: 1800px; margin: 0 auto; }
+  .mockup-card { width: 340px; text-align: center; }
+  .mockup-card h2 { font-size: 20px; font-weight: 400; color: #ede0cc; margin-top: 20px; font-family: Georgia, serif; }
+  .mockup-card .desc { font-size: 11px; color: #7a6858; line-height: 16px; margin-top: 6px; max-width: 290px; margin-left: auto; margin-right: auto; }
+  .swatch-row { display: flex; justify-content: center; gap: 6px; margin-top: 14px; }
+  .swatch { width: 24px; height: 24px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.08); }
+  .swatch-label { font-size: 7px; color: #7a6858; font-family: 'SF Mono', monospace; text-align: center; margin-top: 3px; letter-spacing: 0.5px; }
+
+  /* Phone frame */
+  .phone {
+    width: 320px; height: 640px;
+    border-radius: 36px;
+    overflow: hidden;
+    border: 1px solid rgba(196,151,60,0.1);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+    position: relative;
+  }
+  .phone-screen { width: 100%; height: 100%; overflow-y: auto; scrollbar-width: none; }
+  .phone-screen::-webkit-scrollbar { display: none; }
+
+  /* ── Shared structure ── */
+  .hero { height: 200px; position: relative; display: flex; align-items: flex-end; padding: 16px; }
+  .hero-bg { position: absolute; inset: 0; opacity: 0.25; }
+  .hero-scrim { position: absolute; inset: 0; }
+  .hero-content { position: relative; z-index: 1; }
+  .hero-eyebrow { font-size: 8px; letter-spacing: 1.5px; font-family: 'SF Mono', monospace; }
+  .hero-title { font-size: 28px; font-weight: 400; line-height: 32px; margin-top: 6px; font-family: Georgia, serif; letter-spacing: -0.8px; }
+  .hero-sub { font-size: 12px; line-height: 17px; margin-top: 6px; max-width: 250px; }
+
+  .badge-pill { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 99px; font-size: 7px; font-family: 'SF Mono', monospace; letter-spacing: 1px; margin-top: 8px; }
+  .badge-dot { width: 5px; height: 5px; border-radius: 99px; }
+
+  .search { margin: 12px 16px; padding: 8px 14px; border-radius: 99px; font-size: 12px; display: flex; align-items: center; gap: 8px; }
+
+  .section { padding: 8px 16px 12px; }
+  .section-eyebrow { font-size: 8px; letter-spacing: 1.5px; font-family: 'SF Mono', monospace; text-transform: uppercase; margin-bottom: 8px; }
+
+  .shelf-header { display: flex; align-items: baseline; gap: 6px; padding: 12px 16px 4px; }
+  .shelf-title { font-size: 11px; letter-spacing: 1.5px; font-family: 'SF Mono', monospace; text-transform: uppercase; }
+  .shelf-count { font-size: 8px; font-family: 'SF Mono', monospace; }
+  .shelf-band { height: 3px; margin-bottom: 4px; }
+  .shelf-scroll { display: flex; gap: 10px; padding: 4px 16px 8px; overflow-x: auto; scrollbar-width: none; }
+  .shelf-scroll::-webkit-scrollbar { display: none; }
+  .shelf-card {
+    width: 110px; border-radius: 8px; padding: 8px;
+    display: flex; flex-direction: column; align-items: center;
+    flex-shrink: 0;
+  }
+  .shelf-dot { width: 5px; height: 5px; border-radius: 99px; align-self: flex-start; margin-bottom: 4px; }
+  .shelf-thumb { width: 70px; height: 90px; border-radius: 6px; margin-bottom: 6px; }
+  .shelf-name { font-size: 9px; text-align: center; line-height: 12px; font-weight: 500; }
+  .shelf-estate { font-size: 7px; text-align: center; margin-top: 2px; font-family: 'SF Mono', monospace; }
+
+  .tabbar {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 56px; display: flex; align-items: center; justify-content: space-around;
+    padding-bottom: 6px;
+  }
+  .tab { font-size: 8px; letter-spacing: 0.8px; font-family: 'SF Mono', monospace; text-transform: uppercase; }
+  .tab-active { font-weight: 600; }
+
+  /* ════════════════════════════════════════════
+     THEME 1 — Grand Cru (CURRENT)
+     Deep black · antique gold · warm plum
+     ════════════════════════════════════════════ */
+  .t1 { --canvas: #08030a; --surface: #1a0e14; --card: #1a1216; --accent: #c4973c; --accent-bright: #d4af37; --ink: #ede0cc; --body: #b8a690; --body-mid: #7a6858; --hairline: rgba(196,151,60,0.12); --red: #7a1528; --white: #d4af37; --sparkling: #e0b546; }
+  .t1 .phone { background: var(--canvas); border-color: var(--hairline); }
+  .t1 .hero-bg { background: radial-gradient(ellipse at top, #2a1208, transparent); }
+  .t1 .hero-scrim { background: linear-gradient(180deg, transparent, var(--canvas) 95%); }
+  .t1 .hero-eyebrow, .t1 .hero-sub { color: var(--body); }
+  .t1 .hero-title, .t1 .hero-content { color: var(--ink); }
+  .t1 .badge-pill { background: rgba(196,151,60,0.08); border: 1px solid rgba(196,151,60,0.2); color: var(--accent); }
+  .t1 .badge-dot { background: var(--accent); }
+  .t1 .search { background: rgba(196,151,60,0.06); border: 1px solid var(--hairline); color: var(--body-mid); }
+  .t1 .section-eyebrow { color: var(--body-mid); }
+  .t1 .shelf-header { color: var(--accent); }
+  .t1 .shelf-band { background: linear-gradient(90deg, var(--accent), transparent); opacity: 0.6; }
+  .t1 .shelf-count { color: var(--body-mid); }
+  .t1 .shelf-card { background: var(--card); border: 1px solid var(--hairline); }
+  .t1 .shelf-dot { background: var(--red); }
+  .t1 .shelf-dot.white { background: var(--white); }
+  .t1 .shelf-dot.sparkling { background: var(--sparkling); }
+  .t1 .shelf-thumb { background: linear-gradient(180deg, #3a0f1c, #1a0608); }
+  .t1 .shelf-thumb.white { background: linear-gradient(180deg, #3d3214, #1a1408); }
+  .t1 .shelf-thumb.sparkling { background: linear-gradient(180deg, #44340a, #1f1804); }
+  .t1 .shelf-name { color: var(--ink); }
+  .t1 .shelf-estate { color: var(--accent); }
+  .t1 .tabbar { background: var(--canvas); border-top: 1px solid var(--hairline); }
+  .t1 .tab { color: var(--body-mid); }
+  .t1 .tab-active { color: var(--accent); }
+
+  /* ════════════════════════════════════════════
+     THEME 2 — Constantia Manor
+     Deep charcoal-blue · champagne gold · ivory
+     ════════════════════════════════════════════ */
+  .t2 { --canvas: #0a0f14; --surface: #131a22; --card: #161e28; --accent: #d4b066; --accent-bright: #e4c878; --ink: #f0ebe0; --body: #a8a098; --body-mid: #6a6258; --hairline: rgba(212,176,102,0.12); --red: #8a3050; --white: #d4b066; --sparkling: #e8c870; }
+  .t2 .phone { background: var(--canvas); border-color: var(--hairline); }
+  .t2 .hero-bg { background: radial-gradient(ellipse at top, #142030, transparent); }
+  .t2 .hero-scrim { background: linear-gradient(180deg, transparent, var(--canvas) 95%); }
+  .t2 .hero-eyebrow, .t2 .hero-sub { color: var(--body); }
+  .t2 .hero-title, .t2 .hero-content { color: var(--ink); }
+  .t2 .badge-pill { background: rgba(212,176,102,0.08); border: 1px solid rgba(212,176,102,0.2); color: var(--accent); }
+  .t2 .badge-dot { background: var(--accent); }
+  .t2 .search { background: rgba(212,176,102,0.05); border: 1px solid var(--hairline); color: var(--body-mid); }
+  .t2 .section-eyebrow { color: var(--body-mid); }
+  .t2 .shelf-header { color: var(--accent); }
+  .t2 .shelf-band { background: linear-gradient(90deg, var(--accent), transparent); opacity: 0.5; }
+  .t2 .shelf-count { color: var(--body-mid); }
+  .t2 .shelf-card { background: var(--card); border: 1px solid var(--hairline); }
+  .t2 .shelf-dot { background: var(--red); }
+  .t2 .shelf-dot.white { background: var(--white); }
+  .t2 .shelf-dot.sparkling { background: var(--sparkling); }
+  .t2 .shelf-thumb { background: linear-gradient(180deg, #3a1228, #1a0814); }
+  .t2 .shelf-thumb.white { background: linear-gradient(180deg, #3a3018, #1a140a); }
+  .t2 .shelf-thumb.sparkling { background: linear-gradient(180deg, #44380a, #1f1804); }
+  .t2 .shelf-name { color: var(--ink); }
+  .t2 .shelf-estate { color: var(--accent); }
+  .t2 .tabbar { background: var(--canvas); border-top: 1px solid var(--hairline); }
+  .t2 .tab { color: var(--body-mid); }
+  .t2 .tab-active { color: var(--accent); }
+
+  /* ════════════════════════════════════════════
+     THEME 3 — Swartland Earth
+     Deep umber · burnt clay/terracotta · warm sand
+     ════════════════════════════════════════════ */
+  .t3 { --canvas: #100804; --surface: #1e1108; --card: #1c1208; --accent: #c8723a; --accent-bright: #d8884a; --ink: #f0e0c8; --body: #b89878; --body-mid: #786048; --hairline: rgba(200,114,58,0.12); --red: #8a2a18; --white: #c8a060; --sparkling: #d4a050; }
+  .t3 .phone { background: var(--canvas); border-color: var(--hairline); }
+  .t3 .hero-bg { background: radial-gradient(ellipse at top, #2a1408, transparent); }
+  .t3 .hero-scrim { background: linear-gradient(180deg, transparent, var(--canvas) 95%); }
+  .t3 .hero-eyebrow, .t3 .hero-sub { color: var(--body); }
+  .t3 .hero-title, .t3 .hero-content { color: var(--ink); }
+  .t3 .badge-pill { background: rgba(200,114,58,0.08); border: 1px solid rgba(200,114,58,0.2); color: var(--accent); }
+  .t3 .badge-dot { background: var(--accent); }
+  .t3 .search { background: rgba(200,114,58,0.06); border: 1px solid var(--hairline); color: var(--body-mid); }
+  .t3 .section-eyebrow { color: var(--body-mid); }
+  .t3 .shelf-header { color: var(--accent); }
+  .t3 .shelf-band { background: linear-gradient(90deg, var(--accent), transparent); opacity: 0.6; }
+  .t3 .shelf-count { color: var(--body-mid); }
+  .t3 .shelf-card { background: var(--card); border: 1px solid var(--hairline); }
+  .t3 .shelf-dot { background: var(--red); }
+  .t3 .shelf-dot.white { background: var(--white); }
+  .t3 .shelf-dot.sparkling { background: var(--sparkling); }
+  .t3 .shelf-thumb { background: linear-gradient(180deg, #3a1408, #1a0804); }
+  .t3 .shelf-thumb.white { background: linear-gradient(180deg, #3a2a10, #1a1208); }
+  .t3 .shelf-thumb.sparkling { background: linear-gradient(180deg, #44300a, #1f1404); }
+  .t3 .shelf-name { color: var(--ink); }
+  .t3 .shelf-estate { color: var(--accent); }
+  .t3 .tabbar { background: var(--canvas); border-top: 1px solid var(--hairline); }
+  .t3 .tab { color: var(--body-mid); }
+  .t3 .tab-active { color: var(--accent); }
+
+  /* ════════════════════════════════════════════
+     THEME 4 — Cape Coastal
+     Deep teal-navy · sea-glass green · bright cream
+     ════════════════════════════════════════════ */
+  .t4 { --canvas: #04100e; --surface: #0a1a18; --card: #0c1c1a; --accent: #5cb89a; --accent-bright: #6ec8aa; --ink: #e8f0e8; --body: #98b0a8; --body-mid: #5a7068; --hairline: rgba(92,184,154,0.12); --red: #b04060; --white: #c8d8b0; --sparkling: #d4e088; }
+  .t4 .phone { background: var(--canvas); border-color: var(--hairline); }
+  .t4 .hero-bg { background: radial-gradient(ellipse at top, #0a2025, transparent); }
+  .t4 .hero-scrim { background: linear-gradient(180deg, transparent, var(--canvas) 95%); }
+  .t4 .hero-eyebrow, .t4 .hero-sub { color: var(--body); }
+  .t4 .hero-title, .t4 .hero-content { color: var(--ink); }
+  .t4 .badge-pill { background: rgba(92,184,154,0.08); border: 1px solid rgba(92,184,154,0.2); color: var(--accent); }
+  .t4 .badge-dot { background: var(--accent); }
+  .t4 .search { background: rgba(92,184,154,0.05); border: 1px solid var(--hairline); color: var(--body-mid); }
+  .t4 .section-eyebrow { color: var(--body-mid); }
+  .t4 .shelf-header { color: var(--accent); }
+  .t4 .shelf-band { background: linear-gradient(90deg, var(--accent), transparent); opacity: 0.5; }
+  .t4 .shelf-count { color: var(--body-mid); }
+  .t4 .shelf-card { background: var(--card); border: 1px solid var(--hairline); }
+  .t4 .shelf-dot { background: var(--red); }
+  .t4 .shelf-dot.white { background: var(--white); }
+  .t4 .shelf-dot.sparkling { background: var(--sparkling); }
+  .t4 .shelf-thumb { background: linear-gradient(180deg, #2a1828, #100814); }
+  .t4 .shelf-thumb.white { background: linear-gradient(180deg, #2a3018, #101408); }
+  .t4 .shelf-thumb.sparkling { background: linear-gradient(180deg, #30380a, #141804); }
+  .t4 .shelf-name { color: var(--ink); }
+  .t4 .shelf-estate { color: var(--accent); }
+  .t4 .tabbar { background: var(--canvas); border-top: 1px solid var(--hairline); }
+  .t4 .tab { color: var(--body-mid); }
+  .t4 .tab-active { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Decanta — Theme Colour Directions</h1>
+  <p>SELECT A THEME · SCROLL EACH PHONE TO COMPARE</p>
+</div>
+
+<div class="grid">
+
+  <!-- ════ THEME 1 — GRAND CRU (CURRENT) ════ -->
+  <div class="mockup-card">
+    <div class="phone t1">
+      <div class="phone-screen">
+        <div class="hero">
+          <div class="hero-bg"></div>
+          <div class="hero-scrim"></div>
+          <div class="hero-content">
+            <div class="hero-eyebrow" style="font-family:'SF Mono',monospace">YOUR CELLAR · YOUR PALATE</div>
+            <div class="hero-title">Discover South African wine.</div>
+            <div class="hero-sub">Scan a bottle, rate your tasting, build your palate.</div>
+            <div class="badge-pill"><span class="badge-dot"></span> CURATED · 155 WC WINES</div>
+          </div>
+        </div>
+        <div class="search">⌕ Search wines, estates, varietals…</div>
+        <div class="section">
+          <div class="section-eyebrow">TOP RATED // 01</div>
+          <div class="shelf-scroll">
+            <div class="shelf-card"><div class="shelf-dot"></div><div class="shelf-thumb"></div><div class="shelf-name">Kanonkop Pinotage</div><div class="shelf-estate">KANONKOP</div></div>
+            <div class="shelf-card"><div class="shelf-dot white"></div><div class="shelf-thumb white"></div><div class="shelf-name">Vin de Constance</div><div class="shelf-estate">KLEIN CONST.</div></div>
+          </div>
+        </div>
+        <div class="shelf-band"></div>
+        <div class="shelf-header"><span class="shelf-title">REDS</span><span class="shelf-count">// 98</span></div>
+        <div class="shelf-scroll">
+          <div class="shelf-card"><div class="shelf-dot"></div><div class="shelf-thumb"></div><div class="shelf-name">Sadie Columella</div><div class="shelf-estate">SADIE FAMILY</div></div>
+          <div class="shelf-card"><div class="shelf-dot"></div><div class="shelf-thumb"></div><div class="shelf-name">Meerlust Rubicon</div><div class="shelf-estate">MEERLUST</div></div>
+          <div class="shelf-card"><div class="shelf-dot"></div><div class="shelf-thumb"></div><div class="shelf-name">Hamilton Russell</div><div class="shelf-estate">HAMILTON R.</div></div>
+        </div>
+        <div class="shelf-band"></div>
+        <div class="shelf-header"><span class="shelf-title">WHITES</span><span class="shelf-count">// 49</span></div>
+        <div class="shelf-scroll">
+          <div class="shelf-card"><div class="shelf-dot white"></div><div class="shelf-thumb white"></div><div class="shelf-name">Iona Sauvignon</div><div class="shelf-estate">IONA</div></div>
+          <div class="shelf-card"><div class="shelf-dot white"></div><div class="shelf-thumb white"></div><div class="shelf-name">De Wetshof Chard</div><div class="shelf-estate">DE WETSHOF</div></div>
+        </div>
+        <div style="height:60px"></div>
+        <div class="tabbar">
+          <span class="tab tab-active">DISCOVER</span>
+          <span class="tab">SCAN</span>
+          <span class="tab">CELLAR</span>
+          <span class="tab">EVENTS</span>
+          <span class="tab">LEARN</span>
+        </div>
+      </div>
+    </div>
+    <h2>A. Grand Cru <span style="font-size:12px;color:#7a6858">(current)</span></h2>
+    <div class="desc">Deep black canvas, antique gold, warm plum surfaces. The incumbent — moody, editorial, candlelit-cellar.</div>
+    <div class="swatch-row">
+      <div><div class="swatch" style="background:#08030a"></div><div class="swatch-label">CANVAS</div></div>
+      <div><div class="swatch" style="background:#c4973c"></div><div class="swatch-label">GOLD</div></div>
+      <div><div class="swatch" style="background:#7a1528"></div><div class="swatch-label">RED</div></div>
+      <div><div class="swatch" style="background:#1a1216"></div><div class="swatch-label">CARD</div></div>
+    </div>
+  </div>
+
+  <!-- ════ THEME 2 — CONSTANTIA MANOR ════ -->
+  <div class="mockup-card">
+    <div class="phone t2">
+      <div class="phone-screen">
+        <div class="hero">
+          <div class="hero-bg"></div>
+          <div class="hero-scrim"></div>
+          <div class="hero-content">
+            <div class="hero-eyebrow" style="font-family:'SF Mono',monospace">YOUR CELLAR · YOUR PALATE</div>
+            <div class="hero-title">Discover South African wine.</div>
+            <div class="hero-sub">Scan a bottle, rate your tasting, build your palate.</div>
+            <div class="badge-pill"><span class="badge-dot"></span> CURATED · 155 WC WINES</div>
+          </div>
+        </div>
+        <div class="search">⌕ Search wines, estates, varietals…</div>
+        <div class="section">
+          <div class="section-eyebrow">TOP RATED // 01</div>
+          <div class="shelf-scroll">
+            <div class="shelf-card"><div class="shelf-dot"></div><div class="shelf-thumb"></div><div class="shelf-name">Kanonkop Pinotage</div><div class="shelf-estate">KANONKOP</div></div>
+            <div class="shelf-card"><div class="shelf-dot white"></div><div class="shelf-thumb white"></div><div class="shelf-name">Vin de Constance</div><div class="shelf-estate">KLEIN CONST.</div></div>
+          </div>
+        </div>
+        <div class="shelf-band"></div>
+        <div class="shelf-header"><span class="shelf-title">REDS</span><span class="shelf-count">// 98</span></div>
+        <div class="shelf-scroll">
+          <div class="shelf-card"><div class="shelf-dot"></div><div class="shelf-thumb"></div><div class="shelf-name">Sadie Columella</div><div class="shelf-estate">SADIE FAMILY</div></div>
+          <div class="shelf-card"><div class="shelf-dot"></div><div class="shelf-thumb"></div><div class="shelf-name">Meerlust Rubicon</div><div class="shelf-estate">MEERLUST</div></div>
+          <div class="shelf-card"><div class="shelf-dot"></div><div class="shelf-thumb"></div><div class="shelf-name">Hamilton Russell</div><div class="shelf-estate">HAMILTON R.</div></div>
+        </div>
+        <div class="shelf-band"></div>
+        <div class="shelf-header"><span class="shelf-title">WHITES</span><span class="shelf-count">// 49</span></div>
+        <div class="shelf-scroll">
+          <div class="shelf-card"><div class="shelf-dot white"></div><div class="shelf-thumb white"></div><div class="shelf-name">Iona Sauvignon</div><div class="shelf-estate">IONA</div></div>
+          <div class="shelf-card"><div class="shelf-dot white"></div><div class="shelf-thumb white"></div><div class="shelf-name">De Wetshof Chard</div><div class="shelf-estate">DE WETSHOF</div></div>
+        </div>
+        <div style="height:60px"></div>
+        <div class="tabbar">
+          <span class="tab tab-active">DISCOVER</span>
+          <span class="tab">SCAN</span>
+          <span class="tab">CELLAR</span>
+          <span class="tab">EVENTS</span>
+          <span class="tab">LEARN</span>
+        </div>
+      </div>
+    </div>
+    <h2>B. Constantia Manor</h2>
+    <div class="desc">Deep charcoal-blue canvas, champagne gold, ivory text. Cooler, more refined — like the Constantia manor houses. Less moody, more aristocratic.</div>
+    <div class="swatch-row">
+      <div><div class="swatch" style="background:#0a0f14"></div><div class="swatch-label">CANVAS</div></div>
+      <div><div class="swatch" style="background:#d4b066"></div><div class="swatch-label">GOLD</div></div>
+      <div><div class="swatch" style="background:#8a3050"></div><div class="swatch-label">RED</div></div>
+      <div><div class="swatch" style="background:#161e28"></div><div class="swatch-label">CARD</div></div>
+    </div>
+  </div>
+
+  <!-- ════ THEME 3 — SWARTLAND EARTH ════ -->
+  <div class="mockup-card">
+    <div class="phone t3">
+      <div class="phone-screen">
+        <div class="hero">
+          <div class="hero-bg"></div>
+          <div class="hero-scrim"></div>
+          <div class="hero-content">
+            <div class="hero-eyebrow" style="font-family:'SF Mono',monospace">YOUR CELLAR · YOUR PALATE</div>
+            <div class="hero-title">Discover South African wine.</div>
+            <div class="hero-sub">Scan a bottle, rate your tasting, build your palate.</div>
+            <div class="badge-pill"><span class="badge-dot"></span> CURATED · 155 WC WINES</div>
+          </div>
+        </div>
+        <div class="search">⌕ Search wines, estates, varietals…</div>
+        <div class="section">
+          <div class="section-eyebrow">TOP RATED // 01</div>
+          <div class="shelf-scroll">
+            <div class="shelf-card"><div class="shelf-dot"></div><div class="shelf-thumb"></div><div class="shelf-name">Kanonkop Pinotage</div><div class="shelf-estate">KANONKOP</div></div>
+            <div class="shelf-card"><div class="shelf-dot white"></div><div class="shelf-thumb white"></div><div class="shelf-name">Vin de Constance</div><div class="shelf-estate">KLEIN CONST.</div></div>
+          </div>
+        </div>
+        <div class="shelf-band"></div>
+        <div class="shelf-header"><span class="shelf-title">REDS</span><span class="shelf-count">// 98</span></div>
+        <div class="shelf-scroll">
+          <div class="shelf-card"><div class="shelf-dot"></div><div class="shelf-thumb"></div><div class="shelf-name">Sadie Columella</div><div class="shelf-estate">SADIE FAMILY</div></div>
+          <div class="shelf-card"><div class="shelf-dot"></div><div class="shelf-thumb"></div><div class="shelf-name">Meerlust Rubicon</div><div class="shelf-estate">MEERLUST</div></div>
+          <div class="shelf-card"><div class="shelf-dot"></div><div class="shelf-thumb"></div><div class="shelf-name">Hamilton Russell</div><div class="shelf-estate">HAMILTON R.</div></div>
+        </div>
+        <div class="shelf-band"></div>
+        <div class="shelf-header"><span class="shelf-title">WHITES</span><span class="shelf-count">// 49</span></div>
+        <div class="shelf-scroll">
+          <div class="shelf-card"><div class="shelf-dot white"></div><div class="shelf-thumb white"></div><div class="shelf-name">Iona Sauvignon</div><div class="shelf-estate">IONA</div></div>
+          <div class="shelf-card"><div class="shelf-dot white"></div><div class="shelf-thumb white"></div><div class="shelf-name">De Wetshof Chard</div><div class="shelf-estate">DE WETSHOF</div></div>
+        </div>
+        <div style="height:60px"></div>
+        <div class="tabbar">
+          <span class="tab tab-active">DISCOVER</span>
+          <span class="tab">SCAN</span>
+          <span class="tab">CELLAR</span>
+          <span class="tab">EVENTS</span>
+          <span class="tab">LEARN</span>
+        </div>
+      </div>
+    </div>
+    <h2>C. Swartland Earth</h2>
+    <div class="desc">Deep umber canvas, burnt clay/terracotta accent, warm sand text. Earthy, sun-baked — reflects the Swartland's dry, rugged terroir. Warmer and more organic than Grand Cru.</div>
+    <div class="swatch-row">
+      <div><div class="swatch" style="background:#100804"></div><div class="swatch-label">CANVAS</div></div>
+      <div><div class="swatch" style="background:#c8723a"></div><div class="swatch-label">CLAY</div></div>
+      <div><div class="swatch" style="background:#8a2a18"></div><div class="swatch-label">RED</div></div>
+      <div><div class="swatch" style="background:#1c1208"></div><div class="swatch-label">CARD</div></div>
+    </div>
+  </div>
+
+  <!-- ════ THEME 4 — CAPE COASTAL ════ -->
+  <div class="mockup-card">
+    <div class="phone t4">
+      <div class="phone-screen">
+        <div class="hero">
+          <div class="hero-bg"></div>
+          <div class="hero-scrim"></div>
+          <div class="hero-content">
+            <div class="hero-eyebrow" style="font-family:'SF Mono',monospace">YOUR CELLAR · YOUR PALATE</div>
+            <div class="hero-title">Discover South African wine.</div>
+            <div class="hero-sub">Scan a bottle, rate your tasting, build your palate.</div>
+            <div class="badge-pill"><span class="badge-dot"></span> CURATED · 155 WC WINES</div>
+          </div>
+        </div>
+        <div class="search">⌕ Search wines, estates, varietals…</div>
+        <div class="section">
+          <div class="section-eyebrow">TOP RATED // 01</div>
+          <div class="shelf-scroll">
+            <div class="shelf-card"><div class="shelf-dot"></div><div class="shelf-thumb"></div><div class="shelf-name">Kanonkop Pinotage</div><div class="shelf-estate">KANONKOP</div></div>
+            <div class="shelf-card"><div class="shelf-dot white"></div><div class="shelf-thumb white"></div><div class="shelf-name">Vin de Constance</div><div class="shelf-estate">KLEIN CONST.</div></div>
+          </div>
+        </div>
+        <div class="shelf-band"></div>
+        <div class="shelf-header"><span class="shelf-title">REDS</span><span class="shelf-count">// 98</span></div>
+        <div class="shelf-scroll">
+          <div class="shelf-card"><div class="shelf-dot"></div><div class="shelf-thumb"></div><div class="shelf-name">Sadie Columella</div><div class="shelf-estate">SADIE FAMILY</div></div>
+          <div class="shelf-card"><div class="shelf-dot"></div><div class="shelf-thumb"></div><div class="shelf-name">Meerlust Rubicon</div><div class="shelf-estate">MEERLUST</div></div>
+          <div class="shelf-card"><div class="shelf-dot"></div><div class="shelf-thumb"></div><div class="shelf-name">Hamilton Russell</div><div class="shelf-estate">HAMILTON R.</div></div>
+        </div>
+        <div class="shelf-band"></div>
+        <div class="shelf-header"><span class="shelf-title">WHITES</span><span class="shelf-count">// 49</span></div>
+        <div class="shelf-scroll">
+          <div class="shelf-card"><div class="shelf-dot white"></div><div class="shelf-thumb white"></div><div class="shelf-name">Iona Sauvignon</div><div class="shelf-estate">IONA</div></div>
+          <div class="shelf-card"><div class="shelf-dot white"></div><div class="shelf-thumb white"></div><div class="shelf-name">De Wetshof Chard</div><div class="shelf-estate">DE WETSHOF</div></div>
+        </div>
+        <div style="height:60px"></div>
+        <div class="tabbar">
+          <span class="tab tab-active">DISCOVER</span>
+          <span class="tab">SCAN</span>
+          <span class="tab">CELLAR</span>
+          <span class="tab">EVENTS</span>
+          <span class="tab">LEARN</span>
+        </div>
+      </div>
+    </div>
+    <h2>D. Cape Coastal</h2>
+    <div class="desc">Deep teal-navy canvas, sea-glass green accent, bright cream text. Fresh, coastal, airy — reflects Hemel-en-Aarde and Elgin's cool-climate, ocean-influenced terroir. Most differentiated from a typical wine app.</div>
+    <div class="swatch-row">
+      <div><div class="swatch" style="background:#04100e"></div><div class="swatch-label">CANVAS</div></div>
+      <div><div class="swatch" style="background:#5cb89a"></div><div class="swatch-label">SEA</div></div>
+      <div><div class="swatch" style="background:#b04060"></div><div class="swatch-label">RED</div></div>
+      <div><div class="swatch" style="background:#0c1c1a"></div><div class="swatch-label">CARD</div></div>
+    </div>
+  </div>
+
+</div>
+
+<div style="text-align:center;margin-top:60px">
+  <p style="font-size:10px;letter-spacing:1.5px;color:#7a6858;font-family:'SF Mono',monospace">
+    TELL ME WHICH THEME TO APPLY — I'LL IMPLEMENT ACROSS THE WHOLE APP
+  </p>
+</div>
+
+</body>
+</html>

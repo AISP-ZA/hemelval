@@ -372,7 +372,7 @@ const styles = StyleSheet.create({
     borderRadius: radius.pill,
     borderWidth: 1,
     borderColor: color.hairline,
-    backgroundColor: 'rgba(8,3,10,0.7)',
+    backgroundColor: 'rgba(10,4,16,0.7)',
   },
   skipText: {
     ...font.captionMonoSm,
@@ -395,7 +395,7 @@ const styles = StyleSheet.create({
   },
   heroOverlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(8,3,10,0.55)',
+    backgroundColor: 'rgba(10,4,16,0.55)',
   },
   heroBody: {
     position: 'absolute',
@@ -464,7 +464,7 @@ const styles = StyleSheet.create({
   },
   qOptActive: {
     borderColor: color.gold,
-    backgroundColor: 'rgba(196,151,60,0.08)',
+    backgroundColor: 'rgba(212,148,44,0.08)',
   },
 
   // Pro
@@ -485,11 +485,11 @@ const styles = StyleSheet.create({
   priceCard: {
     marginTop: space.xl,
     borderWidth: 1,
-    borderColor: 'rgba(196,151,60,0.30)',
+    borderColor: 'rgba(212,148,44,0.30)',
     borderRadius: radius.sm,
     padding: space.xl,
     alignItems: 'center',
-    backgroundColor: 'rgba(196,151,60,0.04)',
+    backgroundColor: 'rgba(212,148,44,0.04)',
   },
   price: {
     fontFamily: 'Cormorant Garamond',

@@ -135,11 +135,11 @@ const styles = StyleSheet.create({
   },
   headerOverlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(8,3,10,0.42)',
+    backgroundColor: 'rgba(10,4,16,0.42)',
   },
   backBtn: {
     alignSelf: 'flex-start',
-    backgroundColor: 'rgba(8,3,10,0.72)',
+    backgroundColor: 'rgba(10,4,16,0.72)',
     borderWidth: 1,
     borderColor: color.hairline,
     borderRadius: radius.pill,

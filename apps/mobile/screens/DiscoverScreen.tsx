@@ -739,8 +739,8 @@ const styles = StyleSheet.create({
   profileBtn: {
     position: 'absolute', right: space.lg, zIndex: 10,
     width: 36, height: 36, borderRadius: 9999,
-    borderWidth: 1, borderColor: 'rgba(196,151,60,0.3)',
-    backgroundColor: 'rgba(8,3,10,0.6)',
+    borderWidth: 1, borderColor: 'rgba(212,148,44,0.3)',
+    backgroundColor: 'rgba(10,4,16,0.6)',
     justifyContent: 'center', alignItems: 'center',
   },
   profileBtnText: {
@@ -758,9 +758,9 @@ const styles = StyleSheet.create({
     marginTop: space.md,
     paddingHorizontal: space.md,
     paddingVertical: space.xs,
-    backgroundColor: 'rgba(196,151,60,0.08)',
+    backgroundColor: 'rgba(212,148,44,0.08)',
     borderWidth: 1,
-    borderColor: 'rgba(196,151,60,0.20)',
+    borderColor: 'rgba(212,148,44,0.20)',
     borderRadius: radius.pill,
     alignSelf: 'flex-start',
   },
@@ -854,7 +854,7 @@ const styles = StyleSheet.create({
     width: 38,
     height: 38,
     borderRadius: 9999,
-    backgroundColor: 'rgba(8,3,10,0.72)',
+    backgroundColor: 'rgba(10,4,16,0.72)',
     borderWidth: 1,
     borderColor: color.hairline,
     justifyContent: 'center',
@@ -923,8 +923,8 @@ const styles = StyleSheet.create({
     height: 32,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: 'rgba(196,151,60,0.12)',
-    backgroundColor: 'rgba(196,151,60,0.04)',
+    borderColor: 'rgba(212,148,44,0.12)',
+    backgroundColor: 'rgba(212,148,44,0.04)',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -944,15 +944,15 @@ const styles = StyleSheet.create({
   vintageCard: {
     flex: 1,
     borderWidth: 1,
-    borderColor: 'rgba(196,151,60,0.10)',
+    borderColor: 'rgba(212,148,44,0.10)',
     borderRadius: 10,
     padding: space.md,
     alignItems: 'center',
-    backgroundColor: 'rgba(196,151,60,0.02)',
+    backgroundColor: 'rgba(212,148,44,0.02)',
   },
   vintageCardActive: {
-    borderColor: 'rgba(196,151,60,0.25)',
-    backgroundColor: 'rgba(196,151,60,0.06)',
+    borderColor: 'rgba(212,148,44,0.25)',
+    backgroundColor: 'rgba(212,148,44,0.06)',
   },
   vintageYear: {
     fontFamily: 'CormorantGaramond, Georgia, serif',
@@ -978,9 +978,9 @@ const styles = StyleSheet.create({
   // Stories entry card
   storiesEntryCard: {
     flexDirection: 'row',
-    borderWidth: 1, borderColor: 'rgba(196,151,60,0.25)',
+    borderWidth: 1, borderColor: 'rgba(212,148,44,0.25)',
     borderRadius: radius.sm, overflow: 'hidden',
-    backgroundColor: 'rgba(196,151,60,0.04)',
+    backgroundColor: 'rgba(212,148,44,0.04)',
   },
   storiesEntryLeft: { flex: 1, padding: space.lg },
   storiesEntryTitle: {
@@ -1006,7 +1006,7 @@ const styles = StyleSheet.create({
   },
   storiesEntryThumbScrim: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(8,3,10,0.5)',
+    backgroundColor: 'rgba(10,4,16,0.5)',
   },
   storiesEntryThumbLabel: {
     ...font.captionMonoSm,
@@ -1022,7 +1022,7 @@ const styles = StyleSheet.create({
   },
   nearYouMapWrap: { height: 140, position: 'relative' },
   nearYouMap: { ...StyleSheet.absoluteFillObject },
-  nearYouMapScrim: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(8,3,10,0.50)' },
+  nearYouMapScrim: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(10,4,16,0.50)' },
   nearYouUserPin: {
     position: 'absolute', left: '50%', top: '50%',
     width: 12, height: 12, borderRadius: 9999,

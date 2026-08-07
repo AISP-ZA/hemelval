@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     borderRadius: radius.sm,
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: 'rgba(196,151,60,0.25)',
+    borderColor: 'rgba(212,148,44,0.25)',
     position: 'relative',
     height: 320,
   },
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
   },
   heroOverlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(8,3,10,0.68)',
+    backgroundColor: 'rgba(10,4,16,0.68)',
   },
   heroBody: {
     position: 'absolute',
@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
   },
   storyCoverScrim: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(8,3,10,0.45)',
+    backgroundColor: 'rgba(10,4,16,0.45)',
   },
   storyCoverBody: {
     position: 'absolute', top: space.sm, right: space.sm,
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
     ...font.captionMonoSm,
     color: color.gold,
     letterSpacing: 1,
-    backgroundColor: 'rgba(8,3,10,0.8)',
+    backgroundColor: 'rgba(10,4,16,0.8)',
     paddingHorizontal: space.xs,
     paddingVertical: 2,
     borderRadius: radius.pill,

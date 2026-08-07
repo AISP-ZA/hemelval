@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
   },
   heroOverlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(8,3,10,0.72)',
+    backgroundColor: 'rgba(10,4,16,0.72)',
   },
   backBtn: {
     position: 'absolute',
@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
     borderRadius: radius.pill,
     borderWidth: 1,
     borderColor: color.hairline,
-    backgroundColor: 'rgba(8,3,10,0.7)',
+    backgroundColor: 'rgba(10,4,16,0.7)',
     zIndex: 5,
   },
   backText: {
@@ -234,11 +234,11 @@ const styles = StyleSheet.create({
   },
   callout: {
     borderWidth: 1,
-    borderColor: 'rgba(196,151,60,0.30)',
+    borderColor: 'rgba(212,148,44,0.30)',
     borderRadius: radius.sm,
     padding: space.md,
     marginTop: space.md,
-    backgroundColor: 'rgba(196,151,60,0.06)',
+    backgroundColor: 'rgba(212,148,44,0.06)',
   },
   calloutLabel: {
     ...font.captionMonoSm,
@@ -290,9 +290,9 @@ const styles = StyleSheet.create({
     marginTop: space.lg,
     padding: space.lg,
     borderWidth: 1,
-    borderColor: 'rgba(196,151,60,0.25)',
+    borderColor: 'rgba(212,148,44,0.25)',
     borderRadius: radius.sm,
-    backgroundColor: 'rgba(196,151,60,0.04)',
+    backgroundColor: 'rgba(212,148,44,0.04)',
   },
   estateLinkTitle: {
     fontFamily: 'Cormorant Garamond',

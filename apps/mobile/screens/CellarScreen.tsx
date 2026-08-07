@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: color.canvasCardRaised,
     borderWidth: 1,
-    borderColor: 'rgba(196,151,60,0.15)',
+    borderColor: 'rgba(212,148,44,0.15)',
     borderRadius: radius.sm,
     padding: space.md,
     alignItems: 'center',
@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
   sectionCard: {
     backgroundColor: color.canvasCardRaised,
     borderWidth: 1,
-    borderColor: 'rgba(196,151,60,0.12)',
+    borderColor: 'rgba(212,148,44,0.12)',
     borderRadius: radius.sm,
     padding: space.lg,
     marginTop: space.md,
@@ -277,7 +277,7 @@ const styles = StyleSheet.create({
     marginVertical: space.xs,
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: 'rgba(196,151,60,0.10)',
+    borderColor: 'rgba(212,148,44,0.10)',
   },
   journalAccent: {
     width: 3,
@@ -348,7 +348,7 @@ const styles = StyleSheet.create({
   },
   emptyHeroOverlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(8,3,10,0.65)',
+    backgroundColor: 'rgba(10,4,16,0.65)',
   },
   emptyHeroBody: {
     position: 'absolute',

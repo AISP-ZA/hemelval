@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Decanta — Elevated Theme Directions</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #050308; padding: 40px 20px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+  .header { text-align: center; margin-bottom: 40px; }
+  .header h1 { font-size: 32px; font-weight: 300; color: #c4973c; letter-spacing: -0.5px; font-family: Georgia, serif; }
+  .header .sub { font-size: 12px; color: #8a7060; margin-top: 8px; font-style: italic; font-family: Georgia, serif; }
+  .header p { font-size: 10px; letter-spacing: 2px; color: #7a6858; margin-top: 6px; font-family: 'SF Mono', Menlo, monospace; text-transform: uppercase; }
+
+  .grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 40px; max-width: 1400px; margin: 0 auto; }
+  .mockup-card { width: 340px; text-align: center; }
+  .mockup-card h2 { font-size: 22px; font-weight: 400; color: #ede0cc; margin-top: 20px; font-family: Georgia, serif; }
+  .mockup-card .desc { font-size: 11px; color: #7a6858; line-height: 16px; margin-top: 6px; max-width: 290px; margin-left: auto; margin-right: auto; }
+  .mockup-card .why { font-size: 10px; color: #9a8870; line-height: 15px; margin-top: 6px; font-style: italic; max-width: 290px; margin-left: auto; margin-right: auto; }
+
+  .swatch-row { display: flex; justify-content: center; gap: 8px; margin-top: 14px; }
+  .swatch-wrap { text-align: center; }
+  .swatch { width: 30px; height: 30px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.06); }
+  .swatch-label { font-size: 7px; color: #7a6858; font-family: 'SF Mono', monospace; text-align: center; margin-top: 4px; letter-spacing: 0.5px; }
+  .swatch-hex { font-size: 6px; color: #5a4838; font-family: 'SF Mono', monospace; text-align: center; }
+
+  .phone {
+    width: 320px; height: 640px; border-radius: 36px; overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.9);
+    position: relative;
+  }
+  .phone-screen { width: 100%; height: 100%; overflow-y: auto; scrollbar-width: none; }
+  .phone-screen::-webkit-scrollbar { display: none; }
+
+  /* Shared */
+  .hero { height: 210px; position: relative; display: flex; align-items: flex-end; padding: 16px; }
+  .hero-bg { position: absolute; inset: 0; opacity: 0.3; }
+  .hero-scrim { position: absolute; inset: 0; }
+  .hero-content { position: relative; z-index: 1; }
+  .hero-eyebrow { font-size: 8px; letter-spacing: 1.8px; font-family: 'SF Mono', monospace; }
+  .hero-title { font-size: 28px; font-weight: 400; line-height: 32px; margin-top: 6px; font-family: Georgia, serif; letter-spacing: -0.8px; }
+  .hero-sub { font-size: 12px; line-height: 17px; margin-top: 6px; max-width: 250px; }
+  .badge-pill { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 99px; font-size: 7px; font-family: 'SF Mono', monospace; letter-spacing: 1px; margin-top: 8px; }
+  .badge-dot { width: 5px; height: 5px; border-radius: 99px; }
+  .search { margin: 12px 16px; padding: 9px 16px; border-radius: 99px; font-size: 12px; display: flex; align-items: center; gap: 8px; }
+  .section { padding: 8px 16px 4px; }
+  .section-eyebrow { font-size: 8px; letter-spacing: 1.5px; font-family: 'SF Mono', monospace; text-transform: uppercase; margin-bottom: 8px; }
+  .shelf-header { display: flex; align-items: baseline; gap: 6px; padding: 14px 16px 2px; }
+  .shelf-title { font-size: 12px; letter-spacing: 1.8px; font-family: 'SF Mono', monospace; text-transform: uppercase; font-weight: 500; }
+  .shelf-count { font-size: 9px; font-family: 'SF Mono', monospace; }
+  .shelf-band { height: 3px; margin: 0 16px 4px; border-radius: 2px; }
+  .shelf-scroll { display: flex; gap: 10px; padding: 6px 16px 8px; overflow-x: auto; scrollbar-width: none; }
+  .shelf-scroll::-webkit-scrollbar { display: none; }
+  .shelf-card { width: 112px; border-radius: 10px; padding: 8px; display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+  .shelf-dot { width: 6px; height: 6px; border-radius: 99px; align-self: flex-start; margin-bottom: 5px; }
+  .shelf-thumb { width: 72px; height: 92px; border-radius: 6px; margin-bottom: 6px; }
+  .shelf-name { font-size: 9px; text-align: center; line-height: 12px; font-weight: 600; }
+  .shelf-estate { font-size: 7px; text-align: center; margin-top: 2px; font-family: 'SF Mono', monospace; letter-spacing: 0.5px; }
+  .tabbar { position: absolute; bottom: 0; left: 0; right: 0; height: 56px; display: flex; align-items: center; justify-content: space-around; padding-bottom: 6px; }
+  .tab { font-size: 8px; letter-spacing: 0.8px; font-family: 'SF Mono', monospace; text-transform: uppercase; }
+  .tab-active { font-weight: 700; }
+
+  /* ════════════════════════════════════════════
+     THEME 1 — DEEP LACQUER
+     Near-black with blue-violet depth + vivid burnished gold
+     ════════════════════════════════════════════ */
+  .t1 { --canvas: #06030c; --surface: #120a1a; --card: #160e20; --accent: #e8b840; --ink: #f4ead8; --body: #c0a888; --body-mid: #806858; --hairline: rgba(232,184,64,0.14); --red: #c4223a; --white: #e8c850; --sparkling: #f0c858; }
+  .t1 .phone { background: var(--canvas); border: 1px solid var(--hairline); }
+  .t1 .hero-bg { background: radial-gradient(ellipse 120% 80% at 50% 0%, #1a0a2a 30%, transparent); }
+  .t1 .hero-scrim { background: linear-gradient(180deg, rgba(6,3,12,0.2), var(--canvas) 92%); }
+  .t1 .hero-eyebrow, .t1 .hero-sub { color: var(--body); }
+  .t1 .hero-title { color: var(--ink); }
+  .t1 .badge-pill { background: rgba(232,184,64,0.1); border: 1px solid rgba(232,184,64,0.25); color: var(--accent); }
+  .t1 .badge-dot { background: var(--accent); box-shadow: 0 0 6px rgba(232,184,64,0.6); }
+  .t1 .search { background: rgba(232,184,64,0.07); border: 1px solid var(--hairline); color: var(--body-mid); }
+  .t1 .section-eyebrow { color: var(--body-mid); }
+  .t1 .shelf-header { color: var(--accent); }
+  .t1 .shelf-band { background: linear-gradient(90deg, var(--accent) 20%, transparent); }
+  .t1 .shelf-count { color: var(--body-mid); }
+  .t1 .shelf-card { background: var(--card); border: 1px solid var(--hairline); }
+  .t1 .shelf-dot { background: var(--red); box-shadow: 0 0 4px rgba(196,34,58,0.5); }
+  .t1 .shelf-dot.white { background: var(--white); }
+  .t1 .shelf-dot.sparkling { background: var(--sparkling); }
+  .t1 .shelf-thumb { background: linear-gradient(160deg, #4a1028 10%, #1a0610 90%); }
+  .t1 .shelf-thumb.white { background: linear-gradient(160deg, #4a3a18, #1a140a); }
+  .t1 .shelf-thumb.sparkling { background: linear-gradient(160deg, #4a3c0a, #1f1804); }
+  .t1 .shelf-name { color: var(--ink); }
+  .t1 .shelf-estate { color: var(--accent); }
+  .t1 .tabbar { background: var(--canvas); border-top: 1px solid var(--hairline); }
+  .t1 .tab { color: var(--body-mid); }
+  .t1 .tab-active { color: var(--accent); }
+
+  /* ════════════════════════════════════════════
+     THEME 2 — VELVET VINEYARD
+     Deep aubergine-black + rich amber-gold (warmest, most luxurious)
+     ════════════════════════════════════════════ */
+  .t2 { --canvas: #0a0410; --surface: #180a14; --card: #1c0e18; --accent: #d4942c; --ink: #f2e4cc; --body: #b89878; --body-mid: #785848; --hairline: rgba(212,148,44,0.14); --red: #a8283c; --white: #d8b048; --sparkling: #e0b840; }
+  .t2 .phone { background: var(--canvas); border: 1px solid var(--hairline); }
+  .t2 .hero-bg { background: radial-gradient(ellipse 120% 80% at 50% 0%, #280a1a 30%, transparent); }
+  .t2 .hero-scrim { background: linear-gradient(180deg, rgba(10,4,16,0.2), var(--canvas) 92%); }
+  .t2 .hero-eyebrow, .t2 .hero-sub { color: var(--body); }
+  .t2 .hero-title { color: var(--ink); }
+  .t2 .badge-pill { background: rgba(212,148,44,0.1); border: 1px solid rgba(212,148,44,0.25); color: var(--accent); }
+  .t2 .badge-dot { background: var(--accent); box-shadow: 0 0 6px rgba(212,148,44,0.5); }
+  .t2 .search { background: rgba(212,148,44,0.07); border: 1px solid var(--hairline); color: var(--body-mid); }
+  .t2 .section-eyebrow { color: var(--body-mid); }
+  .t2 .shelf-header { color: var(--accent); }
+  .t2 .shelf-band { background: linear-gradient(90deg, var(--accent) 20%, transparent); }
+  .t2 .shelf-count { color: var(--body-mid); }
+  .t2 .shelf-card { background: var(--card); border: 1px solid var(--hairline); }
+  .t2 .shelf-dot { background: var(--red); box-shadow: 0 0 4px rgba(168,40,60,0.4); }
+  .t2 .shelf-dot.white { background: var(--white); }
+  .t2 .shelf-dot.sparkling { background: var(--sparkling); }
+  .t2 .shelf-thumb { background: linear-gradient(160deg, #4a0e20 10%, #1a0610 90%); }
+  .t2 .shelf-thumb.white { background: linear-gradient(160deg, #4a3818, #1a1208); }
+  .t2 .shelf-thumb.sparkling { background: linear-gradient(160deg, #4a380a, #1f1604); }
+  .t2 .shelf-name { color: var(--ink); }
+  .t2 .shelf-estate { color: var(--accent); }
+  .t2 .tabbar { background: var(--canvas); border-top: 1px solid var(--hairline); }
+  .t2 .tab { color: var(--body-mid); }
+  .t2 .tab-active { color: var(--accent); }
+
+  /* ════════════════════════════════════════════
+     THEME 3 — MIDNIGHT & GUNMETAL
+     Darkest blue-black + cool platinum-gold (most refined, most contrast)
+     ════════════════════════════════════════════ */
+  .t3 { --canvas: #03060e; --surface: #0a1020; --card: #0c1226; --accent: #d8c068; --ink: #eaeef4; --body: #98a0b0; --body-mid: #586076; --hairline: rgba(216,192,104,0.12); --red: #b03858; --white: #d0c878; --sparkling: #e0d070; }
+  .t3 .phone { background: var(--canvas); border: 1px solid var(--hairline); }
+  .t3 .hero-bg { background: radial-gradient(ellipse 120% 80% at 50% 0%, #0a1430 30%, transparent); }
+  .t3 .hero-scrim { background: linear-gradient(180deg, rgba(3,6,14,0.2), var(--canvas) 92%); }
+  .t3 .hero-eyebrow, .t3 .hero-sub { color: var(--body); }
+  .t3 .hero-title { color: var(--ink); }
+  .t3 .badge-pill { background: rgba(216,192,104,0.08); border: 1px solid rgba(216,192,104,0.22); color: var(--accent); }
+  .t3 .badge-dot { background: var(--accent); box-shadow: 0 0 6px rgba(216,192,104,0.5); }
+  .t3 .search { background: rgba(216,192,104,0.05); border: 1px solid var(--hairline); color: var(--body-mid); }
+  .t3 .section-eyebrow { color: var(--body-mid); }
+  .t3 .shelf-header { color: var(--accent); }
+  .t3 .shelf-band { background: linear-gradient(90deg, var(--accent) 20%, transparent); }
+  .t3 .shelf-count { color: var(--body-mid); }
+  .t3 .shelf-card { background: var(--card); border: 1px solid var(--hairline); }
+  .t3 .shelf-dot { background: var(--red); box-shadow: 0 0 4px rgba(176,56,88,0.4); }
+  .t3 .shelf-dot.white { background: var(--white); }
+  .t3 .shelf-dot.sparkling { background: var(--sparkling); }
+  .t3 .shelf-thumb { background: linear-gradient(160deg, #2a1020 10%, #100612 90%); }
+  .t3 .shelf-thumb.white { background: linear-gradient(160deg, #2a2810, #100e08); }
+  .t3 .shelf-thumb.sparkling { background: linear-gradient(160deg, #302c0a, #141204); }
+  .t3 .shelf-name { color: var(--ink); }
+  .t3 .shelf-estate { color: var(--accent); }
+  .t3 .tabbar { background: var(--canvas); border-top: 1px solid var(--hairline); }
+  .t3 .tab { color: var(--body-mid); }
+  .t3 .tab-active { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Elevated Theme Directions</h1>
+  <div class="sub">A+B DNA — deeper blacks, brighter golds, more drama</div>
+  <p>SELECT ONE · SCROLL TO COMPARE</p>
+</div>
+
+<div class="grid">
+
+  <!-- ════ THEME 1 ════ -->
+  <div class="mockup-card">
+    <div class="phone t1">
+      <div class="phone-screen">
+        <div class="hero">
+          <div class="hero-bg"></div>
+          <div class="hero-scrim"></div>
+          <div class="hero-content">
+            <div class="hero-eyebrow">YOUR CELLAR · YOUR PALATE</div>
+            <div class="hero-title">Discover South African wine.</div>
+            <div class="hero-sub">Scan a bottle, rate your tasting, build your palate.</div>
+            <div class="badge-pill"><span class="badge-dot"></span> CURATED · 155 WC WINES</div>
+          </div>
+        </div>
+        <div class="search">⌕ Search wines, estates, varietals…</div>
+        <div class="section"><div class="section-eyebrow">TOP RATED // 01</div></div>
+        <div class="shelf-scroll">
+          <div class="shelf-card"><div class="shelf-dot"></div><div class="shelf-thumb"></div><div class="shelf-name">Kanonkop Pinotage</div><div class="shelf-estate">KANONKOP</div></div>
+          <div class="shelf-card"><div class="shelf-dot white"></div><div class="shelf-thumb white"></div><div class="shelf-name">Vin de Constance</div><div class="shelf-estate">KLEIN CONST.</div></div>
+          <div class="shelf-card"><div class="shelf-dot"></div><div class="shelf-thumb"></div><div class="shelf-name">Sadie Columella</div><div class="shelf-estate">SADIE FAMILY</div></div>
+        </div>
+        <div class="shelf-band"></div>
+        <div class="shelf-header"><span class="shelf-title">REDS</span><span class="shelf-count">// 98</span></div>
+        <div class="shelf-scroll">
+          <div class="shelf-card"><div class="shelf-dot"></div><div class="shelf-thumb"></div><div class="shelf-name">Meerlust Rubicon</div><div class="shelf-estate">MEERLUST</div></div>
+          <div class="shelf-card"><div class="shelf-dot"></div><div class="shelf-thumb"></div><div class="shelf-name">Hamilton Russell</div><div class="shelf-estate">HAMILTON R.</div></div>
+          <div class="shelf-card"><div class="shelf-dot"></div><div class="shelf-thumb"></div><div class="shelf-name">The Chocolate Block</div><div class="shelf-estate">BOEKENHOUT.</div></div>
+        </div>
+        <div class="shelf-band"></div>
+        <div class="shelf-header"><span class="shelf-title">WHITES</span><span class="shelf-count">// 49</span></div>
+        <div class="shelf-scroll">
+          <div class="shelf-card"><div class="shelf-dot white"></div><div class="shelf-thumb white"></div><div class="shelf-name">Iona Sauvignon</div><div class="shelf-estate">IONA</div></div>
+          <div class="shelf-card"><div class="shelf-dot white"></div><div class="shelf-thumb white"></div><div class="shelf-name">De Wetshof Chard</div><div class="shelf-estate">DE WETSHOF</div></div>
+        </div>
+        <div style="height:60px"></div>
+        <div class="tabbar"><span class="tab tab-active">DISCOVER</span><span class="tab">SCAN</span><span class="tab">CELLAR</span><span class="tab">EVENTS</span><span class="tab">LEARN</span></div>
+      </div>
+    </div>
+    <h2>1. Deep Lacquer</h2>
+    <div class="desc">Near-black with a blue-violet depth. The gold is brighter, more vivid — almost luminous against the dark. Like lacquered wood with a gold inlay.</div>
+    <div class="why">Most dramatic contrast. The gold POPs harder than any option. Premium-feel through intensity, not subtlety.</div>
+    <div class="swatch-row">
+      <div class="swatch-wrap"><div class="swatch" style="background:#06030c"></div><div class="swatch-label">CANVAS</div><div class="swatch-hex">#06030c</div></div>
+      <div class="swatch-wrap"><div class="swatch" style="background:#e8b840"></div><div class="swatch-label">GOLD</div><div class="swatch-hex">#e8b840</div></div>
+      <div class="swatch-wrap"><div class="swatch" style="background:#c4223a"></div><div class="swatch-label">RED</div><div class="swatch-hex">#c4223a</div></div>
+      <div class="swatch-wrap"><div class="swatch" style="background:#160e20"></div><div class="swatch-label">CARD</div><div class="swatch-hex">#160e20</div></div>
+    </div>
+  </div>
+
+  <!-- ════ THEME 2 ════ -->
+  <div class="mockup-card">
+    <div class="phone t2">
+      <div class="phone-screen">
+        <div class="hero">
+          <div class="hero-bg"></div>
+          <div class="hero-scrim"></div>
+          <div class="hero-content">
+            <div class="hero-eyebrow">YOUR CELLAR · YOUR PALATE</div>
+            <div class="hero-title">Discover South African wine.</div>
+            <div class="hero-sub">Scan a bottle, rate your tasting, build your palate.</div>
+            <div class="badge-pill"><span class="badge-dot"></span> CURATED · 155 WC WINES</div>
+          </div>
+        </div>
+        <div class="search">⌕ Search wines, estates, varietals…</div>
+        <div class="section"><div class="section-eyebrow">TOP RATED // 01</div></div>
+        <div class="shelf-scroll">
+          <div class="shelf-card"><div class="shelf-dot"></div><div class="shelf-thumb"></div><div class="shelf-name">Kanonkop Pinotage</div><div class="shelf-estate">KANONKOP</div></div>
+          <div class="shelf-card"><div class="shelf-dot white"></div><div class="shelf-thumb white"></div><div class="shelf-name">Vin de Constance</div><div class="shelf-estate">KLEIN CONST.</div></div>
+          <div class="shelf-card"><div class="shelf-dot"></div><div class="shelf-thumb"></div><div class="shelf-name">Sadie Columella</div><div class="shelf-estate">SADIE FAMILY</div></div>
+        </div>
+        <div class="shelf-band"></div>
+        <div class="shelf-header"><span class="shelf-title">REDS</span><span class="shelf-count">// 98</span></div>
+        <div class="shelf-scroll">
+          <div class="shelf-card"><div class="shelf-dot"></div><div class="shelf-thumb"></div><div class="shelf-name">Meerlust Rubicon</div><div class="shelf-estate">MEERLUST</div></div>
+          <div class="shelf-card"><div class="shelf-dot"></div><div class="shelf-thumb"></div><div class="shelf-name">Hamilton Russell</div><div class="shelf-estate">HAMILTON R.</div></div>
+          <div class="shelf-card"><div class="shelf-dot"></div><div class="shelf-thumb"></div><div class="shelf-name">The Chocolate Block</div><div class="shelf-estate">BOEKENHOUT.</div></div>
+        </div>
+        <div class="shelf-band"></div>
+        <div class="shelf-header"><span class="shelf-title">WHITES</span><span class="shelf-count">// 49</span></div>
+        <div class="shelf-scroll">
+          <div class="shelf-card"><div class="shelf-dot white"></div><div class="shelf-thumb white"></div><div class="shelf-name">Iona Sauvignon</div><div class="shelf-estate">IONA</div></div>
+          <div class="shelf-card"><div class="shelf-dot white"></div><div class="shelf-thumb white"></div><div class="shelf-name">De Wetshof Chard</div><div class="shelf-estate">DE WETSHOF</div></div>
+        </div>
+        <div style="height:60px"></div>
+        <div class="tabbar"><span class="tab tab-active">DISCOVER</span><span class="tab">SCAN</span><span class="tab">CELLAR</span><span class="tab">EVENTS</span><span class="tab">LEARN</span></div>
+      </div>
+    </div>
+    <h2>2. Velvet Vineyard</h2>
+    <div class="desc">Deep aubergine-black (the plum warmth of A meets the depth of B). Rich amber-gold — warmer, more saturated than the current antique gold. Like aged oak barrels in candlelight.</div>
+    <div class="why">Most luxurious. The aubergine undertone feels like a fine-dining restaurant. Amber gold reads warmer and more "wine country" than cool gold.</div>
+    <div class="swatch-row">
+      <div class="swatch-wrap"><div class="swatch" style="background:#0a0410"></div><div class="swatch-label">CANVAS</div><div class="swatch-hex">#0a0410</div></div>
+      <div class="swatch-wrap"><div class="swatch" style="background:#d4942c"></div><div class="swatch-label">AMBER</div><div class="swatch-hex">#d4942c</div></div>
+      <div class="swatch-wrap"><div class="swatch" style="background:#a8283c"></div><div class="swatch-label">RED</div><div class="swatch-hex">#a8283c</div></div>
+      <div class="swatch-wrap"><div class="swatch" style="background:#1c0e18"></div><div class="swatch-label">CARD</div><div class="swatch-hex">#1c0e18</div></div>
+    </div>
+  </div>
+
+  <!-- ════ THEME 3 ════ -->
+  <div class="mockup-card">
+    <div class="phone t3">
+      <div class="phone-screen">
+        <div class="hero">
+          <div class="hero-bg"></div>
+          <div class="hero-scrim"></div>
+          <div class="hero-content">
+            <div class="hero-eyebrow">YOUR CELLAR · YOUR PALATE</div>
+            <div class="hero-title">Discover South African wine.</div>
+            <div class="hero-sub">Scan a bottle, rate your tasting, build your palate.</div>
+            <div class="badge-pill"><span class="badge-dot"></span> CURATED · 155 WC WINES</div>
+          </div>
+        </div>
+        <div class="search">⌕ Search wines, estates, varietals…</div>
+        <div class="section"><div class="section-eyebrow">TOP RATED // 01</div></div>
+        <div class="shelf-scroll">
+          <div class="shelf-card"><div class="shelf-dot"></div><div class="shelf-thumb"></div><div class="shelf-name">Kanonkop Pinotage</div><div class="shelf-estate">KANONKOP</div></div>
+          <div class="shelf-card"><div class="shelf-dot white"></div><div class="shelf-thumb white"></div><div class="shelf-name">Vin de Constance</div><div class="shelf-estate">KLEIN CONST.</div></div>
+          <div class="shelf-card"><div class="shelf-dot"></div><div class="shelf-thumb"></div><div class="shelf-name">Sadie Columella</div><div class="shelf-estate">SADIE FAMILY</div></div>
+        </div>
+        <div class="shelf-band"></div>
+        <div class="shelf-header"><span class="shelf-title">REDS</span><span class="shelf-count">// 98</span></div>
+        <div class="shelf-scroll">
+          <div class="shelf-card"><div class="shelf-dot"></div><div class="shelf-thumb"></div><div class="shelf-name">Meerlust Rubicon</div><div class="shelf-estate">MEERLUST</div></div>
+          <div class="shelf-card"><div class="shelf-dot"></div><div class="shelf-thumb"></div><div class="shelf-name">Hamilton Russell</div><div class="shelf-estate">HAMILTON R.</div></div>
+          <div class="shelf-card"><div class="shelf-dot"></div><div class="shelf-thumb"></div><div class="shelf-name">The Chocolate Block</div><div class="shelf-estate">BOEKENHOUT.</div></div>
+        </div>
+        <div class="shelf-band"></div>
+        <div class="shelf-header"><span class="shelf-title">WHITES</span><span class="shelf-count">// 49</span></div>
+        <div class="shelf-scroll">
+          <div class="shelf-card"><div class="shelf-dot white"></div><div class="shelf-thumb white"></div><div class="shelf-name">Iona Sauvignon</div><div class="shelf-estate">IONA</div></div>
+          <div class="shelf-card"><div class="shelf-dot white"></div><div class="shelf-thumb white"></div><div class="shelf-name">De Wetshof Chard</div><div class="shelf-estate">DE WETSHOF</div></div>
+        </div>
+        <div style="height:60px"></div>
+        <div class="tabbar"><span class="tab tab-active">DISCOVER</span><span class="tab">SCAN</span><span class="tab">CELLAR</span><span class="tab">EVENTS</span><span class="tab">LEARN</span></div>
+      </div>
+    </div>
+    <h2>3. Midnight & Gunmetal</h2>
+    <div class="desc">The darkest canvas — blue-black, almost inky. Platinum-gold accent: cooler, more silver than warm gold. Cool text tones. Like a moonlit cellar at midnight.</div>
+    <div class="why">Most refined and modern. The platinum-gold is unexpected — it reads as high-end tech (like a luxury watch brand) rather than traditional wine. If you want to break from wine-app clichés.</div>
+    <div class="swatch-row">
+      <div class="swatch-wrap"><div class="swatch" style="background:#03060e"></div><div class="swatch-label">CANVAS</div><div class="swatch-hex">#03060e</div></div>
+      <div class="swatch-wrap"><div class="swatch" style="background:#d8c068"></div><div class="swatch-label">PLATINUM</div><div class="swatch-hex">#d8c068</div></div>
+      <div class="swatch-wrap"><div class="swatch" style="background:#b03858"></div><div class="swatch-label">RED</div><div class="swatch-hex">#b03858</div></div>
+      <div class="swatch-wrap"><div class="swatch" style="background:#0c1226"></div><div class="swatch-label">CARD</div><div class="swatch-hex">#0c1226</div></div>
+    </div>
+  </div>
+
+</div>
+
+<div style="text-align:center;margin-top:60px;padding-bottom:40px">
+  <p style="font-size:10px;letter-spacing:1.5px;color:#7a6858;font-family:'SF Mono',monospace">
+    WHICH ONE? I'LL APPLY IT ACROSS THE ENTIRE APP
+  </p>
+</div>
+
+</body>
+</html>

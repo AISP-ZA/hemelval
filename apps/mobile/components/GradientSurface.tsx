@@ -3,7 +3,7 @@
  *
  * Uses expo-linear-gradient (already in the project). The Extended Grand Cru
  * palette introduces a barely-lifted warm plum at the top, fading to canvas.
- * This replaces the monotony of a flat #08030a across every screen header
+ * This replaces the monotony of a flat #0a0410 across every screen header
  * without losing the dark-cellar mood.
  *
  * Usage:
@@ -53,7 +53,7 @@ export function GradientSurface({ children, style, overlay, reverse }: GradientS
 export function GradientScrim({ style }: { style?: any }) {
   return (
     <LinearGradient
-      colors={['rgba(8,3,10,0.25)', 'rgba(8,3,10,0.65)', 'rgba(8,3,10,0.90)']}
+      colors={['rgba(10,4,16,0.25)', 'rgba(10,4,16,0.65)', 'rgba(10,4,16,0.90)']}
       style={[StyleSheet.absoluteFillObject, style]}
       start={{ x: 0, y: 0 }}
       end={{ x: 0, y: 1 }}

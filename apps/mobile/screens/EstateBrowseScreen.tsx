@@ -429,8 +429,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   estateCardSelected: {
-    borderColor: 'rgba(196,151,60,0.45)',
-    backgroundColor: 'rgba(196,151,60,0.06)',
+    borderColor: 'rgba(212,148,44,0.45)',
+    backgroundColor: 'rgba(212,148,44,0.06)',
   },
   estateMeta: {
     flexDirection: 'row', flexWrap: 'wrap', gap: space.xs, marginTop: space.sm,
@@ -451,7 +451,7 @@ const styles = StyleSheet.create({
     borderWidth: 1, borderColor: color.hairline,
   },
   mapTile: { ...StyleSheet.absoluteFillObject },
-  mapScrim: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(8,3,10,0.45)' },
+  mapScrim: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(10,4,16,0.45)' },
   userPin: {
     position: 'absolute',
     width: 14, height: 14, borderRadius: 9999,

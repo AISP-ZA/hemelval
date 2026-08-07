@@ -24,7 +24,7 @@ export function LandingScreen({ onEnter }: { onEnter: () => void }) {
       <View style={styles.hero}>
         <Image source={{ uri: HERO_VINEYARD.url }} style={styles.heroImg} resizeMode="cover" />
         <LinearGradient
-          colors={['rgba(8,3,10,0.3)', 'rgba(8,3,10,0.7)', color.canvas]}
+          colors={['rgba(10,4,16,0.3)', 'rgba(10,4,16,0.7)', color.canvas]}
           start={{ x: 0, y: 0 }}
           end={{ x: 0, y: 1 }}
           style={StyleSheet.absoluteFillObject}

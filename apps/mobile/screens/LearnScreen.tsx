@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
     borderColor: color.hairline,
     borderRadius: radius.sm,
     padding: space.lg,
-    backgroundColor: 'rgba(196,151,60,0.04)',
+    backgroundColor: 'rgba(212,148,44,0.04)',
   },
   journeyHeader: {
     flexDirection: 'row',
@@ -261,18 +261,18 @@ const styles = StyleSheet.create({
     backgroundColor: color.canvasCard,
   },
   lessonCardNext: {
-    borderColor: 'rgba(196,151,60,0.45)',
+    borderColor: 'rgba(212,148,44,0.45)',
   },
   lessonCardCover: {
     width: 88, position: 'relative',
   },
   lessonCoverOverlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(8,3,10,0.5)',
+    backgroundColor: 'rgba(10,4,16,0.5)',
   },
   lessonNumBadge: {
     position: 'absolute', top: space.xs, left: space.xs,
-    backgroundColor: 'rgba(8,3,10,0.85)',
+    backgroundColor: 'rgba(10,4,16,0.85)',
     borderRadius: radius.pill,
     paddingHorizontal: space.xs,
     paddingVertical: 2,
@@ -350,7 +350,7 @@ const styles = StyleSheet.create({
   },
   varietalCoverOverlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(8,3,10,0.55)',
+    backgroundColor: 'rgba(10,4,16,0.55)',
   },
   varietalDone: {
     position: 'absolute', top: space.xs, right: space.xs,

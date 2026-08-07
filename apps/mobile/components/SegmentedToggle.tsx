@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     paddingVertical: space.sm,
   },
   segmentActive: {
-    backgroundColor: 'rgba(196,151,60,0.12)',
+    backgroundColor: 'rgba(212,148,44,0.12)',
     // Inner border look via subtle gold tint
   },
   label: {

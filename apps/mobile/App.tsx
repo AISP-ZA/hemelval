@@ -138,7 +138,7 @@ export default function App() {
     const splash = (
       <Animated.View style={[splashStyles.wrap, { opacity: splashOpacity }]}>
         <Image source={{ uri: HERO_VINEYARD.url }} style={splashStyles.bg} resizeMode="cover" />
-        <LinearGradient colors={['rgba(8,3,10,0.3)', 'rgba(8,3,10,0.85)']} style={StyleSheet.absoluteFillObject} />
+        <LinearGradient colors={['rgba(10,4,16,0.3)', 'rgba(10,4,16,0.85)']} style={StyleSheet.absoluteFillObject} />
         <Animated.View style={[splashStyles.content, { opacity: wordmarkOpacity }]}>
           <Text style={splashStyles.wordmark}>DECANTA</Text>
           <Text style={splashStyles.tagline}>SOUTH AFRICAN WINE</Text>
@@ -227,10 +227,10 @@ const webStyles = StyleSheet.create({
     flex: 1,
     width: '100%',
     maxWidth: 480,
-    backgroundColor: '#08030a',
+    backgroundColor: '#0a0410',
     // Box shadow via CSS on web — React Native Web accepts these as camelCase
     ...(({
-      boxShadow: '0 0 120px rgba(0,0,0,0.95), 0 0 1px rgba(196,151,60,0.15)',
+      boxShadow: '0 0 120px rgba(0,0,0,0.95), 0 0 1px rgba(212,148,44,0.15)',
     }) as any),
   },
 });
@@ -254,7 +254,7 @@ const splashStyles = StyleSheet.create({
     fontSize: 36,
     fontWeight: '400',
     letterSpacing: 12,
-    color: '#c4973c',
+    color: '#d4942c',
     marginBottom: 8,
   },
   tagline: {

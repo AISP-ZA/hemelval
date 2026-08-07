@@ -16,7 +16,7 @@
       "package": "za.co.decanta.app",
       "adaptiveIcon": {
         "foregroundImage": "./assets/ios-icon.png",
-        "backgroundColor": "#08030a"
+        "backgroundColor": "#0a0410"
       },
       "permissions": [
         "android.permission.CAMERA",
