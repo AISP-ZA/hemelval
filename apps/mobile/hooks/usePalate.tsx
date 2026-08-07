@@ -27,50 +27,9 @@ import { saveTastingNote, fetchTastingNotes } from '../lib/dataAccessor.js';
 
 const STORAGE_KEY = 'decanta.tastingNotes.v1';
 
-// Seed a small history on first run so the app demonstrates a non-empty palate.
-// (Real users start empty; the seed makes the demo meaningful.)
-const SEED_NOTES: TastingNote[] = [
-  {
-    id: 'seed-1',
-    wineVintageId: 'w1',
-    userId: 'guest',
-    tastedAt: '2026-07-15T19:00:00Z',
-    stars: 4.5,
-    nose: { aromas: ['cherry-red', 'leather', 'tobacco'] },
-    palate: { body: 'medium-plus', flavors: ['plum', 'chocolate-dark'], finish: 'long' },
-    freeText: 'Rich plum, banana, earth. Paired with braai lamb chops.',
-  },
-  {
-    id: 'seed-2',
-    wineVintageId: 'w5',
-    userId: 'guest',
-    tastedAt: '2026-07-12T20:00:00Z',
-    stars: 5,
-    nose: { aromas: ['cherry-red', 'forest-floor', 'rose'] },
-    palate: { body: 'medium', flavors: ['cherry-red', 'mushroom'], finish: 'very-long' },
-    freeText: 'Finessed, forest floor. My new benchmark for SA Pinot.',
-  },
-  {
-    id: 'seed-3',
-    wineVintageId: 'w6',
-    userId: 'guest',
-    tastedAt: '2026-07-08T18:30:00Z',
-    stars: 4,
-    nose: { aromas: ['blackberry', 'black-pepper', 'smoke'] },
-    palate: { body: 'full', flavors: ['blackberry', 'leather'], finish: 'long' },
-    freeText: 'Crowd-pleaser. Smoked meat, white pepper. Great value.',
-  },
-  {
-    id: 'seed-4',
-    wineVintageId: 'w4',
-    userId: 'guest',
-    tastedAt: '2026-06-28T21:00:00Z',
-    stars: 5,
-    nose: { aromas: ['apple', 'honey', 'quince'] },
-    palate: { body: 'full', flavors: ['apricot', 'honey'], finish: 'very-long' },
-    freeText: 'Extraordinary. Honeyed, mineral, infinite length.',
-  },
-];
+// Users start with an EMPTY cellar. No fake seed data — the palate and
+// match scores build organically from real tasting notes.
+const EMPTY_NOTES: TastingNote[] = [];
 
 // Metadata maps the engine needs to build a profile: vintageId → varietal + type.
 function buildVintageMeta() {
@@ -99,14 +58,14 @@ interface PalateContextValue {
 const PalateContext = createContext<PalateContextValue | null>(null);
 
 export function PalateProvider({ children }: { children: React.ReactNode }) {
-  const [notes, setNotes] = useState<TastingNote[]>(SEED_NOTES);
+  const [notes, setNotes] = useState<TastingNote[]>(EMPTY_NOTES);
   const [loaded, setLoaded] = useState(false);
 
   // Load notes: local cache first (instant), then merge live Supabase notes
   useEffect(() => {
     (async () => {
       // 1. Load local cache immediately
-      let localNotes: TastingNote[] = SEED_NOTES;
+      let localNotes: TastingNote[] = EMPTY_NOTES;
       try {
         const raw = await AsyncStorage.getItem(STORAGE_KEY);
         if (raw) {

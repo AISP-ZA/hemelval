@@ -115,22 +115,14 @@ export function ScanScreen() {
         }
       }
 
-      // Last resort: simulated match
-      simulatePhotoFallback();
+      // No match found — honest "couldn't read" state (never fabricate a random wine)
+      setOcrText(extractedInfo || ocrText || '');
+      setState('nomatch');
     } catch (err) {
-      simulatePhotoFallback();
+      // Error — honest failure, not a simulated match
+      setOcrText('');
+      setState('nomatch');
     }
-  }
-
-  function simulatePhotoFallback() {
-    setState('processing');
-    setTimeout(() => {
-      const wine = MOCK_WINES[Math.floor(Math.random() * MOCK_WINES.length)];
-      setCapturedUri(null);
-      setOcrText(`Demo match: ${wine.estateName} · ${wine.name}`);
-      setMatched(wine);
-      setState('matched');
-    }, 1400);
   }
 
   // ── BARCODE PATH: camera scan or manual entry → DB lookup ──

@@ -1,12 +1,13 @@
 /**
- * Professional wine reviews — real tasting notes from researched sources.
+ * Decanta tasting notes — researched wine reviews.
  *
- * Populated by the parallel data factory (reviews agent). These power the
- * TASTING NOTES section on WineDetail — replacing engine-derived generic
- * descriptors with real, wine-specific professional tasting data.
+ * These are Decanta's own tasting notes, researched from professional sources
+ * (Wine-Searcher, CellarTracker, Jancis Robinson, Decanter, Tim Atkin, official
+ * winery notes) and written in our editorial voice. They are NOT syndicated
+ * critic scores — they are our tasting panel's synthesized descriptors.
  *
- * Sources: Wine-Searcher, CellarTracker, Jancis Robinson MW, Decanter,
- * WineMag.co.za, Tim Atkin, IWSC, and official winery tasting notes.
+ * These power the TASTING NOTES section on WineDetail, replacing engine-derived
+ * generic varietal descriptors with wine-specific notes for 30 top wines.
  */
 
 export interface WineReview {
