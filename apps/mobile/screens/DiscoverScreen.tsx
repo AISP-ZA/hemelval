@@ -16,7 +16,7 @@ import { LoadingList } from '../components/Skeleton.js';
 import { color, font, radius, space, wineTypeColor } from '../theme/tokens.js';
 import { MOCK_ESTATES, mockEstateById, type MockWine, type MockEstate } from '../lib/mockData.js';
 import { fetchWines, lastDataSource, type Wine } from '../lib/dataAccessor.js';
-import { signatureVarietals, findWinesForFood } from '@kelder/engine';
+import { signatureVarietals, findWinesForFood, resolveVarietal, aromaLabel, suggestPairings, PAIRINGS } from '@kelder/engine';
 import type { FoodMatch } from '@kelder/engine';
 import { HERO_CELLAR, wineImage } from '../lib/imagery.js';
 import { usePalate } from '../hooks/usePalate.js';
@@ -133,6 +133,7 @@ export function DiscoverScreen() {
     return (
       <WineDetail
         wine={selected}
+        wines={wines}
         matchScore={matchFor(selected)}
         onBack={() => setSelected(null)}
         onRate={() => setTasting(selected)}
@@ -427,8 +428,10 @@ function CalmWineRow({ wine, matchScore, onPress, onEstatePress }: {
 }
 
 // ── Wine detail (rendered when a wine is selected) ──────────────────────────
-// Cinematic: parallax hero, gradient scrim, fade-in content, circular back.
-function WineDetail({ wine, matchScore, onBack, onRate, onEstatePress }: { wine: MockWine; matchScore: number; onBack: () => void; onRate: () => void; onEstatePress: () => void }) {
+// Immersive sensory experience: parallax hero, tasting notes, pairings, vintages.
+function WineDetail({ wine, wines, matchScore, onBack, onRate, onEstatePress }: {
+  wine: MockWine; wines: Wine[]; matchScore: number; onBack: () => void; onRate: () => void; onEstatePress: () => void;
+}) {
   const insets = useSafeAreaInsets();
   const img = wineImage(wine.id, wine.type);
   const wineTypeColor = wine.type === 'red' || wine.type === 'fortified' ? color.redWine
@@ -455,6 +458,36 @@ function WineDetail({ wine, matchScore, onBack, onRate, onEstatePress }: { wine:
       useNativeDriver: true,
     }).start();
   }, []);
+
+  // ── Derive tasting notes from engine varietal data ─────────────────────
+  const varietal = resolveVarietal(wine.varietals[0] ?? '');
+  const noseAromas = varietal?.typicalAromas?.slice(0, 5).map((id) => aromaLabel(id)).filter(Boolean) ?? [];
+  const tasteValues = tasteProfileForVarietal(wine.varietals[0] ?? '', wine.type);
+  const palateDesc = [
+    tasteValues.body != null && tasteValues.body > 60 ? 'full-bodied' : tasteValues.body != null && tasteValues.body < 40 ? 'light-bodied' : 'medium-bodied',
+    tasteValues.tannin != null && tasteValues.tannin > 60 ? 'firm tannin' : tasteValues.tannin != null && tasteValues.tannin < 30 ? 'soft tannin' : null,
+    tasteValues.acidity != null && tasteValues.acidity > 65 ? 'bright acidity' : tasteValues.acidity != null && tasteValues.acidity < 40 ? 'low acidity' : null,
+    tasteValues.sweetness != null && tasteValues.sweetness > 40 ? 'off-dry' : 'dry',
+  ].filter(Boolean).join(', ');
+  const finishDesc = varietal?.character?.split('.').slice(-2).join('.').trim() || 'A lingering finish typical of this varietal.';
+
+  // ── Pairings: derive if empty (live DB wines have []) ───────────────────
+  const pairingTags = wine.pairings.length > 0
+    ? wine.pairings
+    : suggestPairings(wine.type as any, { varietalSlug: wine.varietals[0] }).slice(0, 4);
+  const pairingEmoji: Record<string, string> = {
+    steak: '🥩', lamb: '🍖', game: '🦌', pork: '🥓', chicken: '🍗', duck: '🦆',
+    seafood: '🦐', oysters: '🦪', sushi: '🍣', 'fish-rich': '🐟', 'fish-light': '🐠',
+    curry: '🍛', spicy: '🌶️', 'cheese-hard': '🧀', 'cheese-blue': '🫕', 'cheese-fresh': '🧀',
+    pasta: '🍝', salad: '🥗', braai: '🔥', bobotie: '🍲', malva: '🍮', 'milk-tart': '🥧',
+    'dessert-choc': '🍫', 'dessert-fruit': '🍑',
+  };
+
+  // ── Vintage comparison: other wines from same estate ────────────────────
+  const otherVintages = wines
+    .filter((w) => w.estateId === wine.estateId && w.id !== wine.id && w.year !== wine.year)
+    .sort((a, b) => (b.year || 0) - (a.year || 0))
+    .slice(0, 3);
 
   return (
     <Animated.ScrollView
@@ -518,12 +551,54 @@ function WineDetail({ wine, matchScore, onBack, onRate, onEstatePress }: { wine:
 
         <Divider />
 
-        <Eyebrow>ABOUT</Eyebrow>
-        <BodyText style={{ marginTop: space.sm }}>{wine.about}</BodyText>
+        {/* ── TASTING NOTES — derived from engine varietal data ── */}
+        {(noseAromas.length > 0 || palateDesc) && (
+          <>
+            <Eyebrow>TASTING NOTES</Eyebrow>
+            {noseAromas.length > 0 && (
+              <View style={styles.tastingRow}>
+                <Text style={styles.tastingLabel}>NOSE</Text>
+                <Text style={styles.tastingText}>{noseAromas.join(', ')}</Text>
+              </View>
+            )}
+            {palateDesc && (
+              <View style={styles.tastingRow}>
+                <Text style={styles.tastingLabel}>PALATE</Text>
+                <Text style={styles.tastingText}>{palateDesc}</Text>
+              </View>
+            )}
+            <View style={styles.tastingRow}>
+              <Text style={styles.tastingLabel}>FINISH</Text>
+              <Text style={styles.tastingText}>{finishDesc}</Text>
+            </View>
+          </>
+        )}
 
         <Divider />
 
-        {/* Quick-stats row */}
+        {/* ── PAIRS WITH — icon rows ── */}
+        {pairingTags.length > 0 && (
+          <>
+            <Eyebrow>PAIRS WITH</Eyebrow>
+            <View style={{ marginTop: space.sm, gap: space.sm }}>
+              {pairingTags.map((tag) => {
+                const pairing = PAIRINGS[tag as keyof typeof PAIRINGS];
+                const label = pairing?.label ?? tag.replace(/-/g, ' ');
+                const emoji = pairingEmoji[tag] ?? '🍽️';
+                return (
+                  <View key={tag} style={styles.pairingRow}>
+                    <View style={styles.pairingIcon}><Text style={{ fontSize: 16 }}>{emoji}</Text></View>
+                    <Text style={styles.pairingText}>{label}</Text>
+                  </View>
+                );
+              })}
+            </View>
+          </>
+        )}
+
+        <Divider />
+
+        {/* ── Quick-stats row ── */}
         <View style={styles.statRow}>
           {wine.abv != null && (
             <View style={styles.statCell}>
@@ -553,17 +628,38 @@ function WineDetail({ wine, matchScore, onBack, onRate, onEstatePress }: { wine:
           </>
         ) : null}
 
-        {wine.pairings.length > 0 && (
+        {/* ── ABOUT (full prose) ── */}
+        <Divider />
+        <Eyebrow>ABOUT</Eyebrow>
+        <BodyText style={{ marginTop: space.sm }}>{wine.about}</BodyText>
+
+        {/* ── VINTAGE COMPARISON ── */}
+        {otherVintages.length > 0 && (
           <>
             <Divider />
-            <Eyebrow>PAIRS WITH</Eyebrow>
-            <View style={styles.chipRowSmall}>
-              {wine.pairings.map((p) => <Chip key={p} tone="accent">{p.replace(/-/g, ' ')}</Chip>)}
+            <Eyebrow>VINTAGE COMPARISON</Eyebrow>
+            <View style={styles.vintageRow}>
+              {wine.year > 0 && (
+                <View style={[styles.vintageCard, styles.vintageCardActive]}>
+                  <Text style={styles.vintageYear}>'{String(wine.year).slice(2)}</Text>
+                  <Text style={styles.vintageStar}>★{wine.avgStars.toFixed(1)}</Text>
+                  <Text style={styles.vintageTag}>THIS WINE</Text>
+                </View>
+              )}
+              {otherVintages.map((v) => (
+                <View key={v.id} style={styles.vintageCard}>
+                  <Text style={styles.vintageYear}>{v.year > 0 ? `'${String(v.year).slice(2)}` : 'NV'}</Text>
+                  <Text style={styles.vintageStar}>★{v.avgStars.toFixed(1)}</Text>
+                  <Text style={styles.vintageTag}>{v.name.replace(wine.estateName, '').trim() || 'Vintage'}</Text>
+                </View>
+              ))}
             </View>
           </>
         )}
 
         <Divider />
+
+        {/* ── Taste profile radar ── */}
         <TasteProfileChart
           values={tasteProfileForVarietal(wine.varietals[0], wine.type)}
           label="TASTE PROFILE // THIS WINE"
@@ -792,6 +888,92 @@ const styles = StyleSheet.create({
   statRow: { flexDirection: 'row', gap: space.xxl, marginTop: space.sm },
   statCell: { gap: space.xs },
   statValue: { fontFamily: 'CormorantGaramond, Georgia, serif', fontSize: 22, color: color.ink, fontWeight: '400' },
+
+  // Tasting notes — immersive detail
+  tastingRow: {
+    flexDirection: 'row',
+    gap: space.md,
+    marginTop: space.sm,
+    alignItems: 'baseline',
+  },
+  tastingLabel: {
+    fontFamily: 'GeistMono, monospace',
+    fontSize: 9,
+    fontWeight: '400',
+    letterSpacing: 1.2,
+    color: color.gold,
+    minWidth: 48,
+  },
+  tastingText: {
+    flex: 1,
+    fontFamily: 'Inter, system-ui, sans-serif',
+    fontSize: 14,
+    color: color.body,
+    lineHeight: 20,
+  },
+
+  // Pairing icon rows
+  pairingRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: space.md,
+  },
+  pairingIcon: {
+    width: 32,
+    height: 32,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: 'rgba(196,151,60,0.12)',
+    backgroundColor: 'rgba(196,151,60,0.04)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  pairingText: {
+    flex: 1,
+    fontFamily: 'Inter, system-ui, sans-serif',
+    fontSize: 13,
+    color: color.body,
+  },
+
+  // Vintage comparison cards
+  vintageRow: {
+    flexDirection: 'row',
+    gap: space.sm,
+    marginTop: space.sm,
+  },
+  vintageCard: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: 'rgba(196,151,60,0.10)',
+    borderRadius: 10,
+    padding: space.md,
+    alignItems: 'center',
+    backgroundColor: 'rgba(196,151,60,0.02)',
+  },
+  vintageCardActive: {
+    borderColor: 'rgba(196,151,60,0.25)',
+    backgroundColor: 'rgba(196,151,60,0.06)',
+  },
+  vintageYear: {
+    fontFamily: 'CormorantGaramond, Georgia, serif',
+    fontSize: 22,
+    fontWeight: '400',
+    color: color.ink,
+  },
+  vintageStar: {
+    fontFamily: 'GeistMono, monospace',
+    fontSize: 10,
+    color: color.gold,
+    marginTop: 2,
+  },
+  vintageTag: {
+    fontFamily: 'GeistMono, monospace',
+    fontSize: 7,
+    color: color.bodyMid,
+    marginTop: 4,
+    letterSpacing: 0.5,
+    textAlign: 'center',
+  },
 
   // Stories entry card
   storiesEntryCard: {
