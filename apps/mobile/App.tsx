@@ -7,16 +7,17 @@
  * (caption mono) via expo-google-fonts before rendering the navigator.
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { Platform, View, StyleSheet, Dimensions } from 'react-native';
+import { Platform, View, StyleSheet, Dimensions, Animated, Image, Text } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DiscoverIcon, ScanIcon, CellarIcon, EventsIcon, LearnIcon } from './components/TabIcons.js';
 import { useFonts } from 'expo-font';
-import { color } from './theme/tokens.js';
+import { color, font } from './theme/tokens.js';
 import { PalateProvider } from './hooks/usePalate.js';
 import { AuthProvider } from './hooks/useAuth.js';
 import { DiscoverScreen } from './screens/DiscoverScreen.js';
@@ -24,11 +25,9 @@ import { ScanScreen } from './screens/ScanScreen.js';
 import { CellarScreen } from './screens/CellarScreen.js';
 import { EventsScreen } from './screens/EventsScreen.js';
 import { LearnScreen } from './screens/LearnScreen.js';
-import { OnboardingScreen } from './screens/OnboardingScreen.js';
-import { LandingScreen } from './screens/LandingScreen.js';
+import { HERO_VINEYARD } from './lib/imagery.js';
 
-const ONBOARDED_KEY = 'decanta.onboarded.v1';
-const ENTERED_KEY = 'decanta.entered.v1';
+const SPLASH_KEY = 'decanta.splash.v1';
 
 /**
  * On web, only apply the desktop centering frame on wide viewports (>520px).
@@ -91,90 +90,69 @@ export default function App() {
     GeistMono: require('./theme/assets/GeistMono-Regular.ttf'),
   });
 
-  // First-run landing + onboarding gate.
-  // On web: LandingScreen → Enter → Onboarding → App
-  // On native: Onboarding → App (app store listing is the landing page)
-  const [onboarded, setOnboarded] = useState<boolean | null>(null);
-  const [entered, setEntered] = useState<boolean>(Platform.OS !== 'web'); // native = already entered
+  // ── Cinematic splash gate ──────────────────────────────────────────────────
+  // ONE screen before wine: a 3-second atmospheric vineyard moment with the
+  // DECANTA wordmark, then dissolves into the app. No marketing, no quiz,
+  // no signup wall. Pure atmosphere → wine. Shows once (AsyncStorage gate),
+  // ?splash=1 forces it for review.
+  const [showSplash, setShowSplash] = useState(true);
+  const splashOpacity = useRef(new Animated.Value(1)).current;
+  const wordmarkOpacity = useRef(new Animated.Value(0)).current;
+
   useEffect(() => {
     (async () => {
-      // Dev override: ?onboard=1 shows the flow even if already complete
-      if (Platform.OS === 'web' && typeof window !== 'undefined' && window.location?.search?.includes('onboard=1')) {
-        setEntered(true);
-        setOnboarded(false);
+      const forceSplash = Platform.OS === 'web' && typeof window !== 'undefined' && window.location?.search?.includes('splash=1');
+      const seen = await AsyncStorage.getItem(SPLASH_KEY);
+      if (seen === '1' && !forceSplash) {
+        setShowSplash(false);
         return;
       }
-      try {
-        const ent = await AsyncStorage.getItem(ENTERED_KEY);
-        setEntered(ent === '1' || Platform.OS !== 'web');
-        const v = await AsyncStorage.getItem(ONBOARDED_KEY);
-        setOnboarded(v === '1');
-      } catch {
-        setEntered(true);
-        setOnboarded(true); // storage failure → don't block the app
-      }
+      // Wordmark fades in at 400ms
+      Animated.timing(wordmarkOpacity, {
+        toValue: 1,
+        duration: 1200,
+        delay: 400,
+        useNativeDriver: true,
+      }).start();
+      // Splash dissolves at 2800ms
+      Animated.timing(splashOpacity, {
+        toValue: 0,
+        duration: 700,
+        delay: 2800,
+        useNativeDriver: true,
+      }).start(() => {
+        setShowSplash(false);
+        AsyncStorage.setItem(SPLASH_KEY, '1').catch(() => {});
+      });
     })();
   }, []);
 
-  const completeOnboarding = () => {
-    AsyncStorage.setItem(ONBOARDED_KEY, '1').catch(() => {});
-    setOnboarded(true);
-  };
-
-  const enterApp = () => {
-    AsyncStorage.setItem(ENTERED_KEY, '1').catch(() => {});
-    setEntered(true);
-  };
-
   const showDesktopFrame = useDesktopFrame();
 
-  if (!fontsLoaded || onboarded === null) {
-    return null; // Splash — fonts + onboarding flag must load before first paint
+  if (!fontsLoaded) {
+    return null;
   }
 
-  // ── Landing page (web first-time visitors only) ──
-  // Shows a premium marketing surface before entering the app.
-  // On native, the app store listing is the landing page — skip straight in.
-  if (!entered && Platform.OS === 'web') {
-    const landingContent = (
-      <SafeAreaProvider>
-        <StatusBar style="light" />
-        <LandingScreen onEnter={enterApp} />
-      </SafeAreaProvider>
+  // ── The cinematic splash ──
+  if (showSplash) {
+    const splash = (
+      <Animated.View style={[splashStyles.wrap, { opacity: splashOpacity }]}>
+        <Image source={{ uri: HERO_VINEYARD.url }} style={splashStyles.bg} resizeMode="cover" />
+        <LinearGradient colors={['rgba(8,3,10,0.3)', 'rgba(8,3,10,0.85)']} style={StyleSheet.absoluteFillObject} />
+        <Animated.View style={[splashStyles.content, { opacity: wordmarkOpacity }]}>
+          <Text style={splashStyles.wordmark}>DECANTA</Text>
+          <Text style={splashStyles.tagline}>SOUTH AFRICAN WINE</Text>
+        </Animated.View>
+      </Animated.View>
     );
     if (showDesktopFrame) {
       return (
         <View style={webStyles.outer}>
-          <View style={webStyles.frame}>
-            {landingContent}
-          </View>
+          <View style={webStyles.frame}>{splash}</View>
         </View>
       );
     }
-    return landingContent;
-  }
-
-  // Onboarding renders outside the PalateProvider (it reads/writes the palate
-  // store, so it must be inside one). Wrap it in its own minimal provider.
-  if (!onboarded) {
-    const onboardingContent = (
-      <SafeAreaProvider>
-        <PalateProvider>
-          <StatusBar style="light" />
-          <OnboardingScreen onComplete={completeOnboarding} />
-        </PalateProvider>
-      </SafeAreaProvider>
-    );
-    if (showDesktopFrame) {
-      return (
-        <View style={webStyles.outer}>
-          <View style={webStyles.frame}>
-            {onboardingContent}
-          </View>
-        </View>
-      );
-    }
-    return onboardingContent;
+    return splash;
   }
 
   const appContent = (
@@ -254,5 +232,36 @@ const webStyles = StyleSheet.create({
     ...(({
       boxShadow: '0 0 120px rgba(0,0,0,0.95), 0 0 1px rgba(196,151,60,0.15)',
     }) as any),
+  },
+});
+
+const splashStyles = StyleSheet.create({
+  wrap: {
+    flex: 1,
+    position: 'relative',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: color.canvas,
+  },
+  bg: {
+    ...StyleSheet.absoluteFillObject,
+  },
+  content: {
+    alignItems: 'center',
+  },
+  wordmark: {
+    fontFamily: 'CormorantGaramond',
+    fontSize: 36,
+    fontWeight: '400',
+    letterSpacing: 12,
+    color: '#c4973c',
+    marginBottom: 8,
+  },
+  tagline: {
+    fontFamily: 'GeistMono',
+    fontSize: 10,
+    fontWeight: '400',
+    letterSpacing: 4,
+    color: '#8a7060',
   },
 });

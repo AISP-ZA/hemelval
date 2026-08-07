@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Decanta — Next Phase Design Mockups</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #050308;
+    color: #ede0cc;
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    padding: 40px 20px;
+  }
+  .header {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+  .header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 38px;
+    font-weight: 400;
+    color: #c4973c;
+    letter-spacing: -0.5px;
+  }
+  .header p {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: #7a6858;
+    margin-top: 10px;
+  }
+  .grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 50px;
+    max-width: 2200px;
+    margin: 0 auto;
+  }
+  .mockup-card {
+    width: 340px;
+    text-align: center;
+  }
+  .mockup-card h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: #ede0cc;
+    margin-top: 20px;
+  }
+  .mockup-card .desc {
+    font-size: 12px;
+    color: #7a6858;
+    line-height: 17px;
+    margin-top: 6px;
+    max-width: 290px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .mockup-card .badge {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    color: #c4973c;
+    border: 1px solid rgba(196,151,60,0.3);
+    border-radius: 99px;
+    padding: 3px 10px;
+    margin-top: 12px;
+  }
+  /* ── Phone frame ── */
+  .phone {
+    width: 320px;
+    height: 680px;
+    background: #08030a;
+    border-radius: 36px;
+    border: 1px solid rgba(196,151,60,0.15);
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+  }
+  .phone-screen {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    position: relative;
+  }
+  .phone-screen::-webkit-scrollbar { display: none; }
+
+  /* ── Shared element styles inside phone ── */
+  .mono { font-family: 'JetBrains Mono', monospace; }
+  .serif { font-family: 'Cormorant Garamond', serif; }
+  .gold { color: #c4973c; }
+  .body-mid { color: #7a6858; }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; }
+
+  /* ════════════════════════════════════════════
+     MOCKUP A — Wine Detail: Immersive Sensory
+     ════════════════════════════════════════════ */
+  .a-hero {
+    height: 320px;
+    background: linear-gradient(135deg, #3d0e18, #1a0608);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .a-bottle {
+    width: 70px;
+    height: 240px;
+    border-radius: 8px;
+    background: linear-gradient(180deg, #2a0a0e 20%, #0d0306 100%);
+    border: 1px solid rgba(196,151,60,0.2);
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  }
+  .a-bottle::before {
+    content: '';
+    position: absolute;
+    top: -20px; left: 50%; transform: translateX(-50%);
+    width: 24px; height: 40px;
+    background: #1a0608;
+    border-radius: 4px 4px 0 0;
+    border: 1px solid rgba(196,151,60,0.2);
+  }
+  .a-bottle::after {
+    content: 'KANONKOP';
+    position: absolute;
+    top: 45%; left: 50%; transform: translate(-50%, -50%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 7px;
+    letter-spacing: 1px;
+    color: rgba(196,151,60,0.6);
+    writing-mode: vertical-rl;
+  }
+  .a-back {
+    position: absolute;
+    top: 50px; left: 20px;
+    width: 34px; height: 34px;
+    border-radius: 9999px;
+    background: rgba(8,3,10,0.7);
+    border: 1px solid rgba(196,151,60,0.15);
+    display: flex; align-items: center; justify-content: center;
+    color: #ede0cc; font-size: 18px;
+  }
+  .a-type {
+    position: absolute;
+    top: 54px; right: 20px;
+    border: 1px solid #7a1528;
+    border-radius: 99px;
+    padding: 3px 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    color: #7a1528;
+    letter-spacing: 1px;
+  }
+  .a-body { padding: 20px; }
+  .a-name { font-family: 'Cormorant Garamond', serif; font-size: 26px; color: #ede0cc; line-height: 30px; }
+  .a-estate { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: #c4973c; letter-spacing: 1px; margin-top: 4px; }
+  .a-region { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: #7a6858; margin-top: 2px; }
+  .a-stars { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+  .a-star-gold { color: #c4973c; font-size: 13px; }
+  .a-match { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: #c4973c; }
+  .a-divider { height: 1px; background: rgba(196,151,60,0.1); margin: 16px 0; }
+  .a-section-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.5px; color: #7a6858; margin-bottom: 8px; }
+  .a-note-line { font-size: 12px; color: #b8a690; line-height: 18px; margin-bottom: 4px; }
+  .a-note-label { font-family: 'JetBrains Mono', monospace; font-size: 8px; color: #c4973c; margin-right: 6px; }
+  .a-pairing { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-size: 12px; color: #b8a690; }
+  .a-pairing-icon { width: 28px; height: 28px; border-radius: 6px; background: rgba(196,151,60,0.06); border: 1px solid rgba(196,151,60,0.1); display: flex; align-items: center; justify-content: center; font-size: 14px; }
+  .a-vintage-row { display: flex; gap: 8px; margin-top: 4px; }
+  .a-vintage-card { flex: 1; border: 1px solid rgba(196,151,60,0.1); border-radius: 8px; padding: 8px; text-align: center; }
+  .a-vintage-year { font-family: 'Cormorant Garamond', serif; font-size: 16px; color: #ede0cc; }
+  .a-vintage-star { font-family: 'JetBrains Mono', monospace; font-size: 8px; color: #c4973c; margin-top: 2px; }
+  .a-cta { background: #c4973c; color: #08030a; border-radius: 99px; padding: 12px; text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; margin-top: 16px; }
+
+  /* ════════════════════════════════════════════
+     MOCKUP B — Cellar: Personal Museum
+     ════════════════════════════════════════════ */
+  .b-header {
+    padding: 50px 20px 16px;
+    background: linear-gradient(180deg, #1a0e14, #08030a);
+  }
+  .b-title { font-family: 'Cormorant Garamond', serif; font-size: 28px; color: #ede0cc; }
+  .b-stats { display: flex; gap: 16px; margin-top: 10px; }
+  .b-stat { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: #7a6858; }
+  .b-stat strong { color: #c4973c; font-size: 16px; font-family: 'Cormorant Garamond', serif; display: block; }
+  .b-radar {
+    margin: 16px 20px;
+    border: 1px solid rgba(196,151,60,0.1);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+    background: rgba(196,151,60,0.03);
+  }
+  .b-radar-shape {
+    width: 140px; height: 140px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .b-radar-svg { width: 100%; height: 100%; }
+  .b-grid { padding: 8px 16px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .b-bottle-card {
+    width: calc(33.33% - 4px);
+    aspect-ratio: 0.75;
+    border-radius: 8px;
+    border: 1px solid rgba(196,151,60,0.1);
+    background: linear-gradient(135deg, #1a1216, #120c0f);
+    padding: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    position: relative;
+  }
+  .b-bottle-card .dot {
+    position: absolute; top: 6px; left: 6px;
+    width: 5px; height: 5px; border-radius: 99px;
+  }
+  .b-bottle-card .dot.red { background: #7a1528; }
+  .b-bottle-card .dot.white { background: #d4af37; }
+  .b-bottle-card .dot.sparkling { background: #e0b546; }
+  .b-bottle-card .btl {
+    width: 22px; height: 48px;
+    border-radius: 3px;
+    margin-bottom: 4px;
+  }
+  .b-bottle-card .btl.red { background: linear-gradient(180deg, #3a0f1c, #1a0608); }
+  .b-bottle-card .btl.white { background: linear-gradient(180deg, #3d3214, #1a1408); }
+  .b-bottle-card .btl.sparkling { background: linear-gradient(180deg, #44340a, #1f1804); }
+  .b-bottle-card .nm { font-family: 'JetBrains Mono', monospace; font-size: 6px; color: #7a6858; text-align: center; line-height: 8px; }
+  .b-achievements { padding: 16px 20px; }
+  .b-achievement {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(196,151,60,0.06);
+  }
+  .b-achievement-icon {
+    width: 36px; height: 36px;
+    border-radius: 99px;
+    border: 1px solid rgba(196,151,60,0.2);
+    display: flex; align-items: center; justify-content: center;
+    color: #c4973c; font-size: 14px;
+  }
+  .b-achievement-text { flex: 1; }
+  .b-achievement-title { font-size: 13px; color: #ede0cc; }
+  .b-achievement-sub { font-family: 'JetBrains Mono', monospace; font-size: 8px; color: #7a6858; margin-top: 2px; }
+
+  /* ════════════════════════════════════════════
+     MOCKUP C — Scan: The Ritual
+     ════════════════════════════════════════════ */
+  .c-viewfinder {
+    height: 420px;
+    background: radial-gradient(ellipse at center, #1a1216 0%, #050308 100%);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .c-frame {
+    width: 200px; height: 280px;
+    border: 2px solid rgba(196,151,60,0.3);
+    border-radius: 12px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .c-corner {
+    position: absolute;
+    width: 20px; height: 20px;
+    border: 3px solid #c4973c;
+  }
+  .c-corner.tl { top: -3px; left: -3px; border-right: none; border-bottom: none; border-radius: 8px 0 0 0; }
+  .c-corner.tr { top: -3px; right: -3px; border-left: none; border-bottom: none; border-radius: 0 8px 0 0; }
+  .c-corner.bl { bottom: -3px; left: -3px; border-right: none; border-top: none; border-radius: 0 0 0 8px; }
+  .c-corner.br { bottom: -3px; right: -3px; border-left: none; border-top: none; border-radius: 0 0 8px 0; }
+  .c-scan-bottle {
+    width: 50px; height: 160px;
+    border-radius: 6px;
+    background: linear-gradient(180deg, #2a0a0e, #0d0306);
+    border: 1px solid rgba(196,151,60,0.15);
+  }
+  .c-scan-line {
+    position: absolute;
+    left: 10px; right: 10px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #c4973c, transparent);
+    animation: scan 2.5s ease-in-out infinite;
+    top: 50%;
+  }
+  @keyframes scan { 0%,100% { top: 20%; } 50% { top: 80%; } }
+  .c-hint { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #7a6858; margin-top: 20px; letter-spacing: 1px; }
+  .c-options { padding: 16px 20px; display: flex; gap: 10px; }
+  .c-option {
+    flex: 1;
+    border: 1px solid rgba(196,151,60,0.12);
+    border-radius: 10px;
+    padding: 12px 8px;
+    text-align: center;
+    background: rgba(196,151,60,0.03);
+  }
+  .c-option-icon { font-size: 20px; color: #c4973c; }
+  .c-option-label { font-size: 10px; color: #b8a690; margin-top: 4px; }
+  .c-option-sub { font-family: 'JetBrains Mono', monospace; font-size: 7px; color: #7a6858; margin-top: 2px; }
+  .c-identified {
+    margin: 0 20px;
+    border: 1px solid rgba(196,151,60,0.15);
+    border-radius: 12px;
+    padding: 16px;
+    background: linear-gradient(135deg, rgba(122,21,40,0.08), rgba(8,3,10,0.5));
+  }
+  .c-id-eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: #c4973c; letter-spacing: 1.5px; }
+  .c-id-name { font-family: 'Cormorant Garamond', serif; font-size: 20px; color: #ede0cc; margin-top: 6px; }
+  .c-id-meta { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: #7a6858; margin-top: 4px; }
+  .c-id-stars { color: #c4973c; font-size: 12px; margin-top: 6px; }
+  .c-id-actions { display: flex; gap: 8px; margin-top: 12px; }
+  .c-id-btn { flex: 1; text-align: center; padding: 8px; border-radius: 99px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1px; }
+  .c-id-btn.yes { background: #c4973c; color: #08030a; }
+  .c-id-btn.no { border: 1px solid rgba(196,151,60,0.2); color: #7a6858; }
+
+  /* ════════════════════════════════════════════
+     MOCKUP D — Stories: Editorial Magazine
+     ════════════════════════════════════════════ */
+  .d-hero {
+    height: 300px;
+    background: linear-gradient(180deg, #2d3561 0%, #08030a 100%);
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    padding: 20px;
+  }
+  .d-hero::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: url('https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=400&q=80') center/cover;
+    opacity: 0.35;
+  }
+  .d-hero-content { position: relative; z-index: 1; }
+  .d-hero-eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 8px; letter-spacing: 2px; color: #c4973c; margin-bottom: 8px; }
+  .d-hero-title { font-family: 'Cormorant Garamond', serif; font-size: 24px; color: #ede0cc; line-height: 28px; }
+  .d-hero-meta { font-family: 'JetBrains Mono', monospace; font-size: 8px; color: #8a7060; margin-top: 6px; }
+  .d-list { padding: 16px 20px; }
+  .d-item {
+    display: flex; gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(196,151,60,0.06);
+  }
+  .d-item-thumb {
+    width: 60px; height: 60px;
+    border-radius: 8px;
+    flex-shrink: 0;
+    border: 1px solid rgba(196,151,60,0.1);
+  }
+  .d-item-thumb.wm { background: linear-gradient(135deg, #3d0e18, #1a0608); }
+  .d-item-thumb.gh { background: linear-gradient(135deg, #3a2808, #1a1204); }
+  .d-item-thumb.tr { background: linear-gradient(135deg, #16260e, #0a1206); }
+  .d-item-content { flex: 1; }
+  .d-item-cat { font-family: 'JetBrains Mono', monospace; font-size: 7px; letter-spacing: 1.5px; }
+  .d-item-cat.wm { color: #7a1528; }
+  .d-item-cat.gh { color: #b8862f; }
+  .d-item-cat.tr { color: #5a7a4e; }
+  .d-item-title { font-family: 'Cormorant Garamond', serif; font-size: 15px; color: #ede0cc; margin-top: 3px; line-height: 19px; }
+  .d-item-sub { font-size: 10px; color: #7a6858; margin-top: 2px; line-height: 14px; }
+  .d-item-time { font-family: 'JetBrains Mono', monospace; font-size: 7px; color: #7a6858; margin-top: 4px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Decanta — Next Phase Design Directions</h1>
+  <p>SELECT WHICH TO BUILD NEXT · SCROLL EACH PHONE TO EXPLORE</p>
+</div>
+
+<div class="grid">
+
+  <!-- ════ MOCKUP A — WINE DETAIL ════ -->
+  <div class="mockup-card">
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="a-hero">
+          <div class="a-back">‹</div>
+          <div class="a-type">RED</div>
+          <div class="a-bottle"></div>
+        </div>
+        <div class="a-body">
+          <div class="a-name">Kanonkop Pinotage '21</div>
+          <div class="a-estate">KANONKOP</div>
+          <div class="a-region">SIMONSBERG-STELLENBOSCH</div>
+          <div class="a-stars">
+            <span class="a-star-gold">★★★★½</span>
+            <span class="a-match">55% MATCH</span>
+          </div>
+          <div class="a-divider"></div>
+          <div class="a-section-label">TASTING NOTES</div>
+          <div class="a-note-line"><span class="a-note-label">NOSE</span>Black plum, banana skin, damp earth</div>
+          <div class="a-note-line"><span class="a-note-label">PALATE</span>Full-bodied, powerful tannin, dark fruit</div>
+          <div class="a-note-line"><span class="a-note-label">FINISH</span>Long, firm, rewards cellaring</div>
+          <div class="a-divider"></div>
+          <div class="a-section-label">PAIRS WITH</div>
+          <div class="a-pairing"><div class="a-pairing-icon">🥩</div>Braai lamb, game venison</div>
+          <div class="a-pairing"><div class="a-pairing-icon">🧀</div>Aged cheddar, hard cheeses</div>
+          <div class="a-divider"></div>
+          <div class="a-section-label">VINTAGE COMPARISON</div>
+          <div class="a-vintage-row">
+            <div class="a-vintage-card">
+              <div class="a-vintage-year">'21</div>
+              <div class="a-vintage-star">★4.5</div>
+            </div>
+            <div class="a-vintage-card">
+              <div class="a-vintage-year">'19</div>
+              <div class="a-vintage-star">★4.7</div>
+            </div>
+            <div class="a-vintage-card">
+              <div class="a-vintage-year">'17</div>
+              <div class="a-vintage-star">★4.8</div>
+            </div>
+          </div>
+          <div class="a-cta">★ RATE THIS WINE</div>
+        </div>
+      </div>
+    </div>
+    <h2>A. Wine Detail — Immersive</h2>
+    <div class="desc">Full sensory experience: structured tasting notes layout, food pairing suggestions with icons, vintage comparison chart. The screen where users spend the most time.</div>
+    <div class="badge">TASTING NOTES · PAIRINGS · VINTAGES</div>
+  </div>
+
+  <!-- ════ MOCKUP B — CELLAR MUSEUM ════ -->
+  <div class="mockup-card">
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="b-header">
+          <div class="eyebrow gold">YOUR CELLAR</div>
+          <div class="b-title">23 wines tasted.</div>
+          <div class="b-stats">
+            <div class="b-stat"><strong>23</strong>TASTED</div>
+            <div class="b-stat"><strong>4.2★</strong>AVG</div>
+            <div class="b-stat"><strong>8</strong>VARIETALS</div>
+          </div>
+        </div>
+        <div class="b-radar">
+          <div class="eyebrow body-mid" style="margin-bottom:8px">YOUR PALATE // LIVE</div>
+          <div class="b-radar-shape">
+            <svg viewBox="0 0 140 140" class="b-radar-svg">
+              <!-- Grid -->
+              <polygon points="70,20 120,70 70,120 20,70" fill="none" stroke="rgba(196,151,60,0.15)" stroke-width="1"/>
+              <polygon points="70,40 100,70 70,100 40,70" fill="none" stroke="rgba(196,151,60,0.1)" stroke-width="1"/>
+              <polygon points="70,60 80,70 70,80 60,70" fill="none" stroke="rgba(196,151,60,0.08)" stroke-width="1"/>
+              <!-- Spokes -->
+              <line x1="70" y1="70" x2="70" y2="20" stroke="rgba(196,151,60,0.1)"/>
+              <line x1="70" y1="70" x2="120" y2="70" stroke="rgba(196,151,60,0.1)"/>
+              <line x1="70" y1="70" x2="70" y2="120" stroke="rgba(196,151,60,0.1)"/>
+              <line x1="70" y1="70" x2="20" y2="70" stroke="rgba(196,151,60,0.1)"/>
+              <!-- Palate polygon -->
+              <polygon points="70,28 108,70 70,95 38,70" fill="rgba(196,151,60,0.15)" stroke="#c4973c" stroke-width="1.5"/>
+              <!-- Dots -->
+              <circle cx="70" cy="28" r="3" fill="#c4973c"/>
+              <circle cx="108" cy="70" r="3" fill="#c4973c"/>
+              <circle cx="70" cy="95" r="3" fill="#c4973c"/>
+              <circle cx="38" cy="70" r="3" fill="#c4973c"/>
+              <!-- Labels -->
+              <text x="70" y="14" text-anchor="middle" font-family="monospace" font-size="7" fill="#7a6858" letter-spacing="1">BODY</text>
+              <text x="128" y="73" text-anchor="middle" font-family="monospace" font-size="7" fill="#7a6858" letter-spacing="1">SWEET</text>
+              <text x="70" y="134" text-anchor="middle" font-family="monospace" font-size="7" fill="#7a6858" letter-spacing="1">ACIDITY</text>
+              <text x="12" y="73" text-anchor="middle" font-family="monospace" font-size="7" fill="#7a6858" letter-spacing="1">TANNIN</text>
+            </svg>
+          </div>
+        </div>
+        <div class="eyebrow body-mid" style="padding:0 20px 4px">COLLECTION</div>
+        <div class="b-grid">
+          <div class="b-bottle-card"><div class="dot red"></div><div class="btl red"></div><div class="nm">Kanonkop<br>Pinotage</div></div>
+          <div class="b-bottle-card"><div class="dot red"></div><div class="btl red"></div><div class="nm">Sadie<br>Columella</div></div>
+          <div class="b-bottle-card"><div class="dot white"></div><div class="btl white"></div><div class="nm">Iona<br>Sauv B</div></div>
+          <div class="b-bottle-card"><div class="dot red"></div><div class="btl red"></div><div class="nm">Hamilton<br>Russell</div></div>
+          <div class="b-bottle-card"><div class="dot sparkling"></div><div class="btl sparkling"></div><div class="nm">Graham<br>Beck</div></div>
+          <div class="b-bottle-card"><div class="dot red"></div><div class="btl red"></div><div class="nm">Meerlust<br>Rubicon</div></div>
+          <div class="b-bottle-card"><div class="dot white"></div><div class="btl white"></div><div class="nm">Klein<br>Const.</div></div>
+          <div class="b-bottle-card"><div class="dot red"></div><div class="btl red"></div><div class="nm">Fairview<br>Shiraz</div></div>
+          <div class="b-bottle-card"><div class="dot white"></div><div class="btl white"></div><div class="nm">De<br>Wetshof</div></div>
+        </div>
+        <div class="b-achievements">
+          <div class="eyebrow body-mid" style="margin-bottom:4px">ACHIEVEMENTS</div>
+          <div class="b-achievement">
+            <div class="b-achievement-icon">◆</div>
+            <div class="b-achievement-text">
+              <div class="b-achievement-title">Pinotage Pioneer</div>
+              <div class="b-achievement-sub">5 PINOTAGE TASTINGS</div>
+            </div>
+          </div>
+          <div class="b-achievement">
+            <div class="b-achievement-icon">◆</div>
+            <div class="b-achievement-text">
+              <div class="b-achievement-title">Chenin Champion</div>
+              <div class="b-achievement-sub">3 CHENIN BLANCS RATED 4★+</div>
+            </div>
+          </div>
+          <div class="b-achievement">
+            <div class="b-achievement-icon">◆</div>
+            <div class="b-achievement-text">
+              <div class="b-achievement-title">Hemel-en-Aarde Explorer</div>
+              <div class="b-achievement-sub">TASTED 3 ESTATES IN ONE VALLEY</div>
+            </div>
+          </div>
+          <div class="b-achievement">
+            <div class="b-achievement-icon" style="opacity:0.3">◇</div>
+            <div class="b-achievement-text" style="opacity:0.4">
+              <div class="b-achievement-title">Swartland Revolutionary</div>
+              <div class="b-achievement-sub">2 MORE SWARTLAND TASTINGS TO UNLOCK</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <h2>B. Cellar — Personal Museum</h2>
+    <div class="desc">Your collection reimagined as a visual gallery: bottle grid, animated palate radar, achievement badges that reward exploration. The screen that makes you proud to show friends.</div>
+    <div class="badge">RADAR · GRID · ACHIEVEMENTS</div>
+  </div>
+
+  <!-- ════ MOCKUP C — SCAN RITUAL ════ -->
+  <div class="mockup-card">
+    <div class="phone">
+      <div class="phone-screen">
+        <div style="padding:50px 20px 0;display:flex;justify-content:space-between;align-items:center">
+          <span style="color:#7a6858;font-family:monospace;font-size:11px">✕</span>
+          <span class="eyebrow gold">SCAN</span>
+          <span style="font-family:monospace;font-size:8px;color:#7a6858">STEP 1/2</span>
+        </div>
+        <div class="c-viewfinder">
+          <div class="c-frame">
+            <div class="c-corner tl"></div>
+            <div class="c-corner tr"></div>
+            <div class="c-corner bl"></div>
+            <div class="c-corner br"></div>
+            <div class="c-scan-bottle"></div>
+            <div class="c-scan-line"></div>
+          </div>
+          <div class="c-hint">POINT AT THE BOTTLE</div>
+        </div>
+        <div class="c-options">
+          <div class="c-option">
+            <div class="c-option-icon">📷</div>
+            <div class="c-option-label">Photo Label</div>
+            <div class="c-option-sub">AI READS THE LABEL</div>
+          </div>
+          <div class="c-option" style="border-color:rgba(196,151,60,0.3)">
+            <div class="c-option-icon">▮</div>
+            <div class="c-option-label">Barcode</div>
+            <div class="c-option-sub">EAN-13 SCAN</div>
+          </div>
+          <div class="c-option">
+            <div class="c-option-icon">▦</div>
+            <div class="c-option-label">QR Code</div>
+            <div class="c-option-sub">ESTATE LINKS</div>
+          </div>
+        </div>
+        <div class="c-identified">
+          <div class="c-id-eyebrow">✓ WINE IDENTIFIED</div>
+          <div class="c-id-name">Kanonkop Pinotage '21</div>
+          <div class="c-id-meta">KANONKOP · STELLENBOSCH · R420</div>
+          <div class="c-id-stars">★★★★½ · 2847 ratings</div>
+          <div class="c-id-actions">
+            <div class="c-id-btn yes">✓ RATE NOW</div>
+            <div class="c-id-btn no">NOT IT</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <h2>C. Scan — The Ritual</h2>
+    <div class="desc">A cinematic camera ritual: golden frame viewfinder with animated scan line, instant identification with key details before rating. Makes scanning feel like a sommelier's ceremony.</div>
+    <div class="badge">VIEWFINDER · INSTANT ID · ONE-TAP RATE</div>
+  </div>
+
+  <!-- ════ MOCKUP D — STORIES MAGAZINE ════ -->
+  <div class="mockup-card">
+    <div class="phone">
+      <div class="phone-screen">
+        <div style="padding:50px 20px 0;display:flex;justify-content:space-between;align-items:center">
+          <span class="eyebrow body-mid">STORIES // WC</span>
+          <span class="eyebrow gold">6 STORIES</span>
+        </div>
+        <div class="d-hero">
+          <div class="d-hero-content">
+            <div class="d-hero-eyebrow">WINEMAKER · 8 MIN READ</div>
+            <div class="d-hero-title">Eben Sadie's<br>Swartland revolution</div>
+            <div class="d-hero-meta">How a sommelier transformed a dry wheat belt into SA's most exciting wine region.</div>
+          </div>
+        </div>
+        <div class="d-list">
+          <div class="eyebrow body-mid" style="margin-bottom:4px">LATEST STORIES</div>
+          <div class="d-item">
+            <div class="d-item-thumb wm"></div>
+            <div class="d-item-content">
+              <div class="d-item-cat wm">WINEMAKER</div>
+              <div class="d-item-title">The Mullineux method</div>
+              <div class="d-item-sub">Andrea Mullineux on why Swartland Syrah rivals the Northern Rhône.</div>
+              <div class="d-item-time">6 MIN · MAR 2026</div>
+            </div>
+          </div>
+          <div class="d-item">
+            <div class="d-item-thumb gh"></div>
+            <div class="d-item-content">
+              <div class="d-item-cat gh">HERITAGE</div>
+              <div class="d-item-title">300 years of Constantia</div>
+              <div class="d-item-sub">From Napoleon's deathbed request to modern Klein Constantia.</div>
+              <div class="d-item-time">10 MIN · FEB 2026</div>
+            </div>
+          </div>
+          <div class="d-item">
+            <div class="d-item-thumb tr"></div>
+            <div class="d-item-content">
+              <div class="d-item-cat tr">TRANSFORMATION</div>
+              <div class="d-item-title">The new face of SA wine</div>
+              <div class="d-item-sub">Black-owned estates reshaping a centuries-old industry.</div>
+              <div class="d-item-time">7 MIN · FEB 2026</div>
+            </div>
+          </div>
+          <div class="d-item">
+            <div class="d-item-thumb wm"></div>
+            <div class="d-item-content">
+              <div class="d-item-cat wm">WINEMAKER</div>
+              <div class="d-item-title">Boekenhoutskloof's Marc Kent</div>
+              <div class="d-item-sub">The mind behind The Chocolate Block on blending for pleasure.</div>
+              <div class="d-item-time">5 MIN · JAN 2026</div>
+            </div>
+          </div>
+          <div class="d-item">
+            <div class="d-item-thumb tr"></div>
+            <div class="d-item-content">
+              <div class="d-item-cat tr">TRANSFORMATION</div>
+              <div class="d-item-title">Aslina Wines: a homecoming</div>
+              <div class="d-item-sub">Ntsiki Biyela's journey from Zululand to award-winning winemaker.</div>
+              <div class="d-item-time">9 MIN · JAN 2026</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <h2>D. Stories — Editorial Magazine</h2>
+    <div class="desc">Premium digital wine magazine: full-bleed editorial photography, long-form winemaker profiles, typography-driven layout (like Monocle or Kinfolk for wine). The competitive moat.</div>
+    <div class="badge">EDITORIAL · LONG-FORM · CATEGORIES</div>
+  </div>
+
+</div>
+
+<div style="text-align:center;margin-top:60px;padding:0 20px">
+  <p style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;color:#7a6858">
+    TELL ME WHICH DIRECTION(S) TO BUILD — I'LL IMPLEMENT IN THE APP
+  </p>
+</div>
+
+</body>
+</html>
