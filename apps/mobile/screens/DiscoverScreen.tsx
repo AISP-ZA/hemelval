@@ -20,6 +20,7 @@ import { fetchWines, lastDataSource, type Wine } from '../lib/dataAccessor.js';
 import { signatureVarietals, findWinesForFood, resolveVarietal, aromaLabel, suggestPairings, PAIRINGS } from '@kelder/engine';
 import type { FoodMatch } from '@kelder/engine';
 import { HERO_CELLAR, wineImage, hasRealPhoto } from '../lib/imagery.js';
+import { findReview } from '../lib/reviews.js';
 import { usePalate } from '../hooks/usePalate.js';
 import { TastingNoteScreen } from './TastingNoteScreen.js';
 import { EstateDetailScreen } from './EstateDetailScreen.js';
@@ -466,17 +467,19 @@ function WineDetail({ wine, wines, matchScore, onBack, onRate, onEstatePress }: 
     }).start();
   }, []);
 
-  // ── Derive tasting notes from engine varietal data ─────────────────────
+  // ── Tasting notes: use REAL review data when available, fall back to engine ──
+  const realReview = findReview(wine.name, wine.estateName);
   const varietal = resolveVarietal(wine.varietals[0] ?? '');
-  const noseAromas = varietal?.typicalAromas?.slice(0, 5).map((id) => aromaLabel(id)).filter(Boolean) ?? [];
+  const noseAromas = realReview?.nose ?? (varietal?.typicalAromas?.slice(0, 5).map((id) => aromaLabel(id)).filter(Boolean) ?? []);
   const tasteValues = tasteProfileForVarietal(wine.varietals[0] ?? '', wine.type);
-  const palateDesc = [
+  const palateDesc = realReview?.palate?.join(', ') ?? [
     tasteValues.body != null && tasteValues.body > 60 ? 'full-bodied' : tasteValues.body != null && tasteValues.body < 40 ? 'light-bodied' : 'medium-bodied',
     tasteValues.tannin != null && tasteValues.tannin > 60 ? 'firm tannin' : tasteValues.tannin != null && tasteValues.tannin < 30 ? 'soft tannin' : null,
     tasteValues.acidity != null && tasteValues.acidity > 65 ? 'bright acidity' : tasteValues.acidity != null && tasteValues.acidity < 40 ? 'low acidity' : null,
     tasteValues.sweetness != null && tasteValues.sweetness > 40 ? 'off-dry' : 'dry',
   ].filter(Boolean).join(', ');
-  const finishDesc = varietal?.character?.split('.').slice(-2).join('.').trim() || 'A lingering finish typical of this varietal.';
+  const finishDesc = realReview?.finish ?? (varietal?.character?.split('.').slice(-2).join('.').trim() || 'A lingering finish typical of this varietal.');
+  const reviewerLabel = realReview ? `${realReview.reviewer.toUpperCase()} · ${realReview.date.slice(0, 7)}` : null;
 
   // ── Pairings: derive if empty (live DB wines have []) ───────────────────
   const pairingTags = wine.pairings.length > 0
@@ -591,6 +594,14 @@ function WineDetail({ wine, wines, matchScore, onBack, onRate, onEstatePress }: 
               <Text style={styles.tastingLabel}>FINISH</Text>
               <Text style={styles.tastingText}>{finishDesc}</Text>
             </View>
+            {reviewerLabel && (
+              <Text style={[font.captionMonoSm, { color: color.bodyMid, marginTop: space.xs, fontStyle: 'italic' }]}>
+                REVIEWED BY {reviewerLabel}
+              </Text>
+            )}
+            {realReview && realReview.summary && (
+              <Text style={[styles.tastingSummary]}>"{realReview.summary}"</Text>
+            )}
           </>
         )}
 
@@ -931,6 +942,18 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: color.body,
     lineHeight: 20,
+  },
+  tastingSummary: {
+    fontFamily: 'CormorantGaramond, Georgia, serif',
+    fontSize: 16,
+    fontWeight: '400',
+    color: color.ink,
+    lineHeight: 22,
+    fontStyle: 'italic',
+    marginTop: space.sm,
+    paddingTop: space.sm,
+    borderTopWidth: 1,
+    borderTopColor: color.hairline,
   },
 
   // Pairing icon rows
