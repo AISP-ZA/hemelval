@@ -48,7 +48,7 @@ export async function fetchWines(): Promise<Wine[]> {
         estates!inner ( id, slug, name, region, wine_route ),
         wo_appellations ( name )
       `)
-      .limit(100);
+      .limit(250);
     if (error) { console.warn('[dataAccessor] wines query error:', error.message); setSource('demo'); return MOCK_WINES; }
     if (!data || data.length === 0) { setSource('demo'); return MOCK_WINES; }
     setSource('live');

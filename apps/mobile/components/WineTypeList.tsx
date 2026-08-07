@@ -70,7 +70,7 @@ export function WineTypeList({
         {/* Wine cards — calm surface + type dot, never a per-card fill */}
         <View style={styles.list}>
           {shown.map((w) => {
-            const img = wineImage(w.id);
+            const img = wineImage(w.id, w.type);
             return (
               <SurfaceCard
                 key={w.id}

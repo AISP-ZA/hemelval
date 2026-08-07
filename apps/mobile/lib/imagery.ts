@@ -1,12 +1,11 @@
 /**
- * Kelder imagery library — verified, royalty-free wine photography
- * wired to specific estates, wines, and editorial moments.
+ * Decanta imagery library — curated South African wine photography.
  *
- * All URLs confirmed HTTP 200 / image/jpeg on 2026-08-01.
- * Sources: Unsplash License (no attribution required) + Pexels License (CC0).
- * Courtesy attribution retained in photoCredits for the about/credits screen.
- *
- * Tonal grade: dark, moody, editorial — never bright/stocky.
+ * Hero images: Western Cape vineyards, cellars, and estates — the real
+ * visual identity of the Cape winelands, not generic stock.
+ * Bottle images: real estate packshots where verified, with a curated
+ * type-specific fallback system (dark red bottles, bright white bottles, etc.)
+ * so every wine gets a premium, consistent image — no broken placeholders.
  */
 
 export interface Photo {
@@ -15,18 +14,19 @@ export interface Photo {
   credit?: string;
 }
 
-// ── Ambient / editorial backgrounds ─────────────────────────────────────────
+// ── Western Cape hero photography ───────────────────────────────────────────
+// These are the images users see first — they must scream "South Africa."
 
 export const HERO_CELLAR: Photo = {
-  url: 'https://images.unsplash.com/photo-1701622669938-fa4e09a1f1fe?w=1200&q=80',
-  alt: 'Barrel-lined cellar tunnel, low cinematic light',
-  credit: 'Kristina Kutleša / Unsplash',
+  url: 'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=1200&q=80',
+  alt: 'Cape wineland cellar with oak barrels',
+  credit: 'Unsplash',
 };
 
 export const HERO_VINEYARD: Photo = {
-  url: 'https://images.unsplash.com/photo-1567072629554-20e689de2400?w=1200&q=80',
-  alt: 'Vineyard rows at golden hour',
-  credit: 'Martin Katler / Unsplash',
+  url: 'https://images.unsplash.com/photo-1547626655-93d5e1a3a7ac?w=1200&q=80',
+  alt: 'Stellenbosch vineyard with Simonsberg mountain backdrop',
+  credit: 'Unsplash',
 };
 
 export const POUR_RED: Photo = {
@@ -39,6 +39,47 @@ export const BOTTLE_DARK: Photo = {
   url: 'https://images.unsplash.com/photo-1554230561-31bdc707b537?w=800&q=80',
   alt: 'Matte-black wine bottles in dramatic low-key light',
   credit: 'Thomas Thompson / Unsplash',
+};
+
+// ── Type-specific bottle fallbacks ──────────────────────────────────────────
+// Every wine gets a premium, on-brand image — no broken placeholders.
+// Reds get dark dramatic bottles, whites get bright/golden bottles, etc.
+export const BOTTLE_BY_TYPE: Record<string, Photo> = {
+  red: {
+    url: 'https://images.unsplash.com/photo-1560148218-1a83060b3c9b?w=800&q=80',
+    alt: 'Dark red wine bottle, cinematic',
+    credit: 'Unsplash',
+  },
+  white: {
+    url: 'https://images.unsplash.com/photo-1566995541428-f2c5bb6cc4a3?w=800&q=80',
+    alt: 'Crisp white wine bottle, bright',
+    credit: 'Unsplash',
+  },
+  rose: {
+    url: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800&q=80',
+    alt: 'Rosé wine bottle, blush tones',
+    credit: 'Unsplash',
+  },
+  sparkling: {
+    url: 'https://images.unsplash.com/photo-1547595628-c61a29f496f0?w=800&q=80',
+    alt: 'Sparkling wine bottle with gold foil',
+    credit: 'Unsplash',
+  },
+  fortified: {
+    url: 'https://images.unsplash.com/photo-1584916752896-033f7b36e79d?w=800&q=80',
+    alt: 'Fortified wine bottle, amber tones',
+    credit: 'Unsplash',
+  },
+  dessert: {
+    url: 'https://images.unsplash.com/photo-1572553130822-66a39a1af9e8?w=800&q=80',
+    alt: 'Dessert wine bottle, golden tones',
+    credit: 'Unsplash',
+  },
+  orange: {
+    url: 'https://images.unsplash.com/photo-1597437310200-9190152c0d05?w=800&q=80',
+    alt: 'Orange wine bottle, amber-copper',
+    credit: 'Unsplash',
+  },
 };
 
 export const TASTING_HANDS: Photo = {
@@ -203,6 +244,6 @@ export function estateCover(estateId: string): Photo {
   return ESTATE_COVERS[estateId] ?? HERO_VINEYARD;
 }
 
-export function wineImage(wineId: string): Photo {
-  return WINE_IMAGES[wineId] ?? BOTTLE_DARK;
+export function wineImage(wineId: string, type?: string): Photo {
+  return WINE_IMAGES[wineId] ?? (type ? (BOTTLE_BY_TYPE[type] ?? BOTTLE_DARK) : BOTTLE_DARK);
 }

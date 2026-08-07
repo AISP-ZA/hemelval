@@ -187,15 +187,19 @@ export function DiscoverScreen() {
           <Text style={styles.heroHeadline}>Discover South African wine.</Text>
           <Text style={styles.heroSub}>Scan a bottle, rate your tasting, build your palate. The Western Cape's wines, estates, and varietals — explored.</Text>
           {dataSource === 'demo' && (
-            <Text style={[font.captionMonoSm, { color: color.bodyMid, marginTop: space.sm }]}>
-              Curated reference collection · 217 SA wines
-            </Text>
+            <View style={styles.curatedBadge}>
+              <Text style={styles.curatedBadgeDot}>●</Text>
+              <Text style={styles.curatedBadgeText}>
+                CURATED COLLECTION · {wines.length} WESTERN CAPE WINES
+              </Text>
+            </View>
           )}
         </View>
       </View>
 
       {/* Search */}
       <View style={styles.searchRow}>
+        <Text style={styles.searchIcon}>⌕</Text>
         <TextInput
           style={styles.input}
           placeholder="Search wines, estates, varietals…"
@@ -203,6 +207,11 @@ export function DiscoverScreen() {
           value={query}
           onChangeText={setQuery}
         />
+        {query.length > 0 && (
+          <Pressable hitSlop={12} onPress={() => setQuery('')} style={styles.searchClear}>
+            <Text style={styles.searchClearIcon}>✕</Text>
+          </Pressable>
+        )}
       </View>
 
       {/* Signature SA grapes — the differentiator (grape education) */}
@@ -232,7 +241,7 @@ export function DiscoverScreen() {
           keyExtractor={(item) => item.id}
           contentContainerStyle={{ gap: space.md, paddingRight: space.xl }}
           renderItem={({ item }) => {
-            const img = wineImage(item.id);
+            const img = wineImage(item.id, item.type);
             return (
               <Pressable hitSlop={8} onPress={() => setSelected(item)} style={({ pressed }) => [styles.topCard, pressed && { opacity: 0.85 }]}>
                 <Image source={{ uri: img.url }} style={styles.topCardImage} resizeMode="cover" />
@@ -382,7 +391,7 @@ export function DiscoverScreen() {
 function CalmWineRow({ wine, matchScore, onPress, onEstatePress }: {
   wine: Wine; matchScore: number; onPress: () => void; onEstatePress: () => void;
 }) {
-  const img = wineImage(wine.id);
+  const img = wineImage(wine.id, wine.type);
   return (
     <SurfaceCard
       onPress={onPress}
@@ -421,7 +430,7 @@ function CalmWineRow({ wine, matchScore, onPress, onEstatePress }: {
 // Cinematic: parallax hero, gradient scrim, fade-in content, circular back.
 function WineDetail({ wine, matchScore, onBack, onRate, onEstatePress }: { wine: MockWine; matchScore: number; onBack: () => void; onRate: () => void; onEstatePress: () => void }) {
   const insets = useSafeAreaInsets();
-  const img = wineImage(wine.id);
+  const img = wineImage(wine.id, wine.type);
   const wineTypeColor = wine.type === 'red' || wine.type === 'fortified' ? color.redWine
     : wine.type === 'white' ? color.whiteWine
     : wine.type === 'rose' ? color.roseWine
@@ -646,13 +655,64 @@ const styles = StyleSheet.create({
   heroContent: { padding: space.xl, paddingBottom: space.xxl },
   heroHeadline: { fontFamily: 'CormorantGaramond, Georgia, serif', fontSize: 40, fontWeight: '400', color: color.ink, letterSpacing: -1, lineHeight: 44, marginTop: space.sm },
   heroSub: { fontFamily: 'Inter, system-ui, sans-serif', fontSize: 15, color: color.body, lineHeight: 22, marginTop: space.md, maxWidth: 300 },
-  searchRow: { paddingHorizontal: space.xl, paddingVertical: space.lg },
+  curatedBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: space.xs,
+    marginTop: space.md,
+    paddingHorizontal: space.md,
+    paddingVertical: space.xs,
+    backgroundColor: 'rgba(196,151,60,0.08)',
+    borderWidth: 1,
+    borderColor: 'rgba(196,151,60,0.20)',
+    borderRadius: radius.pill,
+    alignSelf: 'flex-start',
+  },
+  curatedBadgeDot: {
+    color: color.gold,
+    fontSize: 7,
+  },
+  curatedBadgeText: {
+    fontFamily: 'GeistMono, monospace',
+    fontSize: 9,
+    fontWeight: '400',
+    letterSpacing: 1.2,
+    color: color.gold,
+  },
+  searchRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: space.xl,
+    paddingVertical: space.lg,
+    gap: space.sm,
+  },
+  searchIcon: {
+    position: 'absolute',
+    left: space.xl + space.md,
+    fontSize: 20,
+    color: color.bodyMid,
+    zIndex: 1,
+  },
+  searchClear: {
+    width: 24,
+    height: 24,
+    borderRadius: 9999,
+    backgroundColor: color.canvasMid,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  searchClearIcon: {
+    fontSize: 10,
+    color: color.bodyMid,
+  },
   input: {
+    flex: 1,
     backgroundColor: color.canvasSoft,
     borderWidth: 1,
     borderColor: color.hairline,
-    borderRadius: radius.sm,
+    borderRadius: radius.pill,
     padding: space.md,
+    paddingLeft: space.xl + space.md,
     color: color.ink,
     ...font.bodyMd,
   },

@@ -62,7 +62,7 @@ export function WineShelf({
         contentContainerStyle={styles.shelfScroll}
       >
         {preview.map((w) => {
-          const img = wineImage(w.id);
+          const img = wineImage(w.id, w.type);
           return (
             <Pressable
               key={w.id}

@@ -125,7 +125,7 @@ export function CellarScreen() {
               notes.map((t) => {
                 const wine = wineForNote(t);
                 const tCol = wine ? wineTypeColor(wine.type) : color.gold;
-                const img = wine ? wineImage(wine.id) : null;
+                const img = wine ? wineImage(wine.id, wine.type) : null;
                 return (
                   <SurfaceCard
                     key={t.id}
