@@ -2,10 +2,10 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   isValidStars, averageStars, points100ToStars, starsToPoints100,
-  AROMA_DESCRIPTORS, aromasByCategory, AROMA_BY_ID,
-  suggestPairings, servingTempFor,
+  AROMA_DESCRIPTORS, aromasByCategory, AROMA_BY_ID, aromaLabel,
+  suggestPairings, servingTempFor, findWinesForFood, PAIRINGS,
   buildPalateProfile, matchScore, validateTastingNote,
-  VARIETAL_BY_SLUG, resolveVarietal, signatureVarietals,
+  VARIETAL_BY_SLUG, VARIETALS, resolveVarietal, signatureVarietals,
 } from '../src/index.ts';
 
 test('star validation', () => {
@@ -134,4 +134,101 @@ test('validateTastingNote', () => {
   assert.ok(validateTastingNote({ stars: 3.7 }), 'rejects 3.7');
   assert.ok(validateTastingNote({}), 'requires stars');
   assert.ok(validateTastingNote({ stars: 6 }), 'rejects > 5');
+});
+
+// ── Regression: no dangling aroma references in varietal data ───────────────
+// Every typicalAromas id referenced by a varietal must resolve to a real
+// descriptor in the controlled vocabulary. Before this guard, varietals.ts
+// used `as string` casts to bypass the type checker for ids that didn't
+// exist (raspberry, plum, wax, game, green-apple) — those aromas silently
+// failed label lookup and corrupted palate profiles.
+test('every varietal typicalAroma resolves to a controlled descriptor', () => {
+  const dangling: string[] = [];
+  for (const v of VARIETALS) {
+    for (const id of v.typicalAromas ?? []) {
+      if (!AROMA_BY_ID.has(id)) {
+        dangling.push(`${v.slug} → '${id}'`);
+      }
+    }
+  }
+  assert.deepEqual(dangling, [], `dangling aroma ids: ${dangling.join(', ')}`);
+});
+
+test('previously-missing descriptors are now in the controlled vocab', () => {
+  // These were the 5 ids that varietals.ts referenced but didn't exist.
+  for (const id of ['raspberry', 'plum', 'wax', 'game', 'green-apple']) {
+    assert.ok(AROMA_BY_ID.has(id), `${id} is a controlled descriptor`);
+    // aromaLabel must return the human label, not the raw id (the old bug)
+    assert.notEqual(aromaLabel(id), id, `${id} has a real label`);
+  }
+});
+
+// ── findWinesForFood — the "What are you eating?" feature (was 0% covered) ──
+test('findWinesForFood — braai', () => {
+  const m = findWinesForFood('braai wors at the braai');
+  assert.ok(m.tags.includes('braai'));
+  assert.ok(m.varietalSlugs.includes('pinotage'), 'Pinotage recommended for braai');
+  assert.ok(m.wineTypes.includes('red'));
+  assert.ok(m.explanation.length > 0);
+});
+
+test('findWinesForFood — oysters', () => {
+  const m = findWinesForFood('fresh oysters');
+  assert.ok(m.tags.includes('oysters'));
+  assert.ok(m.varietalSlugs.includes('mcc'), 'MCC recommended for oysters');
+});
+
+test('findWinesForFood — bobotie (SA Cape Malay)', () => {
+  const m = findWinesForFood('bobotie');
+  assert.ok(m.tags.includes('curry') || m.tags.includes('bobotie'), 'bobotie maps to a curry/bobotie tag');
+  assert.ok(m.varietalSlugs.length > 0);
+});
+
+test('findWinesForFood — chocolate dessert', () => {
+  const m = findWinesForFood('chocolate brownie');
+  assert.ok(m.tags.includes('dessert-choc'));
+  assert.ok(m.wineTypes.includes('fortified') || m.wineTypes.includes('dessert'));
+});
+
+test('findWinesForFood — unknown food returns versatile fallback', () => {
+  const m = findWinesForFood('quatzlcoatl surprise');
+  assert.equal(m.tags.length, 0, 'no tags for unknown food');
+  assert.ok(m.varietalSlugs.includes('chenin-blanc'), 'falls back to Chenin');
+  assert.ok(m.varietalSlugs.includes('pinot-noir'), 'falls back to Pinot Noir');
+});
+
+test('findWinesForFood — only recommends varietals we actually know', () => {
+  // Regression: TAG_WINE_MAP previously recommended 'gewurztraminer' which
+  // is not in our VARIETALS list — a dangling slug that breaks downstream UI.
+  for (const slug of findWinesForFood('spicy thai curry').varietalSlugs) {
+    assert.ok(VARIETAL_BY_SLUG.has(slug), `recommended slug '${slug}' is a known varietal`);
+  }
+});
+
+// ── suggestPairings — no invalid tags (regression for dead-code escapes) ────
+// Before this guard, suggestPairings pushed 'salmon' and 'salad' as PairingTag
+// via `as PairingTag` casts — those aren't valid tags and would surface as
+// undefined labels in the UI.
+test('suggestPairings only emits valid PairingTags', () => {
+  const validTags = new Set(Object.keys(PAIRINGS));
+  for (const type of ['red', 'white', 'rose', 'sparkling', 'orange'] as const) {
+    for (const vslug of ['', 'pinotage', 'pinot-noir', 'chenin-blanc', 'shiraz']) {
+      const tags = suggestPairings(type, vslug ? { varietalSlug: vslug } : undefined);
+      for (const t of tags) {
+        assert.ok(validTags.has(t), `invalid tag '${t}' from suggestPairings(${type}, ${vslug})`);
+      }
+    }
+  }
+});
+
+test('suggestPairings — Pinot Noir recommends fish (not the old dead-code path)', () => {
+  const tags = suggestPairings('red', { varietalSlug: 'pinot-noir' });
+  assert.ok(tags.includes('fish-rich'), 'Pinot Noir pairs with oily fish');
+  assert.ok(!tags.includes('salmon' as never), 'no invalid salmon tag');
+});
+
+test('suggestPairings — rosé type fallback recommends valid tags', () => {
+  const tags = suggestPairings('rose');
+  assert.ok(tags.includes('pizza'), 'rosé pairs with pizza');
+  assert.ok(!tags.includes('salad' as never), 'no invalid salad tag');
 });

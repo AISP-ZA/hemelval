@@ -114,8 +114,7 @@ export function suggestPairings(
       out.push('braai', 'steak', 'game', 'bobotie');
       break;
     case 'pinot-noir':
-      out.push('duck', 'mushroom', 'salmon' as PairingTag || 'fish-rich', 'charcuterie');
-      out.push('fish-rich');
+      out.push('duck', 'mushroom', 'fish-rich', 'charcuterie');
       break;
     case 'grenache':
     case 'mourvedre':
@@ -151,7 +150,7 @@ export function suggestPairings(
   if (out.length === 0) {
     if (type === 'red') out.push('steak', 'lamb', 'cheese-hard', 'braai');
     else if (type === 'white') out.push('seafood', 'chicken', 'cheese-fresh');
-    else if (type === 'rose') out.push('charcuterie', 'salad' as PairingTag || 'chicken', 'seafood', 'pizza');
+    else if (type === 'rose') out.push('charcuterie', 'chicken', 'seafood', 'pizza');
     else if (type === 'orange') out.push('curry', 'charcuterie', 'cheese-fresh');
   }
 
@@ -234,7 +233,7 @@ const TAG_WINE_MAP: Record<PairingTag, { types: WineType[]; varietals: string[] 
   'fish-rich': { types: ['white', 'red'], varietals: ['chardonnay', 'pinot-noir', 'sauvignon-blanc'] },
   'fish-light': { types: ['white'], varietals: ['sauvignon-blanc', 'chenin-blanc', 'chardonnay'] },
   'curry': { types: ['white', 'red'], varietals: ['chenin-blanc', 'riesling', 'viognier', 'pinotage'] },
-  'spicy': { types: ['white'], varietals: ['riesling', 'gewurztraminer' as string, 'viognier'] },
+  'spicy': { types: ['white'], varietals: ['riesling', 'viognier', 'chenin-blanc'] },
   'cheese-hard': { types: ['red'], varietals: ['cabernet-sauvignon', 'bordeaux-blend', 'pinotage'] },
   'cheese-blue': { types: ['fortified', 'dessert'], varietals: ['touriga-nacional'] },
   'cheese-fresh': { types: ['white', 'sparkling'], varietals: ['sauvignon-blanc', 'mcc', 'chenin-blanc'] },

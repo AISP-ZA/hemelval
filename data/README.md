@@ -24,13 +24,47 @@
 
 ## Data Sources
 
+See `docs/SOURCES.md` for the **authoritative source list** — every source is
+categorised by tier (gold standard / structured-free / editorial), mapped to
+schema fields, and tracked with ingestion status.
+
+See `docs/INGESTION_PLAYBOOK.md` for the **field-level ingestion mapping** —
+which source populates which column, deduplication strategy, and phase-by-phase
+ingestion instructions.
+
 1. Official estate websites (priority)
-2. Wine.co.za / Wined.co.za / Wineries.co.za
-3. Platter's SA Wine Guide
-4. SA Wine Routes associations
-5. Cape Wine / WOSA
-6. Google Maps / OpenStreetMap (geo data)
-7. Wine awards databases
+2. Wine.co.za / Wineries.co.za (structured free seed)
+3. Platter's SA Wine Guide (gold standard, licensed — P2)
+4. SAWIS (Wine of Origin registry — P2)
+5. SA Wine Routes associations (WoSA)
+6. Wikimedia Commons (GPS coordinates, free images)
+7. Wine ratings databases (Winemag, TopWineSA, Wine-Searcher)
+8. Farmer story sources (§4 of SOURCES.md)
+
+## Current DB State (2026-08-02)
+
+| Table | Count | Notes |
+|---|---|---|
+| estates | **420** | 64 backfilled + 269 inserted via batch research |
+| wines | 217 | Next expansion target |
+| events | 41 | Target: 60+ via §3 sources |
+| varietals | 40 | All SA varieties |
+| wine_routes | 20 | All major SA routes |
+| wine_regions | 15 | WO hierarchy |
+| certifications | 10 | IPW, WIETA, OVP, BWI, etc. |
+| award_bodies | 10 | Platter's, Veritas, DWWA, etc. |
+| vintage_reports | 10 | 2015–2024 |
+
+### Field population (estates)
+| Field | Populated | % |
+|---|---|---|
+| region | 324/420 | 77% |
+| wine_route | 324/420 | 77% |
+| tasting_room | 227/420 | 54% |
+| restaurant | 69/420 | 16% |
+| founded_year | ~180/420 | ~43% |
+| website_url | ~390/420 | ~93% |
+| latitude/longitude | 0/420 | **0% — P1 geo ingestion needed** |
 
 ## Maintenance
 

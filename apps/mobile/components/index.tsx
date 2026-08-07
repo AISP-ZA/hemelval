@@ -12,7 +12,7 @@ import {
   View, Text, Pressable, StyleSheet, type ViewStyle, type TextStyle,
   type PressableProps, ActivityIndicator,
 } from 'react-native';
-import { color, font, radius, space } from '../theme/tokens.js';
+import { color, font, radius, space, wineTypeColor } from '../theme/tokens.js';
 
 // ── Eyebrow (caption-mono, the AISP section label) ──────────────────────────
 
@@ -116,11 +116,11 @@ export function Chip({ children, tone = 'neutral', style }: {
   style?: ViewStyle;
 }) {
   const tones: Record<string, { bg: string; border: string; fg: string }> = {
-    neutral: { bg: 'transparent', border: color.hairline, fg: color.body },
-    accent: { bg: 'rgba(201,169,106,0.12)', border: color.gold, fg: color.gold },
-    systems: { bg: 'rgba(127,168,106,0.14)', border: color.systems, fg: color.systems },
-    wine: { bg: 'rgba(139,29,46,0.36)', border: color.wineBright, fg: '#d49aa3' },
-    sunset: { bg: 'rgba(201,169,106,0.12)', border: color.gold, fg: color.gold },
+    neutral: { bg: 'transparent', border: color.hairline, fg: color.bodyMid },
+    accent:  { bg: 'transparent', border: color.gold, fg: color.gold },
+    systems: { bg: 'transparent', border: color.gold, fg: color.gold },
+    wine:    { bg: 'rgba(107,18,40,0.22)', border: color.wine, fg: color.ink },
+    sunset:  { bg: 'transparent', border: color.gold, fg: color.gold },
   };
   const t = tones[tone];
   return (
@@ -133,13 +133,22 @@ export function Chip({ children, tone = 'neutral', style }: {
 // ── Star rating display ──────────────────────────────────────────────────────
 
 export function Stars({ value, count, size = 14 }: { value: number; count?: number; size?: number }) {
+  // value === 0 means "not yet rated" in the live DB — show honest label, not fake stars
+  if (!value || value === 0) {
+    return (
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}>
+        <Text style={{ color: color.bodyMid, fontSize: size, fontWeight: '400' }}>☆☆☆☆☆</Text>
+        <Text style={[font.captionMonoSm, { color: color.bodyMid }]}>Not yet rated</Text>
+      </View>
+    );
+  }
   const full = Math.floor(value);
   const half = value - full >= 0.5;
   const stars = '★'.repeat(full) + (half ? '½' : '') + '☆'.repeat(5 - full - (half ? 1 : 0));
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}>
       <Text style={{ color: color.sunset, fontSize: size, fontWeight: '600' }}>{stars}</Text>
-      {count != null && <Text style={[font.captionMonoSm, { color: color.bodyMid }]}>{value.toFixed(1)} · {count}</Text>}
+      {count != null && count > 0 && <Text style={[font.captionMonoSm, { color: color.bodyMid }]}>{value.toFixed(1)} · {count}</Text>}
     </View>
   );
 }
@@ -152,8 +161,11 @@ export function Divider({ style }: { style?: ViewStyle }) {
 
 // ── Match score badge ────────────────────────────────────────────────────────
 
-export function MatchBadge({ score }: { score: number }) {
-  const tone = score >= 80 ? color.systems : score >= 60 ? color.sunset : color.bodyMid;
+export function MatchBadge({ score, wineType }: { score: number; wineType?: string }) {
+  // Tiered colour: strong matches get the wine-type spectrum colour,
+  // mid matches get gold, weak matches stay muted.
+  const typeCol = wineType ? wineTypeColor(wineType) : color.gold;
+  const tone = score >= 60 ? typeCol : score >= 40 ? color.gold : color.mute;
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.xs }}>
       <Text style={[font.captionMonoSm, { color: tone }]}>{score}% MATCH</Text>
@@ -173,10 +185,10 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: color.canvasCard,
     borderWidth: 1,
-    borderColor: color.hairline,
+    borderColor: color.cardBorder,
     borderRadius: radius.sm,
     padding: space.xl,
-    // NO shadow — hairlines carry elevation (DESIGN.md)
+    // NO shadow — cardBorder (white overtone) + hairline carry elevation
   },
   chip: {
     borderRadius: radius.pill,

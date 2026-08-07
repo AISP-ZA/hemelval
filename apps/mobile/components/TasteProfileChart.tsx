@@ -1,23 +1,28 @@
 /**
- * TasteProfileChart — the signature 4-axis bipolar visualization.
+ * TasteProfileChart — the signature animated radar visualization.
  *
- * Each axis is a horizontal bar from 0–100 showing where the wine (or
- * the user's aggregate palate) sits between two poles:
+ * A 4-axis spider/radar chart showing the wine's (or user's palate's) shape:
  *
- *   Light ←──────→ Bold       (body)
- *   Dry   ←──────→ Sweet      (sweetness)
- *   Soft  ←──────→ Acidic     (acidity)
- *   Smooth←──────→ Tannic     (tannin)
+ *        BOLD (body)
+ *          ╱╲
+ *  TANNIC ╱  ╲ SWEET
+ *        ╲  ╱
+ *         ╲╱
+ *       ACIDIC
  *
- * The wine's values are shown as a gold filled bar with a marker dot.
- * On the profile page, the user's aggregate is shown the same way.
+ * The gold polygon DRAWS ON from center → outer edge with a staggered
+ * animation on mount. Gold fill at 15% opacity, gold stroke, axis dots
+ * glow on arrival. Optional second profile overlay (e.g. user's palate
+ * vs the wine) renders as a thinner outline.
  *
- * This is the single most-copied wine-app visualization (Vivino's
- * "taste profile"). Replicated and enhanced with SA-appropriate styling.
+ * Uses react-native-svg (already in project) + React Native Animated (no
+ * new deps). Falls back gracefully if a value is missing (that axis snaps
+ * to center).
  */
 
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { View, Text, StyleSheet, Animated, Easing } from 'react-native';
+import { Svg, Polygon, Circle, Line, Text as SvgText, G } from 'react-native-svg';
 import { color, font, space, radius } from '../theme/tokens.js';
 
 export interface TasteValues {
@@ -27,54 +32,209 @@ export interface TasteValues {
   tannin?: number;     // 0=smooth, 100=tannic
 }
 
-interface AxisConfig {
-  key: keyof TasteValues;
-  leftLabel: string;
-  rightLabel: string;
-}
-
-const AXES: AxisConfig[] = [
-  { key: 'body',      leftLabel: 'Light',  rightLabel: 'Bold' },
-  { key: 'sweetness', leftLabel: 'Dry',    rightLabel: 'Sweet' },
-  { key: 'acidity',   leftLabel: 'Soft',   rightLabel: 'Acidic' },
-  { key: 'tannin',    leftLabel: 'Smooth', rightLabel: 'Tannic' },
+// ── Axis config — 4 axes arranged at N, E, S, W ──────────────────────────────
+const AXES = [
+  { key: 'body'      as const, label: 'BODY',      subLabel: 'light → bold',    angle: -Math.PI / 2 },         // top
+  { key: 'sweetness' as const, label: 'SWEETNESS', subLabel: 'dry → sweet',     angle: 0 },                     // right
+  { key: 'acidity'   as const, label: 'ACIDITY',   subLabel: 'soft → acidic',   angle: Math.PI / 2 },          // bottom
+  { key: 'tannin'    as const, label: 'TANNIN',    subLabel: 'smooth → tannic', angle: Math.PI },              // left
 ];
 
 export function TasteProfileChart({
   values,
+  comparisonValues,
   label = 'TASTE PROFILE',
   compact = false,
 }: {
   values: TasteValues;
+  /** Optional second profile (e.g. user's palate) overlaid as a thin outline. */
+  comparisonValues?: TasteValues;
   label?: string;
   compact?: boolean;
 }) {
+  // Animation: polygon grows from center (0%) → full size (100%) on mount
+  const grow = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(grow, {
+      toValue: 1,
+      duration: 900,
+      easing: Easing.bezier(0.25, 0.1, 0.25, 1),  // ease-out
+      useNativeDriver: false,  // SVG needs JS driver
+      delay: 150,
+    }).start();
+  }, [grow]);
+
+  const size = compact ? 220 : 260;
+  const cx = size / 2;
+  const cy = size / 2;
+  const maxR = compact ? 72 : 88;
+
+  // Compute polygon points from taste values
+  const pointsFor = (v: TasteValues, scaleFactor: number = 1): string => {
+    return AXES.map((axis) => {
+      const val = v[axis.key];
+      const pct = (val != null ? Math.max(0, Math.min(100, val)) : 0) / 100;
+      const r = maxR * pct * scaleFactor;
+      const x = cx + Math.cos(axis.angle) * r;
+      const y = cy + Math.sin(axis.angle) * r;
+      return `${x},${y}`;
+    }).join(' ');
+  };
+
+  // Animated polygon — grows from center
+  const animatedPoints = grow.interpolate({
+    inputRange: [0, 1],
+    outputRange: [pointsFor(values, 0), pointsFor(values, 1)],
+  });
+
+  // Grid rings (concentric squares rotated to match axes)
+  const ringPoints = (ringR: number): string => {
+    return AXES.map((axis) => {
+      const x = cx + Math.cos(axis.angle) * ringR;
+      const y = cy + Math.sin(axis.angle) * ringR;
+      return `${x},${y}`;
+    }).join(' ');
+  };
+
   return (
     <View style={styles.wrap}>
-      <Text style={[font.captionMono, { color: color.bodyMid, marginBottom: space.md }]}>
+      <Text style={[font.captionMono, { color: color.bodyMid, marginBottom: space.sm }]}>
         {label}
       </Text>
-      {AXES.map((axis) => {
-        const val = values[axis.key];
-        if (val == null) return null;
-        const pct = Math.max(0, Math.min(100, val));
-        return (
-          <View key={axis.key} style={styles.axisRow}>
-            <Text style={[font.captionMonoSm, styles.axisLeftLabel, { color: pct < 50 ? color.gold : color.bodyMid }]}>
-              {axis.leftLabel.toUpperCase()}
+      <View style={styles.chartWrap}>
+        <Svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+          {/* ── Grid: 3 concentric rings + 4 axis spokes ── */}
+          {[0.33, 0.66, 1.0].map((ring, i) => (
+            <Polygon
+              key={`ring-${i}`}
+              points={ringPoints(maxR * ring)}
+              fill="none"
+              stroke={color.hairline}
+              strokeWidth={1}
+              opacity={i === 2 ? 0.6 : 0.35}
+            />
+          ))}
+          {AXES.map((axis) => {
+            const ex = cx + Math.cos(axis.angle) * maxR;
+            const ey = cy + Math.sin(axis.angle) * maxR;
+            return (
+              <Line
+                key={`spoke-${axis.key}`}
+                x1={cx} y1={cy} x2={ex} y2={ey}
+                stroke={color.hairline}
+                strokeWidth={1}
+                opacity={0.4}
+              />
+            );
+          })}
+
+          {/* ── Comparison profile (user's palate) — thin outline behind ── */}
+          {comparisonValues && (
+            <Polygon
+              points={pointsFor(comparisonValues)}
+              fill={color.gold}
+              fillOpacity={0.04}
+              stroke={color.gold}
+              strokeOpacity={0.3}
+              strokeWidth={1}
+              strokeDasharray="3 3"
+            />
+          )}
+
+          {/* ── Main profile polygon (animated grow) ── */}
+          <AnimatedPolygon
+            points={animatedPoints}
+            fill={color.gold}
+            fillOpacity={0.15}
+            stroke={color.gold}
+            strokeWidth={1.8}
+            strokeLinejoin="round"
+          />
+
+          {/* ── Axis vertex dots ── */}
+          {AXES.map((axis) => {
+            const val = values[axis.key];
+            const pct = (val != null ? Math.max(0, Math.min(100, val)) : 0) / 100;
+            // We can't easily animate each dot, so render at final position
+            // (the polygon growing into them creates the reveal effect)
+            const r = maxR * pct;
+            const x = cx + Math.cos(axis.angle) * r;
+            const y = cy + Math.sin(axis.angle) * r;
+            if (val == null) return null;
+            return (
+              <Circle
+                key={`dot-${axis.key}`}
+                cx={x} cy={y} r={3.5}
+                fill={color.gold}
+                stroke={color.canvas}
+                strokeWidth={1.5}
+              />
+            );
+          })}
+
+          {/* ── Center dot ── */}
+          <Circle cx={cx} cy={cy} r={2} fill={color.gold} opacity={0.4} />
+
+          {/* ── Axis labels ── */}
+          {AXES.map((axis) => {
+            const labelR = maxR + 18;
+            const x = cx + Math.cos(axis.angle) * labelR;
+            const y = cy + Math.sin(axis.angle) * labelR;
+            const anchor = Math.abs(Math.cos(axis.angle)) < 0.1 ? 'middle'
+                         : Math.cos(axis.angle) > 0 ? 'start' : 'end';
+            return (
+              <G key={`label-${axis.key}`}>
+                <SvgText
+                  x={x} y={y}
+                  fontFamily="GeistMono"
+                  fontSize={9}
+                  fontWeight="400"
+                  letterSpacing={1}
+                  fill={color.body}
+                  textAnchor={anchor as 'middle' | 'start' | 'end'}
+                  alignmentBaseline="central"
+                >
+                  {axis.label}
+                </SvgText>
+              </G>
+            );
+          })}
+        </Svg>
+
+        {/* ── Pole descriptors below the chart ── */}
+        <View style={styles.polesRow}>
+          {AXES.map((axis) => (
+            <Text key={`pole-${axis.key}`} style={styles.poleText}>
+              {axis.subLabel}
             </Text>
-            <View style={styles.barTrack}>
-              <View style={[styles.barFill, { width: `${pct}%` }]} />
-              <View style={[styles.barMarker, { left: `${pct}%` }]} />
+          ))}
+        </View>
+
+        {comparisonValues && (
+          <View style={styles.legendRow}>
+            <View style={styles.legendItem}>
+              <View style={[styles.legendSwatch, { backgroundColor: color.gold, opacity: 0.3 }]} />
+              <Text style={styles.legendText}>THIS WINE</Text>
             </View>
-            <Text style={[font.captionMonoSm, styles.axisRightLabel, { color: pct > 50 ? color.gold : color.bodyMid }]}>
-              {axis.rightLabel.toUpperCase()}
-            </Text>
+            <View style={styles.legendItem}>
+              <View style={[styles.legendSwatch, { backgroundColor: 'transparent', borderColor: color.gold, borderWidth: 1, borderStyle: 'dashed' }]} />
+              <Text style={styles.legendText}>YOUR PALATE</Text>
+            </View>
           </View>
-        );
-      })}
+        )}
+      </View>
     </View>
   );
+}
+
+// ── Animated SVG Polygon wrapper ─────────────────────────────────────────────
+// react-native-svg's Polygon doesn't accept animated points directly, so we
+// wrap it with a custom Animated component that interpolates the points string.
+function AnimatedPolygon({ points, ...props }: { points: any; [key: string]: any }) {
+  const PolygonAnimated = Animated.createAnimatedComponent(Polygon);
+  // RN Animated can interpolate string values via useNativeDriver: false
+  return <PolygonAnimated points={points} {...props} />;
 }
 
 // ── Helper: derive taste values from wine type + varietal ──────────────────
@@ -147,45 +307,44 @@ const styles = StyleSheet.create({
     borderColor: color.hairline,
     borderRadius: radius.sm,
     padding: space.lg,
+    alignItems: 'center',
   },
-  axisRow: {
+  chartWrap: {
+    alignItems: 'center',
+    width: '100%',
+  },
+  polesRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    gap: space.xs,
+    marginTop: space.sm,
+    paddingHorizontal: space.md,
+  },
+  poleText: {
+    fontFamily: 'GeistMono, monospace',
+    fontSize: 9,
+    color: color.bodyMid,
+    letterSpacing: 0.5,
+  },
+  legendRow: {
+    flexDirection: 'row',
+    gap: space.lg,
+    marginTop: space.md,
+  },
+  legendItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: space.sm,
-    marginBottom: space.md,
+    gap: space.xs,
   },
-  axisLeftLabel: {
-    width: 50,
-    textAlign: 'right',
+  legendSwatch: {
+    width: 14, height: 14,
+    borderRadius: 3,
   },
-  axisRightLabel: {
-    width: 50,
-    textAlign: 'left',
-  },
-  barTrack: {
-    flex: 1,
-    height: 8,
-    backgroundColor: color.canvasSoft,
-    borderRadius: 4,
-    position: 'relative',
-    overflow: 'hidden',
-  },
-  barFill: {
-    position: 'absolute',
-    top: 0, left: 0, bottom: 0,
-    backgroundColor: color.gold,
-    borderRadius: 4,
-    opacity: 0.6,
-  },
-  barMarker: {
-    position: 'absolute',
-    top: -2,
-    width: 12,
-    height: 12,
-    borderRadius: 9999,
-    backgroundColor: color.gold,
-    borderWidth: 2,
-    borderColor: color.canvas,
-    transform: [{ translateX: -6 }],
+  legendText: {
+    fontFamily: 'GeistMono, monospace',
+    fontSize: 9,
+    color: color.bodyMid,
+    letterSpacing: 0.8,
   },
 });

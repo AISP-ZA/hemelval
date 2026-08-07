@@ -1,4 +1,4 @@
-# Hemelval — Subscription & Business Model
+# Decanta — Subscription & Business Model
 
 > Why people will pay, and how the two-sided revenue model works.
 
@@ -29,7 +29,7 @@
 
 **The core insight:** a wine app's value compounds with data volume. Every rating, tasting note, and scan makes the recommendations better for everyone. A hard paywall strangles that flywheel at launch — you'd have a beautiful app with an empty database.
 
-So the free tier must be **genuinely useful** (Vivino's lesson — users revolted when they paywalled core features in 2025). Hemelval's free tier includes the full scan→rate→palate→cellar loop, because that's what generates the data. Pro gates the *advanced* value that engaged users will gladly pay for:
+So the free tier must be **genuinely useful** (Vivino's lesson — users revolted when they paywalled core features in 2025). Decanta's free tier includes the full scan→rate→palate→cellar loop, because that's what generates the data. Pro gates the *advanced* value that engaged users will gladly pay for:
 
 | Free (the data generators) | Pro R89/mo (the power features) |
 |---|---|
@@ -45,7 +45,7 @@ So the free tier must be **genuinely useful** (Vivino's lesson — users revolte
 
 ## Why the Estate SaaS is the structural revenue
 
-The consumer Pro tier is high-margin but volatile (churn). The Estate SaaS is **recurring, predictable B2B revenue** — the kind investors and a sustainable business are built on. Estates pay because Hemelval gives them something they can't get elsewhere:
+The consumer Pro tier is high-margin but volatile (churn). The Estate SaaS is **recurring, predictable B2B revenue** — the kind investors and a sustainable business are built on. Estates pay because Decanta gives them something they can't get elsewhere:
 
 1. **A verified, owned presence** in the app every SA wine drinker uses (vs. Vivino, where their profile is generic and often wrong)
 2. **Direct connection to engaged local consumers** — the people who actually buy their wines
@@ -70,7 +70,7 @@ Defer until the consumer + estate base is established. Launch marketplace only w
 
 ## Why this beats Vivino's model in SA
 
-| Vivino weakness | Hemelval advantage |
+| Vivino weakness | Decanta advantage |
 |---|---|
 | US/EU-centric; weak SA coverage | SA-deep from day one — every WO ward, Platter's/Veritas badges, local estates |
 | Generic palate (no WSET rigor) | WSET-structured tasting that connoisseurs respect |

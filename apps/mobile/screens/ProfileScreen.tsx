@@ -15,7 +15,7 @@ import { aromaLabel } from '@kelder/engine';
 import { usePalate } from '../hooks/usePalate.js';
 import { useAuth } from '../hooks/useAuth.js';
 
-export function ProfileScreen() {
+export function ProfileScreen({ onBack }: { onBack?: () => void } = {}) {
   const insets = useSafeAreaInsets();
   const { profile: palateProfile, notes } = usePalate();
   const { profile, isRegistered, register, signIn, signOut, authError } = useAuth();
@@ -46,8 +46,13 @@ export function ProfileScreen() {
   if (!isRegistered) {
     return (
       <ScrollView style={{ flex: 1, backgroundColor: color.canvas }} contentContainerStyle={{ paddingTop: insets.top + 16 }}>
+        {onBack && (
+          <Pressable hitSlop={12} onPress={onBack} style={{ paddingHorizontal: space.xl, paddingTop: space.md }}>
+            <Text style={[font.captionMono, { color: color.body }]}>← BACK</Text>
+          </Pressable>
+        )}
         <View style={{ padding: space.xl }}>
-          <Eyebrow>JOIN HEMELVAL</Eyebrow>
+          <Eyebrow>JOIN DECANTA</Eyebrow>
           <Headline size="xl" style={{ marginTop: space.sm }}>
             {mode === 'signup' ? 'Create your cellar.' : 'Welcome back.'}
           </Headline>
@@ -129,11 +134,16 @@ export function ProfileScreen() {
   // ── Logged in: show profile ────────────────────────────────────────────
   return (
     <ScrollView style={{ flex: 1, backgroundColor: color.canvas }} contentContainerStyle={{ paddingTop: insets.top + 16 }}>
+      {onBack && (
+        <Pressable hitSlop={12} onPress={onBack} style={{ paddingHorizontal: space.xl, paddingTop: space.md }}>
+          <Text style={[font.captionMono, { color: color.body }]}>← BACK</Text>
+        </Pressable>
+      )}
       <View style={{ padding: space.xl }}>
         <Eyebrow>YOUR PROFILE</Eyebrow>
         <Headline size="xl" style={{ marginTop: space.sm }}>{profile.displayName || 'Wine lover'}</Headline>
         <BodyText muted size="sm" style={{ marginTop: space.xs }}>{profile.email}</BodyText>
-        {profile.isPro && <Chip tone="systems" style={{ marginTop: space.sm }}>✓ HEMELVAL PRO</Chip>}
+        {profile.isPro && <Chip tone="systems" style={{ marginTop: space.sm }}>✓ DECANTA PRO</Chip>}
       </View>
 
       <View style={{ paddingHorizontal: space.xl }}>
@@ -197,7 +207,7 @@ export function ProfileScreen() {
         {/* Pro upsell */}
         {!profile.isPro && (
           <Card style={{ marginTop: space.lg }}>
-            <Eyebrow>HEMELVAL PRO // R89/MO</Eyebrow>
+            <Eyebrow>DECANTA PRO // R89/MO</Eyebrow>
             <Headline size="md" style={{ marginTop: space.sm }}>Unlock your palate's full depth.</Headline>
             <View style={{ gap: space.sm, marginTop: space.md }}>
               <BodyText size="sm">✓ Unlimited scans</BodyText>
@@ -214,9 +224,9 @@ export function ProfileScreen() {
 
         {/* About */}
         <Card style={{ marginTop: space.lg }}>
-          <Eyebrow>ABOUT HEMELVAL</Eyebrow>
+          <Eyebrow>ABOUT DECANTA</Eyebrow>
           <BodyText size="sm" muted style={{ marginTop: space.md }}>
-            Hemelval is built for the South African wine community — every estate, varietal, and festival of the Western Cape. Your tasting data stays on your device; nothing is shared.
+            Decanta is built for the South African wine community — every estate, varietal, and festival of the Western Cape. Your tasting data stays on your device; nothing is shared.
           </BodyText>
           <BodyText size="sm" muted style={{ marginTop: space.sm }}>v0.1 · {palateProfile.noteCount} tastings logged</BodyText>
         </Card>
@@ -248,7 +258,7 @@ const styles = StyleSheet.create({
     marginTop: space.xs,
     ...font.bodyMd,
   },
-  errorBox: { marginTop: space.md, padding: space.md, backgroundColor: 'rgba(176,64,64,0.12)', borderRadius: radius.sm },
+  errorBox: { marginTop: space.md, padding: space.md, backgroundColor: color.critFill, borderRadius: radius.sm },
   palateBlock: { marginTop: space.md },
   chipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: space.xs, marginTop: space.sm },
   prefGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: space.lg, marginTop: space.sm },

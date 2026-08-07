@@ -20,7 +20,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import type { TastePreferences } from '@kelder/engine';
 import { supabase, isSupabaseConfigured } from '../lib/supabase.js';
 
-const PREFS_KEY = 'hemelval.preferences.v1';
+const PREFS_KEY = 'decanta.preferences.v1';
 
 export interface UserProfile {
   id: string;

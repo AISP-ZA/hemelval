@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Decanta — Visual Direction Options</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #000;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: #ccc;
+    padding: 20px;
+  }
+  h1 { text-align: center; font-size: 14px; letter-spacing: 3px; text-transform: uppercase; color: #c4973c; margin-bottom: 30px; }
+  .options { display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; }
+  .option-card {
+    width: 320px;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  .option-card:hover { transform: translateY(-4px); }
+  .option-label {
+    text-align: center;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .option-desc {
+    text-align: center;
+    font-size: 10px;
+    color: #666;
+    margin-bottom: 12px;
+    line-height: 1.4;
+  }
+
+  /* Shared phone frame */
+  .phone {
+    width: 320px;
+    height: 580px;
+    border-radius: 24px;
+    overflow: hidden;
+    position: relative;
+    border: 3px solid #1a1a1a;
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     OPTION A: "Wine List" — Editorial Magazine
+     Deep warm dark, generous space, serif-forward, gold rules
+     ═══════════════════════════════════════════════════════ */
+  .a-phone { background: #0a0608; }
+  .a-phone * { font-family: 'Georgia', serif; }
+  .a-header { padding: 40px 24px 16px; }
+  .a-eyebrow { font-family: 'Courier New', monospace; font-size: 8px; letter-spacing: 2px; color: #c4973c; text-transform: uppercase; margin-bottom: 6px; }
+  .a-title { font-size: 28px; color: #f0e6d6; font-weight: 400; line-height: 1.1; letter-spacing: -0.5px; }
+  .a-rule { height: 1px; background: linear-gradient(90deg, transparent, #c4973c44, transparent); margin: 16px 0; }
+  .a-stats { display: flex; padding: 0 24px; gap: 0; }
+  .a-stat { flex: 1; text-align: center; }
+  .a-stat-val { font-size: 24px; color: #f0e6d6; }
+  .a-stat-val-gold { color: #c4973c; }
+  .a-stat-lbl { font-family: 'Courier New', monospace; font-size: 7px; letter-spacing: 1.5px; color: #6a5848; margin-top: 2px; }
+  .a-stat-divider { width: 1px; background: #c4973c22; margin: 4px 0; }
+  .a-section { padding: 20px 24px; }
+  .a-entry { margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid #1a1015; }
+  .a-entry:last-child { border-bottom: none; }
+  .a-entry-wine { font-size: 16px; color: #c4973c; }
+  .a-entry-meta { font-family: 'Courier New', monospace; font-size: 8px; color: #6a5848; margin-top: 2px; letter-spacing: 0.5px; }
+  .a-entry-stars { color: #c4973c; font-size: 10px; float: right; }
+  .a-entry-note { font-size: 11px; color: #9a8870; font-style: italic; margin-top: 6px; line-height: 1.5; }
+  .a-type-tag { display: inline-block; font-family: 'Courier New', monospace; font-size: 7px; letter-spacing: 1px; padding: 1px 6px; border-radius: 99px; border: 1px solid; margin-right: 4px; }
+  .a-type-red { color: #9a2030; border-color: #9a2030; }
+  .a-type-white { color: #d4af37; border-color: #d4af37; }
+
+  /* ═══════════════════════════════════════════════════════
+     OPTION B: "Tasting Room" — Warm Material Depth
+     Rich layered surfaces, amber glow, tactile leather/wood
+     ═══════════════════════════════════════════════════════ */
+  .b-phone { background: #0d0709; }
+  .b-header { padding: 40px 20px 16px; background: linear-gradient(180deg, #1a0d10, #0d0709); }
+  .b-eyebrow { font-family: 'Georgia', serif; font-size: 9px; letter-spacing: 2px; color: #c4973c; text-transform: uppercase; margin-bottom: 4px; }
+  .b-title { font-family: 'Georgia', serif; font-size: 26px; color: #f0e6d6; font-weight: 400; }
+  .b-stats { display: flex; gap: 8px; padding: 16px 20px 0; }
+  .b-stat-card {
+    flex: 1; border-radius: 10px; padding: 12px 8px; text-align: center;
+    background: linear-gradient(145deg, #1a0e14, #120a0e);
+    border: 1px solid #2a1c20;
+    box-shadow: inset 0 1px 0 #c4973c15, 0 2px 8px #00000080;
+  }
+  .b-stat-val { font-family: 'Georgia', serif; font-size: 22px; color: #f0e6d6; }
+  .b-stat-val-gold { color: #d4a548; text-shadow: 0 0 12px #c4973c40; }
+  .b-stat-lbl { font-size: 7px; letter-spacing: 1px; color: #7a6050; margin-top: 2px; text-transform: uppercase; }
+  .b-entries { padding: 16px 20px; }
+  .b-entry {
+    display: flex; border-radius: 10px; overflow: hidden; margin-bottom: 10px;
+    background: linear-gradient(145deg, #160b10, #100709);
+    border: 1px solid #221318;
+    box-shadow: 0 2px 12px #00000060;
+  }
+  .b-accent { width: 3px; flex-shrink: 0; }
+  .b-accent-red { background: linear-gradient(180deg, #9a2030, #6b1228); }
+  .b-accent-white { background: linear-gradient(180deg, #e0b546, #c4973c); }
+  .b-body { flex: 1; padding: 10px 12px; }
+  .b-wine { font-family: 'Georgia', serif; font-size: 14px; color: #d4a548; }
+  .b-meta { font-size: 8px; color: #6a5040; margin-top: 1px; }
+  .b-stars { color: #c4973c; font-size: 9px; float: right; margin-top: 2px; }
+  .b-tags { display: flex; gap: 3px; margin-top: 5px; flex-wrap: wrap; }
+  .b-tag { font-size: 7px; padding: 1px 5px; border-radius: 99px; background: #2a1820; color: #9a8060; border: 1px solid #3a2428; }
+  .b-note { font-size: 9px; color: #8a7460; font-style: italic; margin-top: 4px; line-height: 1.4; }
+
+  /* ═══════════════════════════════════════════════════════
+     OPTION C: "Cape Modern" — Bright & Confident
+     Warmer canvas, colour-coded tiles, indigo companion, energetic
+     ═══════════════════════════════════════════════════════ */
+  .c-phone { background: #110a10; }
+  .c-header { padding: 40px 20px 12px; background: linear-gradient(135deg, #1a0e16, #150a12); }
+  .c-eyebrow { font-family: 'Georgia', serif; font-size: 9px; letter-spacing: 2px; color: #d4a548; text-transform: uppercase; margin-bottom: 4px; }
+  .c-title { font-family: 'Georgia', serif; font-size: 26px; color: #f5ecd8; font-weight: 400; }
+  .c-stats { display: flex; gap: 8px; padding: 12px 20px 0; }
+  .c-stat-card {
+    flex: 1; border-radius: 12px; padding: 12px 8px; text-align: center;
+    background: #1c1018;
+    border: 1px solid #2a1828;
+  }
+  .c-stat-val { font-family: 'Georgia', serif; font-size: 22px; color: #f5ecd8; }
+  .c-stat-val-gold { color: #d4a548; }
+  .c-stat-lbl { font-size: 7px; letter-spacing: 1px; color: #7a6858; margin-top: 2px; }
+  .c-entries { padding: 16px 20px; }
+  .c-entry {
+    border-radius: 12px; margin-bottom: 10px; overflow: hidden;
+    border: 1px solid #2a1828;
+  }
+  .c-entry-red { background: linear-gradient(135deg, #1e0a10, #150810); border-color: #4a1525; }
+  .c-entry-white { background: linear-gradient(135deg, #1a160e, #14100a); border-color: #4a3818; }
+  .c-body { padding: 12px; }
+  .c-wine-row { display: flex; justify-content: space-between; align-items: center; }
+  .c-wine { font-family: 'Georgia', serif; font-size: 14px; color: #f0e6d6; font-weight: 400; }
+  .c-stars { font-size: 10px; }
+  .c-stars-red { color: #9a2030; }
+  .c-stars-white { color: #d4af37; }
+  .c-meta { font-size: 8px; color: #7a6858; margin-top: 1px; }
+  .c-type-pill { font-size: 7px; padding: 2px 8px; border-radius: 99px; font-weight: 600; letter-spacing: 0.5px; }
+  .c-type-pill-red { background: #4a1525; color: #e090a0; }
+  .c-type-pill-white { background: #3a2c10; color: #e8c860; }
+  .c-tags { display: flex; gap: 4px; margin-top: 6px; flex-wrap: wrap; }
+  .c-tag { font-size: 7px; padding: 2px 6px; border-radius: 6px; background: #ffffff08; color: #a09080; }
+  .c-note { font-size: 9px; color: #8a7868; margin-top: 5px; line-height: 1.4; font-style: italic; }
+
+  /* ═══════════════════════════════════════════════════════
+     OPTION D: "Cellar Vault" — Glassmorphism & Glow
+     Frosted glass, luminous gold, premium fintech feel
+     ═══════════════════════════════════════════════════════ */
+  .d-phone { background: #08030a; position: relative; }
+  .d-glow { position: absolute; top: -40px; left: -40px; width: 200px; height: 200px; background: radial-gradient(circle, #c4973c15, transparent 70%); pointer-events: none; }
+  .d-glow2 { position: absolute; bottom: 40px; right: -60px; width: 180px; height: 180px; background: radial-gradient(circle, #6b122820, transparent 70%); pointer-events: none; }
+  .d-header { padding: 40px 24px 16px; position: relative; z-index: 2; }
+  .d-eyebrow { font-family: 'Georgia', serif; font-size: 9px; letter-spacing: 2.5px; color: #c4973c; text-transform: uppercase; margin-bottom: 6px; text-shadow: 0 0 8px #c4973c30; }
+  .d-title { font-family: 'Georgia', serif; font-size: 28px; color: #f0e6d6; font-weight: 400; text-shadow: 0 0 20px #c4973c10; }
+  .d-stats { display: flex; gap: 8px; padding: 16px 20px 0; position: relative; z-index: 2; }
+  .d-stat-card {
+    flex: 1; border-radius: 12px; padding: 12px 8px; text-align: center;
+    background: rgba(196,151,60,0.06);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(196,151,60,0.15);
+    box-shadow: 0 4px 16px #00000040, inset 0 1px 0 rgba(196,151,60,0.08);
+  }
+  .d-stat-val { font-family: 'Georgia', serif; font-size: 22px; color: #f0e6d6; }
+  .d-stat-val-gold { color: #c4973c; text-shadow: 0 0 16px #c4973c50; }
+  .d-stat-lbl { font-size: 7px; letter-spacing: 1.5px; color: #7a6858; margin-top: 2px; }
+  .d-entries { padding: 16px 20px; position: relative; z-index: 2; }
+  .d-entry {
+    border-radius: 14px; margin-bottom: 10px; padding: 12px;
+    background: rgba(196,151,60,0.04);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(196,151,60,0.10);
+    box-shadow: 0 4px 20px #00000050;
+    position: relative;
+  }
+  .d-entry::before {
+    content: ''; position: absolute; left: 0; top: 12px; bottom: 12px; width: 2px; border-radius: 99px;
+  }
+  .d-entry-red::before { background: #9a2030; box-shadow: 0 0 8px #9a203060; }
+  .d-entry-white::before { background: #d4af37; box-shadow: 0 0 8px #d4af3760; }
+  .d-wine-row { display: flex; justify-content: space-between; align-items: center; padding-left: 10px; }
+  .d-wine { font-family: 'Georgia', serif; font-size: 14px; color: #c4973c; }
+  .d-stars { color: #c4973c; font-size: 10px; text-shadow: 0 0 6px #c4973c40; }
+  .d-meta { font-size: 8px; color: #6a5848; margin-top: 1px; padding-left: 10px; }
+  .d-tags { display: flex; gap: 4px; margin-top: 6px; padding-left: 10px; flex-wrap: wrap; }
+  .d-tag {
+    font-size: 7px; padding: 2px 6px; border-radius: 6px;
+    background: rgba(196,151,60,0.06); color: #9a8870;
+    border: 1px solid rgba(196,151,60,0.10);
+  }
+  .d-note { font-size: 9px; color: #8a7460; margin-top: 5px; line-height: 1.4; font-style: italic; padding-left: 10px; }
+</style>
+</head>
+<body>
+
+<h1>Decanta — Visual Direction Options · Tap to Compare</h1>
+
+<div class="options">
+
+  <!-- ═══ OPTION A ═══ -->
+  <div class="option-card">
+    <div class="option-label" style="color: #c4973c;">A · Wine List</div>
+    <div class="option-desc">Editorial magazine. Generous whitespace, serif-forward, gold rule lines. Like reading Platter's Guide. Content breathes — photography & typography carry the richness, not effects.</div>
+    <div class="phone a-phone">
+      <div class="a-header">
+        <div class="a-eyebrow">Your Cellar</div>
+        <div class="a-title">4 wines tasted.</div>
+      </div>
+      <div class="a-rule"></div>
+      <div class="a-stats">
+        <div class="a-stat"><div class="a-stat-val">4</div><div class="a-stat-lbl">TASTED</div></div>
+        <div class="a-stat-divider"></div>
+        <div class="a-stat"><div class="a-stat-val a-stat-val-gold">4.6★</div><div class="a-stat-lbl">AVG</div></div>
+        <div class="a-stat-divider"></div>
+        <div class="a-stat"><div class="a-stat-val">4</div><div class="a-stat-lbl">VARIETALS</div></div>
+      </div>
+      <div class="a-rule"></div>
+      <div class="a-section">
+        <div class="a-entry">
+          <span class="a-entry-stars">★★★★½</span>
+          <div class="a-entry-wine">Kanonkop Pinotage 2021</div>
+          <div class="a-entry-meta">Kanonkop · 15 Jul 2026</div>
+          <div style="margin-top:4px"><span class="a-type-tag a-type-red">RED</span></div>
+          <div class="a-entry-note">"Rich plum, banana, earth. Paired with braai lamb chops."</div>
+        </div>
+        <div class="a-entry">
+          <span class="a-entry-stars">★★★★★</span>
+          <div class="a-entry-wine">Hamilton Russell Pinot Noir</div>
+          <div class="a-entry-meta">Hamilton Russell · 12 Jul 2026</div>
+          <div style="margin-top:4px"><span class="a-type-tag a-type-red">RED</span></div>
+          <div class="a-entry-note">"Finessed, forest floor. My new benchmark for SA Pinot."</div>
+        </div>
+        <div class="a-entry">
+          <span class="a-entry-stars">★★★★★</span>
+          <div class="a-entry-wine">Sadie Skurfberg 2021</div>
+          <div class="a-entry-meta">Sadie Family · 28 Jun 2026</div>
+          <div style="margin-top:4px"><span class="a-type-tag a-type-white">WHITE</span></div>
+          <div class="a-entry-note">"Extraordinary. Honeyed, mineral, infinite length."</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ OPTION B ═══ -->
+  <div class="option-card">
+    <div class="option-label" style="color: #d4a548;">B · Tasting Room</div>
+    <div class="option-desc">Warm material depth. Layered surfaces with visible warmth — cards glow from within. Amber tones, tactile borders. Like sitting in a candlelit barrel cellar. Closest to InVintory premium.</div>
+    <div class="phone b-phone">
+      <div class="b-header">
+        <div class="b-eyebrow">Your Cellar</div>
+        <div class="b-title">4 wines tasted.</div>
+      </div>
+      <div class="b-stats">
+        <div class="b-stat-card">
+          <div class="b-stat-val">4</div>
+          <div class="b-stat-lbl">TASTED</div>
+        </div>
+        <div class="b-stat-card">
+          <div class="b-stat-val b-stat-val-gold">4.6★</div>
+          <div class="b-stat-lbl">AVG RATING</div>
+        </div>
+        <div class="b-stat-card">
+          <div class="b-stat-val">4</div>
+          <div class="b-stat-lbl">VARIETALS</div>
+        </div>
+      </div>
+      <div class="b-entries">
+        <div class="b-entry">
+          <div class="b-accent b-accent-red"></div>
+          <div class="b-body">
+            <span class="b-stars">★★★★½</span>
+            <div class="b-wine">Kanonkop Pinotage 2021</div>
+            <div class="b-meta">Kanonkop · 15 Jul</div>
+            <div class="b-tags">
+              <span class="b-tag">Red Cherry</span><span class="b-tag">Leather</span><span class="b-tag">Plum</span>
+            </div>
+            <div class="b-note">Rich plum, banana, earth. Paired with braai lamb.</div>
+          </div>
+        </div>
+        <div class="b-entry">
+          <div class="b-accent b-accent-red"></div>
+          <div class="b-body">
+            <span class="b-stars">★★★★★</span>
+            <div class="b-wine">Hamilton Russell Pinot Noir</div>
+            <div class="b-meta">Hamilton Russell · 12 Jul</div>
+            <div class="b-tags">
+              <span class="b-tag">Cherry</span><span class="b-tag">Forest Floor</span><span class="b-tag">Rose</span>
+            </div>
+            <div class="b-note">Finessed, forest floor. New benchmark for SA Pinot.</div>
+          </div>
+        </div>
+        <div class="b-entry">
+          <div class="b-accent b-accent-white"></div>
+          <div class="b-body">
+            <span class="b-stars">★★★★★</span>
+            <div class="b-wine">Sadie Skurfberg 2021</div>
+            <div class="b-meta">Sadie Family · 28 Jun</div>
+            <div class="b-tags">
+              <span class="b-tag">Apple</span><span class="b-tag">Honey</span><span class="b-tag">Quince</span>
+            </div>
+            <div class="b-note">Extraordinary. Honeyed, mineral, infinite length.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ OPTION C ═══ -->
+  <div class="option-card">
+    <div class="option-label" style="color: #5a7a9a;">C · Cape Modern</div>
+    <div class="option-desc">Bright & confident. Warmer canvas, full colour-coded tiles per wine type. Reds are visibly red, whites visibly gold. More energy, more lifestyle. Airbnb-meets-wine. Less somber, more inviting.</div>
+    <div class="phone c-phone">
+      <div class="c-header">
+        <div class="c-eyebrow">Your Cellar</div>
+        <div class="c-title">4 wines tasted.</div>
+      </div>
+      <div class="c-stats">
+        <div class="c-stat-card">
+          <div class="c-stat-val">4</div>
+          <div class="c-stat-lbl">TASTED</div>
+        </div>
+        <div class="c-stat-card">
+          <div class="c-stat-val c-stat-val-gold">4.6★</div>
+          <div class="c-stat-lbl">AVG RATING</div>
+        </div>
+        <div class="c-stat-card">
+          <div class="c-stat-val">4</div>
+          <div class="c-stat-lbl">VARIETALS</div>
+        </div>
+      </div>
+      <div class="c-entries">
+        <div class="c-entry c-entry-red">
+          <div class="c-body">
+            <div class="c-wine-row">
+              <div class="c-wine">Kanonkop Pinotage '21</div>
+              <div class="c-stars c-stars-red">★★★★½</div>
+            </div>
+            <div class="c-meta">Kanonkop · 15 Jul</div>
+            <div class="c-tags">
+              <span class="c-type-pill c-type-pill-red">RED</span>
+              <span class="c-tag">Cherry</span><span class="c-tag">Leather</span>
+            </div>
+            <div class="c-note">Rich plum, banana, earth. Braai lamb.</div>
+          </div>
+        </div>
+        <div class="c-entry c-entry-red">
+          <div class="c-body">
+            <div class="c-wine-row">
+              <div class="c-wine">Hamilton Russell Pinot Noir</div>
+              <div class="c-stars c-stars-red">★★★★★</div>
+            </div>
+            <div class="c-meta">Hamilton Russell · 12 Jul</div>
+            <div class="c-tags">
+              <span class="c-type-pill c-type-pill-red">RED</span>
+              <span class="c-tag">Forest Floor</span><span class="c-tag">Rose</span>
+            </div>
+            <div class="c-note">Finessed, forest floor. Benchmark SA Pinot.</div>
+          </div>
+        </div>
+        <div class="c-entry c-entry-white">
+          <div class="c-body">
+            <div class="c-wine-row">
+              <div class="c-wine">Sadie Skurfberg '21</div>
+              <div class="c-stars c-stars-white">★★★★★</div>
+            </div>
+            <div class="c-meta">Sadie Family · 28 Jun</div>
+            <div class="c-tags">
+              <span class="c-type-pill c-type-pill-white">WHITE</span>
+              <span class="c-tag">Honey</span><span class="c-tag">Quince</span>
+            </div>
+            <div class="c-note">Honeyed, mineral, infinite length.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ OPTION D ═══ -->
+  <div class="option-card">
+    <div class="option-label" style="color: #c4973c;">D · Cellar Vault</div>
+    <div class="option-desc">Glassmorphism & glow. Frosted-glass cards, luminous gold elements, ambient light pools. Premium fintech feel (Apple Card, Revolut Metal) applied to wine. Every element has a luminous quality.</div>
+    <div class="phone d-phone">
+      <div class="d-glow"></div>
+      <div class="d-glow2"></div>
+      <div class="d-header">
+        <div class="d-eyebrow">Your Cellar</div>
+        <div class="d-title">4 wines tasted.</div>
+      </div>
+      <div class="d-stats">
+        <div class="d-stat-card">
+          <div class="d-stat-val">4</div>
+          <div class="d-stat-lbl">TASTED</div>
+        </div>
+        <div class="d-stat-card">
+          <div class="d-stat-val d-stat-val-gold">4.6★</div>
+          <div class="d-stat-lbl">AVG RATING</div>
+        </div>
+        <div class="d-stat-card">
+          <div class="d-stat-val">4</div>
+          <div class="d-stat-lbl">VARIETALS</div>
+        </div>
+      </div>
+      <div class="d-entries">
+        <div class="d-entry d-entry-red">
+          <div class="d-wine-row">
+            <div class="d-wine">Kanonkop Pinotage '21</div>
+            <div class="d-stars">★★★★½</div>
+          </div>
+          <div class="d-meta">Kanonkop · 15 Jul</div>
+          <div class="d-tags">
+            <span class="d-tag">Cherry</span><span class="d-tag">Leather</span><span class="d-tag">Plum</span>
+          </div>
+          <div class="d-note">Rich plum, banana, earth. Braai lamb.</div>
+        </div>
+        <div class="d-entry d-entry-red">
+          <div class="d-wine-row">
+            <div class="d-wine">Hamilton Russell Pinot Noir</div>
+            <div class="d-stars">★★★★★</div>
+          </div>
+          <div class="d-meta">Hamilton Russell · 12 Jul</div>
+          <div class="d-tags">
+            <span class="d-tag">Forest Floor</span><span class="d-tag">Rose</span>
+          </div>
+          <div class="d-note">Finessed, forest floor. Benchmark SA Pinot.</div>
+        </div>
+        <div class="d-entry d-entry-white">
+          <div class="d-wine-row">
+            <div class="d-wine">Sadie Skurfberg '21</div>
+            <div class="d-stars">★★★★★</div>
+          </div>
+          <div class="d-meta">Sadie Family · 28 Jun</div>
+          <div class="d-tags">
+            <span class="d-tag">Honey</span><span class="d-tag">Quince</span>
+          </div>
+          <div class="d-note">Honeyed, mineral, infinite length.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div style="text-align:center; margin-top:30px; font-size:10px; color:#444; letter-spacing:1px;">
+  All directions retain: dark canvas · gold identity · Cormorant Garamond serif · SA wine focus · existing features
+</div>
+
+</body>
+</html>

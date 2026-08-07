@@ -16,8 +16,8 @@ import { Platform, View, type ViewStyle } from 'react-native';
 export function QRCode({
   value,
   size = 120,
-  color = '#241b18',
-  backgroundColor = '#ece4d8',
+  color = '#08030a',
+  backgroundColor = '#ede0cc',
   style,
 }: {
   value: string;

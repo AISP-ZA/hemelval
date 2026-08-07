@@ -33,6 +33,17 @@ config.watchFolders = [
 
 config.resolver.resolveRequest = (context, moduleName, platform) => {
   const delegate = context.resolveRequest;
+
+  // Handle package "exports" subpaths that Metro doesn't resolve natively.
+  // barcode-detector/ponyfill → node_modules/barcode-detector/dist/es/ponyfill.js
+  if (moduleName === 'barcode-detector/ponyfill') {
+    try {
+      return delegate(context, 'barcode-detector/dist/es/ponyfill.js', platform);
+    } catch (e) {
+      // Fall through to default resolution
+    }
+  }
+
   try {
     return delegate(context, moduleName, platform);
   } catch (err) {

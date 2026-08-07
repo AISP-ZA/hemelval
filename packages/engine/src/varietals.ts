@@ -104,7 +104,7 @@ export const VARIETALS: readonly Varietal[] = [
     type: 'red',
     aliases: ['Garnacha'],
     character: 'Red fruit, white pepper, spice. Central to the Swartland Rhône movement.',
-    typicalAromas: ['strawberry', 'raspberry' as string, 'white-pepper', 'thyme', 'licorice'],
+    typicalAromas: ['strawberry', 'raspberry', 'white-pepper', 'thyme', 'licorice'],
     regions: ['Swartland'],
   },
   {
@@ -113,7 +113,7 @@ export const VARIETALS: readonly Varietal[] = [
     type: 'red',
     aliases: ['Monastrell'],
     character: 'Dark, meaty, structured. Swartland Rhône-blend component.',
-    typicalAromas: ['blackberry', 'leather', 'black-pepper', 'game' as string],
+    typicalAromas: ['blackberry', 'leather', 'black-pepper', 'game'],
     regions: ['Swartland', 'Stellenbosch'],
   },
   {
@@ -150,7 +150,7 @@ export const VARIETALS: readonly Varietal[] = [
     type: 'white',
     aliases: ['Semillon'],
     character: 'Waxy, lanolin, fig. Constantia\'s historic grape; revived by Boekenhoutskloof single-vineyard.',
-    typicalAromas: ['fig', 'lemon', 'hay', 'wax' as string, 'honey'],
+    typicalAromas: ['fig', 'lemon', 'hay', 'wax', 'honey'],
     regions: ['Constantia', 'Franschhoek', 'Stellenbosch'],
   },
   {
@@ -158,7 +158,7 @@ export const VARIETALS: readonly Varietal[] = [
     name: 'Riesling',
     type: 'white',
     character: 'Lime, petrol (with age), high acid. SA examples from Elgin & Hemel-en-Aarde.',
-    typicalAromas: ['lime', 'lemon', 'green-apple' as string, 'petrol', 'honey'],
+    typicalAromas: ['lime', 'lemon', 'green-apple', 'petrol', 'honey'],
     regions: ['Elgin', 'Hemel-en-Aarde', 'Constantia'],
   },
   {
@@ -175,7 +175,7 @@ export const VARIETALS: readonly Varietal[] = [
     type: 'white',
     aliases: ['Colombard'],
     character: 'High acid, value whites & brandy base. Mostly Breedekloof & Robertson.',
-    typicalAromas: ['lemon', 'green-apple' as string, 'cut-grass'],
+    typicalAromas: ['lemon', 'green-apple', 'cut-grass'],
     regions: ['Breedekloof', 'Robertson'],
   },
   // ── Sparkling ───────────────────────────────────────────────────────────
@@ -194,7 +194,7 @@ export const VARIETALS: readonly Varietal[] = [
     name: 'Touriga Nacional',
     type: 'red',
     character: 'Port-style wines of Calitzdorp. Dark, floral, concentrated.',
-    typicalAromas: ['blackberry', 'violet', 'plum' as string, 'licorice'],
+    typicalAromas: ['blackberry', 'violet', 'plum', 'licorice'],
     regions: ['Calitzdorp', 'Klein Karoo'],
   },
   {
@@ -202,7 +202,7 @@ export const VARIETALS: readonly Varietal[] = [
     name: 'Tinta Barroca',
     type: 'red',
     character: 'Portuguese variety for Calitzdorp port-style wines.',
-    typicalAromas: ['plum' as string, 'cherry-black', 'chocolate-dark'],
+    typicalAromas: ['plum', 'cherry-black', 'chocolate-dark'],
     regions: ['Calitzdorp', 'Klein Karoo'],
   },
 ] as const;
